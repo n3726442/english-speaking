@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>英文口說跟讀練習器</title>
+  <title>英文口說與歌詞跟讀練習器</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
-      --primary-light: #eff6ff;
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --primary-light: #e0f2fe;
       --secondary: #0d9488;
       --secondary-light: #f0fdfa;
       --danger: #e11d48;
@@ -19,11 +19,11 @@
       --success: #16a34a;
       --success-light: #f0fdf4;
       --warning: #f59e0b;
-      --bg: #f8fafc;
+      --bg: #f0f9ff;
       --card-bg: #ffffff;
-      --text-main: #1e293b;
-      --text-muted: #64748b;
-      --border: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --border: #bae6fd;
       --radius: 14px;
     }
 
@@ -42,7 +42,7 @@
     }
 
     .container {
-      max-width: 820px;
+      max-width: 840px;
       margin: 0 auto;
     }
 
@@ -56,8 +56,8 @@
       background: var(--card-bg);
       padding: 14px 20px;
       border-radius: var(--radius);
-      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
-      border: 1px solid var(--border);
+      box-shadow: 0 2px 10px rgba(2, 132, 199, 0.08);
+      border: 1.5px solid var(--border);
       margin-bottom: 16px;
       position: sticky;
       top: 8px;
@@ -77,7 +77,8 @@
     .stats-bar {
       display: flex;
       align-items: center;
-      gap: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
     .star-counter {
@@ -85,7 +86,7 @@
       color: #b45309;
       padding: 6px 14px;
       border-radius: 999px;
-      font-weight: 700;
+      font-weight: 800;
       font-size: 0.95rem;
       display: flex;
       align-items: center;
@@ -94,15 +95,16 @@
     }
 
     .toggle-btn {
-      background: #f1f5f9;
+      background: #f8fafc;
       color: var(--text-main);
-      border: 1px solid var(--border);
+      border: 1px solid #cbd5e1;
       padding: 6px 12px;
       border-radius: 8px;
       font-size: 0.85rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       transition: all 0.2s;
+      font-family: inherit;
     }
 
     .toggle-btn:hover {
@@ -121,13 +123,13 @@
       font-size: 0.9rem;
     }
 
-    /* 文章輸入區塊 */
+    /* 主題選擇與文章輸入區塊 */
     .input-panel {
       background: var(--card-bg);
       padding: 20px;
       border-radius: var(--radius);
-      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
-      border: 1px solid var(--border);
+      box-shadow: 0 2px 10px rgba(2, 132, 199, 0.06);
+      border: 1.5px solid var(--border);
       margin-bottom: 20px;
       transition: all 0.3s ease;
     }
@@ -136,39 +138,68 @@
       display: none;
     }
 
+    .preset-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      padding-bottom: 14px;
+      border-bottom: 1px dashed #cbd5e1;
+    }
+
+    .preset-bar label {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+
+    .preset-select {
+      flex: 1;
+      min-width: 240px;
+      padding: 9px 12px;
+      border-radius: 10px;
+      border: 1.5px solid var(--primary);
+      background-color: #f0f9ff;
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .preset-select:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.18);
+    }
+
+    .custom-area {
+      display: none;
+    }
+
+    .custom-area.show {
+      display: block;
+    }
+
     .input-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
-    .input-header label {
+    .input-header span {
       font-weight: 700;
-      font-size: 0.95rem;
-      color: var(--text-main);
-    }
-
-    .sample-btn {
-      background: transparent;
-      color: var(--primary);
-      border: 1px solid var(--primary);
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 0.8rem;
-      cursor: pointer;
-      font-weight: 600;
-    }
-
-    .sample-btn:hover {
-      background: var(--primary-light);
+      font-size: 0.9rem;
+      color: var(--text-muted);
     }
 
     textarea {
       width: 100%;
       height: 120px;
       padding: 12px;
-      border: 1.5px solid var(--border);
+      border: 1.5px solid #cbd5e1;
       border-radius: 10px;
       font-family: 'Nunito', 'Noto Sans TC', sans-serif;
       font-size: 1rem;
@@ -188,11 +219,11 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 10px;
-      margin-top: 12px;
+      margin-top: 10px;
     }
 
     .hint-text {
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
     }
 
@@ -208,8 +239,9 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+      box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
       transition: background 0.2s, transform 0.1s;
+      font-family: inherit;
     }
 
     .btn-primary:hover {
@@ -218,6 +250,33 @@
 
     .btn-primary:active {
       transform: scale(0.98);
+    }
+
+    /* 主題資訊橫幅 */
+    .topic-banner {
+      background: linear-gradient(135deg, #0284c7, #0d9488);
+      color: white;
+      padding: 14px 20px;
+      border-radius: var(--radius);
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
+    }
+
+    .topic-banner h2 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .topic-banner p {
+      margin: 2px 0 0 0;
+      font-size: 0.85rem;
+      opacity: 0.92;
     }
 
     /* 練習卡片列表 */
@@ -232,14 +291,14 @@
       background: var(--card-bg);
       border-radius: var(--radius);
       padding: 20px;
-      border: 1.5px solid var(--border);
+      border: 1.5px solid #e2e8f0;
       box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
       transition: border-color 0.3s, box-shadow 0.3s;
     }
 
     .practice-card.completed {
       border-color: #86efac;
-      background: linear-gradient(to bottom right, #ffffff, #f7fee7);
+      background: linear-gradient(to bottom right, #ffffff, #f0fdf4);
     }
 
     .practice-card.recording {
@@ -251,15 +310,30 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
+    }
+
+    .badge-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .sentence-badge {
       font-size: 0.78rem;
       font-weight: 700;
-      color: var(--text-muted);
-      background: #f1f5f9;
+      color: var(--primary);
+      background: var(--primary-light);
       padding: 3px 10px;
+      border-radius: 6px;
+    }
+
+    .section-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--secondary);
+      background: var(--secondary-light);
+      padding: 3px 8px;
       border-radius: 6px;
     }
 
@@ -279,9 +353,20 @@
       font-size: 1.35rem;
       font-weight: 700;
       color: var(--text-main);
-      margin-bottom: 16px;
+      margin-bottom: 6px;
       line-height: 1.7;
       word-spacing: 2px;
+    }
+
+    .zh-translation {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      padding-left: 4px;
+    }
+
+    body.hide-zh .zh-translation {
+      display: none;
     }
 
     .clickable-word {
@@ -298,7 +383,7 @@
     }
 
     .clickable-word:active {
-      background-color: #dbeafe;
+      background-color: #bae6fd;
     }
 
     /* 按鈕控制列 */
@@ -310,7 +395,7 @@
     }
 
     .ctrl-btn {
-      border: 1.5px solid var(--border);
+      border: 1.5px solid #e2e8f0;
       background: #ffffff;
       color: var(--text-main);
       padding: 8px 14px;
@@ -336,12 +421,12 @@
 
     .btn-listen {
       color: var(--primary);
-      border-color: #bfdbfe;
+      border-color: #bae6fd;
       background: var(--primary-light);
     }
 
     .btn-listen:hover {
-      background: #dbeafe;
+      background: #bae6fd;
     }
 
     .btn-slow {
@@ -383,7 +468,7 @@
       padding: 12px 14px;
       border-radius: 10px;
       background: #f8fafc;
-      border: 1px solid var(--border);
+      border: 1px solid #e2e8f0;
       display: none;
     }
 
@@ -398,6 +483,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
     }
 
     .diff-words {
@@ -458,11 +545,12 @@
 <div class="container">
   <header>
     <div class="title-group">
-      <h1>🗣️ 英文口說跟讀練習</h1>
+      <h1>🗣️ 英文口說與歌詞跟讀</h1>
     </div>
     <div class="stats-bar">
       <div class="star-counter" id="totalStars">⭐ 0 / 0</div>
-      <button class="toggle-btn" id="toggleInputBtn" onclick="toggleInputPanel()">隱藏輸入區</button>
+      <button class="toggle-btn" id="toggleZhBtn" onclick="toggleTranslation()">隱藏中文</button>
+      <button class="toggle-btn" id="toggleInputBtn" onclick="toggleInputPanel()">切換主題</button>
     </div>
   </header>
 
@@ -470,29 +558,108 @@
     ⚠️ 提醒：目前的瀏覽器可能不支援語音辨識（錄音評分功能）。建議使用 <strong>Google Chrome</strong>、<strong>Microsoft Edge</strong> 或 <strong>Safari</strong> 開啟，並允許麥克風權限。
   </div>
 
-  <!-- 上方文章輸入區 -->
+  <!-- 主題選單與文章輸入區 -->
   <section class="input-panel" id="inputPanel">
-    <div class="input-header">
-      <label for="sourceText">貼上英文文章或歌詞（系統會自動斷句）：</label>
-      <button class="sample-btn" onclick="loadSampleText()">載入範例短文</button>
+    <div class="preset-bar">
+      <label for="topicSelect">📚 選擇練習主題：</label>
+      <select id="topicSelect" class="preset-select" onchange="handleTopicChange()">
+        <option value="moana_highlight">🌊 《海洋奇緣》How Far I'll Go（第一段＋副歌精選）</option>
+        <option value="moana_full">🌊 《海洋奇緣》How Far I'll Go（完整版歌詞）</option>
+        <option value="nature_story">☀️ 自然與生活短文（基礎練習）</option>
+        <option value="custom">✏️ 自訂文章 / 貼上新歌詞...</option>
+      </select>
     </div>
-    <textarea id="sourceText" placeholder="請在此貼上英文文章或歌詞..."></textarea>
-    <div class="input-actions">
-      <span class="hint-text">💡 小提示：練習時，點擊句子裡的「單一英文單字」也可以單獨聽發音喔！</span>
-      <button class="btn-primary" onclick="generateCards()">✨ 生成練習卡片</button>
+
+    <div class="hint-text" id="presetHint">
+      💡 提示：點擊句子中的「單一英文單字」可以單獨聽發音；按下「錄音測試」唸出整句即可獲得星星！
+    </div>
+
+    <!-- 自訂輸入區（選擇「自訂文章」時展開） -->
+    <div class="custom-area" id="customArea">
+      <div class="input-header">
+        <span>請在下方貼上任何英文文章或歌詞（系統會自動斷句）：</span>
+      </div>
+      <textarea id="sourceText" placeholder="請在此貼上英文文章或歌詞..."></textarea>
+      <div class="input-actions">
+        <span class="hint-text">支援依換行或標點符號自動切分句子</span>
+        <button class="btn-primary" onclick="generateCustomCards()">✨ 生成練習卡片</button>
+      </div>
     </div>
   </section>
+
+  <!-- 當前主題說明橫幅 -->
+  <div class="topic-banner" id="topicBanner">
+    <div>
+      <h2 id="bannerTitle">🌊 《海洋奇緣》How Far I'll Go（精選段）</h2>
+      <p id="bannerDesc">Disney's Moana • 點擊單字可聽獨立發音，挑戰集滿所有星星！</p>
+    </div>
+  </div>
 
   <!-- 下方互動練習卡片區 -->
   <main class="cards-list" id="cardsContainer"></main>
 </div>
 
 <script>
-  // 預設範例文章（原創兒童自然與生活短文）
-  const DEFAULT_TEXT = `Look at the bright morning sun in the sky.
-Little birds are singing happily in the green trees.
-Every day is a brand new adventure to explore.
-Take a deep breath, smile wide, and try your best!`;
+  // 預設題庫資料庫（含段落標籤與中文對照翻譯）
+  const PRESET_TOPICS = {
+    moana_highlight: {
+      title: "🌊 《海洋奇緣》How Far I'll Go（精選段）",
+      desc: "Disney's Moana • 第一段主歌與經典副歌，適合單堂課分段練習",
+      items: [
+        { tag: "Verse 1", en: "I've been staring at the edge of the water", zh: "我一直凝望著水岸的盡頭" },
+        { tag: "Verse 1", en: "Long as I can remember, never really knowing why", zh: "從我有記憶以來就是如此，卻從不明白為什麼" },
+        { tag: "Verse 1", en: "I wish I could be the perfect daughter", zh: "我希望自己能成為完美的女兒" },
+        { tag: "Verse 1", en: "But I come back to the water, no matter how hard I try", zh: "但無論我多麼努力嘗試，我總是會回到這片海邊" },
+        { tag: "Chorus", en: "See the line where the sky meets the sea? It calls me", zh: "看見天空與大海交會的那條線了嗎？它在呼喚著我" },
+        { tag: "Chorus", en: "And no one knows, how far it goes", zh: "沒有人知道，它究竟延伸到多遠的地方" },
+        { tag: "Chorus", en: "If the wind in my sail on the sea stays behind me", zh: "如果海上的風吹進我的船帆，在身後推著我前進" },
+        { tag: "Chorus", en: "One day I'll know, if I go there's just no telling how far I'll go", zh: "總有一天我會明白，只要我啟航，沒人能預料我能走多遠" }
+      ]
+    },
+    moana_full: {
+      title: "🌊 《海洋奇緣》How Far I'll Go（完整版歌詞）",
+      desc: "Disney's Moana • 全曲完整練習，挑戰成為海洋奇緣口說大師！",
+      items: [
+        { tag: "Verse 1", en: "I've been staring at the edge of the water", zh: "我一直凝望著水岸的盡頭" },
+        { tag: "Verse 1", en: "Long as I can remember, never really knowing why", zh: "從我有記憶以來就是如此，卻從不明白為什麼" },
+        { tag: "Verse 1", en: "I wish I could be the perfect daughter", zh: "我希望自己能成為完美的女兒" },
+        { tag: "Verse 1", en: "But I come back to the water, no matter how hard I try", zh: "但無論我多麼努力嘗試，我總是會回到這片海邊" },
+        { tag: "Pre-Chorus", en: "Every turn I take, every trail I track", zh: "我走的每一個轉彎，我追尋的每一條小徑" },
+        { tag: "Pre-Chorus", en: "Every path I make, every road leads back", zh: "我開闢的每一條路，每一條道路最終都引領我回到" },
+        { tag: "Pre-Chorus", en: "To the place I know, where I cannot go, where I long to be", zh: "那個我熟悉、卻不能前往、內心深深渴望的地方" },
+        { tag: "Chorus", en: "See the line where the sky meets the sea? It calls me", zh: "看見天空與大海交會的那條線了嗎？它在呼喚著我" },
+        { tag: "Chorus", en: "And no one knows, how far it goes", zh: "沒有人知道，它究竟延伸到多遠的地方" },
+        { tag: "Chorus", en: "If the wind in my sail on the sea stays behind me", zh: "如果海上的風吹進我的船帆，在身後推著我前進" },
+        { tag: "Chorus", en: "One day I'll know, if I go there's just no telling how far I'll go", zh: "總有一天我會明白，只要我啟航，沒人能預料我能走多遠" },
+        { tag: "Verse 2", en: "I know everybody on this island seems so happy on this island", zh: "我知道這座島上的每個人，在這裡看起來都如此快樂" },
+        { tag: "Verse 2", en: "Everything is by design", zh: "一切都已安排妥當、各司其職" },
+        { tag: "Verse 2", en: "I know everybody on this island has a role on this island", zh: "我知道這座島上的每個人，都有屬於自己的角色" },
+        { tag: "Verse 2", en: "So maybe I can roll with mine", zh: "所以也許我可以順應並扮演好我的角色" },
+        { tag: "Bridge", en: "I can lead with pride, I can make us strong", zh: "我可以驕傲地帶領大家，我可以讓我們變得強大" },
+        { tag: "Bridge", en: "I'll be satisfied if I play along", zh: "只要我照著大家的期望走，我也會感到滿足" },
+        { tag: "Bridge", en: "But the voice inside sings a different song", zh: "但內心深處的聲音，卻唱著一首截然不同的歌" },
+        { tag: "Bridge", en: "What is wrong with me?", zh: "我究竟是怎麼了？" },
+        { tag: "Chorus 2", en: "See the light as it shines on the sea? It's blinding", zh: "看見海面上閃耀的光芒了嗎？如此耀眼奪目" },
+        { tag: "Chorus 2", en: "But no one knows, how deep it goes", zh: "但沒有人知道，這片大海究竟有多深" },
+        { tag: "Chorus 2", en: "And it seems like it's calling out to me, so come find me", zh: "它彷彿正大聲呼喚著我，說著「快來尋找我吧」" },
+        { tag: "Chorus 2", en: "And let me know, what's beyond that line, will I cross that line?", zh: "讓我知道，那條地平線的彼端有什麼，我會跨越那條界線嗎？" },
+        { tag: "Outro", en: "See the line where the sky meets the sea? It calls me", zh: "看見天空與大海交會的那條線了嗎？它在呼喚著我" },
+        { tag: "Outro", en: "And no one knows, how far it goes", zh: "沒有人知道，它究竟延伸到多遠的地方" },
+        { tag: "Outro", en: "If the wind in my sail on the sea stays behind me", zh: "如果海上的風吹進我的船帆，在身後推著我前進" },
+        { tag: "Outro", en: "One day I'll know, how far I'll go", zh: "總有一天我會明白，我究竟能走多遠" }
+      ]
+    },
+    nature_story: {
+      title: "☀️ 自然與生活短文（基礎練習）",
+      desc: "適合暖身練習的日常英語短句",
+      items: [
+        { tag: "Sentence 1", en: "Look at the bright morning sun in the sky.", zh: "看看天空中明亮的朝陽。" },
+        { tag: "Sentence 2", en: "Little birds are singing happily in the green trees.", zh: "小鳥在綠樹間快樂地歌唱。" },
+        { tag: "Sentence 3", en: "Every day is a brand new adventure to explore.", zh: "每一天都是一場等待探索的全新冒險。" },
+        { tag: "Sentence 4", en: "Take a deep breath, smile wide, and try your best!", zh: "深吸一口氣，露出燦爛的微笑，全力以赴吧！" }
+      ]
+    }
+  };
 
   let sentencesData = [];
   let activeRecognition = null;
@@ -519,30 +686,58 @@ Take a deep breath, smile wide, and try your best!`;
     document.getElementById('browserAlert').style.display = 'block';
   }
 
-  // 頁面載入時初始化
+  // 頁面載入時初始化預設主題（《海洋奇緣》精選段）
   window.addEventListener('DOMContentLoaded', () => {
     initVoices();
-    document.getElementById('sourceText').value = DEFAULT_TEXT;
-    generateCards();
+    handleTopicChange();
   });
+
+  // 切換主題選單
+  function handleTopicChange() {
+    const selectedKey = document.getElementById('topicSelect').value;
+    const customArea = document.getElementById('customArea');
+    const presetHint = document.getElementById('presetHint');
+
+    if (selectedKey === 'custom') {
+      customArea.classList.add('show');
+      presetHint.style.display = 'none';
+      document.getElementById('bannerTitle').textContent = "✏️ 自訂文章 / 歌詞練習";
+      document.getElementById('bannerDesc').textContent = "在上方輸入任何英文內容，點擊「生成練習卡片」即可開始";
+      if (!document.getElementById('sourceText').value.trim()) {
+        document.getElementById('cardsContainer').innerHTML =
+          '<div style="text-align:center; color:#64748b; padding:30px;">請在上方文字框貼上英文文章或歌詞，然後點擊「生成練習卡片」。</div>';
+        sentencesData = [];
+        updateStarCounter();
+      } else {
+        generateCustomCards();
+      }
+    } else {
+      customArea.classList.remove('show');
+      presetHint.style.display = 'block';
+      const topic = PRESET_TOPICS[selectedKey];
+      document.getElementById('bannerTitle').textContent = topic.title;
+      document.getElementById('bannerDesc').textContent = topic.desc;
+      renderCards(topic.items);
+    }
+  }
 
   // 切換輸入區顯示/隱藏
   function toggleInputPanel() {
     const panel = document.getElementById('inputPanel');
     const btn = document.getElementById('toggleInputBtn');
     panel.classList.toggle('collapsed');
-    btn.textContent = panel.classList.contains('collapsed') ? '編輯文章' : '隱藏輸入區';
+    btn.textContent = panel.classList.contains('collapsed') ? '展開選單' : '收合選單';
   }
 
-  // 載入範例文字
-  function loadSampleText() {
-    document.getElementById('sourceText').value = DEFAULT_TEXT;
-    generateCards();
+  // 切換中文翻譯顯示/隱藏
+  function toggleTranslation() {
+    document.body.classList.toggle('hide-zh');
+    const btn = document.getElementById('toggleZhBtn');
+    btn.textContent = document.body.classList.contains('hide-zh') ? '顯示中文' : '隱藏中文';
   }
 
-  // 智慧斷句處理
+  // 智慧斷句處理（用於自訂文章模式）
   function splitIntoSentences(rawText) {
-    // 先依換行符號切分，再依句尾標點符號 (. ! ?) 切分，保留原標點
     const lines = rawText.split(/\n+/).map(l => l.trim()).filter(Boolean);
     const result = [];
 
@@ -551,9 +746,8 @@ Take a deep breath, smile wide, and try your best!`;
       if (parts) {
         parts.forEach(p => {
           const cleaned = p.trim();
-          // 確保至少包含一個英文字母才列入練習句
           if (/[a-zA-Z]/.test(cleaned)) {
-            result.push(cleaned);
+            result.push({ tag: "", en: cleaned, zh: "" });
           }
         });
       }
@@ -561,26 +755,33 @@ Take a deep breath, smile wide, and try your best!`;
     return result;
   }
 
-  // 生成練習卡片
-  function generateCards() {
+  // 生成自訂文章卡片
+  function generateCustomCards() {
+    const text = document.getElementById('sourceText').value;
+    const items = splitIntoSentences(text);
+    renderCards(items);
+  }
+
+  // 渲染練習卡片列表
+  function renderCards(items) {
     stopCurrentRecording();
     window.speechSynthesis.cancel();
 
-    const text = document.getElementById('sourceText').value;
-    const sentences = splitIntoSentences(text);
     const container = document.getElementById('cardsContainer');
     container.innerHTML = '';
 
-    sentencesData = sentences.map((sentence, idx) => ({
+    sentencesData = items.map((item, idx) => ({
       id: idx,
-      text: sentence,
+      tag: item.tag || '',
+      text: item.en,
+      zh: item.zh || '',
       completed: false
     }));
 
     updateStarCounter();
 
     if (sentencesData.length === 0) {
-      container.innerHTML = '<div style="text-align:center; color:#64748b; padding:30px;">請在上方輸入英文句子後點擊「生成練習卡片」。</div>';
+      container.innerHTML = '<div style="text-align:center; color:#64748b; padding:30px;">目前沒有練習句子，請輸入英文內容後生成卡片。</div>';
       return;
     }
 
@@ -596,12 +797,19 @@ Take a deep breath, smile wide, and try your best!`;
         return `<span class="clickable-word" title="點擊聽單字發音" onclick="speakText('${escapeJs(cleanWord)}', 0.9)">${escapeHtml(token)}</span>`;
       }).join(' ');
 
+      const tagHtml = item.tag ? `<span class="section-tag">${escapeHtml(item.tag)}</span>` : '';
+      const zhHtml = item.zh ? `<div class="zh-translation">${escapeHtml(item.zh)}</div>` : '';
+
       card.innerHTML = `
         <div class="card-top">
-          <span class="sentence-badge">第 ${index + 1} 句</span>
+          <div class="badge-group">
+            <span class="sentence-badge">第 ${index + 1} 句</span>
+            ${tagHtml}
+          </div>
           <span class="card-star" id="star-${index}">⭐</span>
         </div>
         <div class="sentence-display">${wordsHtml}</div>
+        ${zhHtml}
         <div class="controls-row">
           <button class="ctrl-btn btn-listen" onclick="speakText('${escapeJs(item.text)}', 0.95)">
             🔊 聽發音
@@ -649,16 +857,13 @@ Take a deep breath, smile wide, and try your best!`;
       return;
     }
 
-    // 如果正在錄同一句，則停止
     if (activeRecordingIndex === index) {
       stopCurrentRecording();
       return;
     }
 
-    // 如果正在錄別句，先停止舊的
     stopCurrentRecording();
     window.speechSynthesis.cancel();
-
     startRecording(index);
   }
 
@@ -693,7 +898,7 @@ Take a deep breath, smile wide, and try your best!`;
     recognition.onerror = (event) => {
       let msg = '沒有聽清楚聲音，請再試一次！';
       if (event.error === 'not-allowed') {
-        msg = '❌ 麥克風權限被拒絕，請在瀏覽器網址列允許麥克風使用。';
+        msg = '❌ 麥克風權限被拒絕。若在 Google Sites 內嵌中發生此問題，請改用獨立網頁連結開啟。';
       } else if (event.error === 'no-speech') {
         msg = '🤔 沒有偵測到聲音，請靠近麥克風再試一次。';
       }
@@ -736,33 +941,61 @@ Take a deep breath, smile wide, and try your best!`;
     }
   }
 
-  // 文字標準化（移除標點符號轉小寫，用於比對）
-  function normalizeWord(word) {
-    return word.toLowerCase().replace(/[^a-z0-9']/g, '');
+  // 文字標準化（處理縮寫與標點符號，讓口說辨識更寬容準確）
+  function normalizeTextForCompare(str) {
+    return str
+      .toLowerCase()
+      .replace(/’/g, "'")
+      .replace(/\bi've\b/g, "i have")
+      .replace(/\bi'll\b/g, "i will")
+      .replace(/\bit's\b/g, "it is")
+      .replace(/\bthere's\b/g, "there is")
+      .replace(/\bwhat's\b/g, "what is")
+      .replace(/\bcannot\b/g, "can not")
+      .replace(/[^a-z0-9\s]/g, ' ')
+      .trim();
   }
 
   // 評估發音並產生紅綠字比對結果
   function evaluatePronunciation(index, spokenText) {
     const targetText = sentencesData[index].text;
     const targetTokens = targetText.split(/\s+/);
-    const spokenWords = spokenText.split(/\s+/).map(normalizeWord).filter(Boolean);
 
-    // 複製一份辨識到的單字池，進行順序與出現比對
-    const spokenPool = [...spokenWords];
+    // 將 AI 聽到的內容展開標準化後拆成單字池
+    const normalizedSpoken = normalizeTextForCompare(spokenText);
+    const spokenPool = normalizedSpoken.split(/\s+/).filter(Boolean);
+
     let matchCount = 0;
     let totalCleanWords = 0;
 
     const diffHtml = targetTokens.map(token => {
-      const cleanTarget = normalizeWord(token);
-      if (!cleanTarget) return `<span>${escapeHtml(token)}</span>`;
+      const normalizedToken = normalizeTextForCompare(token);
+      if (!normalizedToken) return `<span>${escapeHtml(token)}</span>`;
 
       totalCleanWords++;
-      const foundIdx = spokenPool.indexOf(cleanTarget);
+      const subWords = normalizedToken.split(/\s+/).filter(Boolean);
 
-      if (foundIdx !== -1) {
+      // 檢查該 token 展開後的所有子單字是否都在辨識結果中
+      let allSubMatched = true;
+      const tempPool = [...spokenPool];
+
+      for (const sw of subWords) {
+        const idxInPool = tempPool.indexOf(sw);
+        if (idxInPool !== -1) {
+          tempPool.splice(idxInPool, 1);
+        } else {
+          allSubMatched = false;
+          break;
+        }
+      }
+
+      if (allSubMatched) {
         matchCount++;
-        // 移除已配對的單字，避免重複計算
-        spokenPool.splice(foundIdx, 1);
+        // 正式從 spokenPool 中扣除已配對的單字
+        for (const sw of subWords) {
+          const idxInPool = spokenPool.indexOf(sw);
+          if (idxInPool !== -1) spokenPool.splice(idxInPool, 1);
+        }
         return `<span class="word-ok" title="發音清晰！">${escapeHtml(token)}</span>`;
       } else {
         return `<span class="word-miss" title="可以再聽一次發音練習喔">${escapeHtml(token)}</span>`;
