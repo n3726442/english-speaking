@@ -59,13 +59,13 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
       background: var(--card-bg);
-      padding: 14px 20px;
+      padding: 12px 18px;
       border-radius: var(--radius);
       box-shadow: 0 2px 10px rgba(2, 132, 199, 0.08);
       border: 1.5px solid var(--border);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       position: sticky;
       top: 8px;
       z-index: 100;
@@ -73,7 +73,7 @@
 
     .title-group h1 {
       margin: 0;
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       font-weight: 800;
       color: var(--primary);
       display: flex;
@@ -85,19 +85,19 @@
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 6px;
     }
 
     .star-counter {
       background: #fef3c7;
       color: #b45309;
-      padding: 6px 14px;
+      padding: 5px 12px;
       border-radius: 999px;
       font-weight: 800;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       border: 1px solid #fde68a;
     }
 
@@ -105,9 +105,9 @@
       background: #f8fafc;
       color: var(--text-main);
       border: 1px solid #cbd5e1;
-      padding: 6px 12px;
+      padding: 6px 10px;
       border-radius: 8px;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.2s;
@@ -118,6 +118,12 @@
       background: #e2e8f0;
     }
 
+    .toggle-btn.active-sync {
+      background: #dcfce7;
+      color: #15803d;
+      border-color: #86efac;
+    }
+
     .alert-banner {
       display: none;
       background: #fef2f2;
@@ -125,18 +131,103 @@
       border: 1px solid #fecaca;
       padding: 12px 16px;
       border-radius: var(--radius);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       font-size: 0.9rem;
+    }
+
+    /* 老師對時小工具橫幅 */
+    .sync-toolbar {
+      display: none;
+      background: #f0fdf4;
+      border: 2px solid #4ade80;
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.12);
+    }
+
+    body.sync-mode .sync-toolbar {
+      display: block;
+    }
+
+    .sync-toolbar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .sync-toolbar-title {
+      font-weight: 800;
+      color: #15803d;
+      font-size: 0.98rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .live-clock {
+      background: #15803d;
+      color: white;
+      padding: 2px 10px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 0.95rem;
+    }
+
+    .sync-toolbar-desc {
+      font-size: 0.85rem;
+      color: #166534;
+      margin-bottom: 10px;
+    }
+
+    .btn-export {
+      background: #16a34a;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .btn-export:hover {
+      background: #15803d;
+    }
+
+    .export-textarea {
+      display: none;
+      width: 100%;
+      height: 110px;
+      margin-top: 10px;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 0.82rem;
+      border: 1.5px solid #86efac;
+      border-radius: 8px;
+      background: #ffffff;
+      color: #0f172a;
+    }
+
+    .export-textarea.show {
+      display: block;
     }
 
     /* 主題選擇與文章輸入區塊 */
     .input-panel {
       background: var(--card-bg);
-      padding: 20px;
+      padding: 18px 20px;
       border-radius: var(--radius);
       box-shadow: 0 2px 10px rgba(2, 132, 199, 0.06);
       border: 1.5px solid var(--border);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .input-panel.collapsed {
@@ -148,7 +239,7 @@
       flex-wrap: wrap;
       align-items: center;
       gap: 10px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .preset-bar label {
@@ -200,7 +291,7 @@
       font-size: 0.9rem;
     }
 
-    textarea {
+    textarea#sourceText {
       width: 100%;
       height: 110px;
       padding: 12px;
@@ -300,14 +391,14 @@
       border: 0;
     }
 
-    /* 全篇語音連播與跟讀控制列（所有主題皆可用） */
+    /* 全篇語音連播與跟讀控制列 */
     .tts-global-bar {
       background: var(--card-bg);
       border-radius: var(--radius);
-      padding: 14px 18px;
+      padding: 12px 18px;
       border: 1.5px solid #bae6fd;
       box-shadow: 0 2px 8px rgba(2, 132, 199, 0.05);
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -317,7 +408,7 @@
 
     .tts-global-title {
       font-weight: 800;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       color: var(--primary);
       display: flex;
       align-items: center;
@@ -370,14 +461,13 @@
     .practice-card {
       background: var(--card-bg);
       border-radius: var(--radius);
-      padding: 20px;
+      padding: 18px 20px;
       border: 1.5px solid #e2e8f0;
       box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
       transition: all 0.25s ease;
       scroll-margin-top: 110px;
     }
 
-    /* 正在唱到的句子 KTV 高亮效果 */
     .practice-card.singing-active {
       border-color: var(--music);
       background: linear-gradient(to right, #faf5ff, #ffffff);
@@ -385,7 +475,6 @@
       transform: translateY(-1px);
     }
 
-    /* 正在語音連播的句子高亮效果 */
     .practice-card.reading-active {
       border-color: var(--primary);
       background: linear-gradient(to right, #f0f9ff, #ffffff);
@@ -393,7 +482,6 @@
       transform: translateY(-1px);
     }
 
-    /* 停頓等待孩子跟讀的提示效果 */
     .practice-card.shadow-waiting {
       border-color: var(--secondary);
       background: linear-gradient(to right, #f0fdfa, #ffffff);
@@ -451,6 +539,7 @@
       background: var(--music-light);
       padding: 3px 8px;
       border-radius: 6px;
+      font-family: monospace;
     }
 
     .shadow-cue {
@@ -485,7 +574,7 @@
     }
 
     .sentence-display {
-      font-size: 1.35rem;
+      font-size: 1.32rem;
       font-weight: 700;
       color: var(--text-main);
       margin-bottom: 6px;
@@ -515,6 +604,58 @@
     .clickable-word:hover {
       background-color: var(--primary-light);
       color: var(--primary);
+    }
+
+    /* 卡片內部的對時微調控制列（僅在對時模式顯示） */
+    .card-sync-editor {
+      display: none;
+      margin-bottom: 12px;
+      padding: 10px 12px;
+      background: #f0fdf4;
+      border: 1.5px dashed #4ade80;
+      border-radius: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.84rem;
+    }
+
+    body.sync-mode .card-sync-editor {
+      display: flex;
+    }
+
+    .sync-btn {
+      background: #ffffff;
+      border: 1px solid #22c55e;
+      color: #15803d;
+      padding: 5px 9px;
+      border-radius: 7px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .sync-btn:hover {
+      background: #dcfce7;
+    }
+
+    .sync-btn.primary-capture {
+      background: #16a34a;
+      color: #ffffff;
+    }
+
+    .sync-btn.primary-capture:hover {
+      background: #15803d;
+    }
+
+    .sync-time-readout {
+      font-family: monospace;
+      font-weight: 700;
+      color: #166534;
+      background: #dcfce7;
+      padding: 4px 8px;
+      border-radius: 6px;
     }
 
     /* 按鈕控制列 */
@@ -693,6 +834,7 @@
     <div class="stats-bar">
       <div class="star-counter" id="totalStars">⭐ 0 / 0</div>
       <button class="toggle-btn" id="toggleZhBtn" onclick="toggleTranslation()">隱藏中文</button>
+      <button class="toggle-btn" id="toggleSyncBtn" onclick="toggleSyncMode()">⏱️ 對時工具</button>
       <button class="toggle-btn" id="toggleInputBtn" onclick="toggleInputPanel()">切換主題</button>
     </div>
   </header>
@@ -700,6 +842,21 @@
   <div class="alert-banner" id="browserAlert">
     ⚠️ 提醒：目前的瀏覽器可能不支援語音辨識（錄音評分功能）。建議使用 <strong>Google Chrome</strong>、<strong>Microsoft Edge</strong> 或 <strong>Safari</strong> 開啟，並允許麥克風權限。
   </div>
+
+  <!-- 老師對時小工具面板 -->
+  <section class="sync-toolbar" id="syncToolbar">
+    <div class="sync-toolbar-header">
+      <div class="sync-toolbar-title">
+        ⏱️ 老師時間軸微調工具
+        <span class="live-clock" id="livePlayerClock">目前秒數：0.0s</span>
+      </div>
+      <button class="btn-export" onclick="exportSyncedCode()">📋 複製更新後的歌詞代碼</button>
+    </div>
+    <div class="sync-toolbar-desc">
+      <strong>操作步驟：</strong>1. 按下方「▶️ 從頭跟著唱整首」播放音樂 $\rightarrow$ 2. 聽到歌手剛唱出某一句的瞬間，點擊該句的 <strong>「📍 設為開始」</strong>（會自動把上一句結束時間接好）$\rightarrow$ 3. 全部對好後按右上角「複製更新後的歌詞代碼」，貼回 GitHub 的 <code>items: [...]</code> 覆蓋即可！
+    </div>
+    <textarea id="exportOutput" class="export-textarea" readonly></textarea>
+  </section>
 
   <!-- 主題選單與文章輸入區 -->
   <section class="input-panel" id="inputPanel">
@@ -724,7 +881,7 @@
       </div>
       <textarea id="sourceText" placeholder="請在此貼上英文文章或歌詞（每行一句）..."></textarea>
       <div class="input-actions">
-        <span class="hint-text">系統會自動依照換行或標點符號切分練習卡片</span>
+        <span class="hint-text">系統會自動依照換行或標點符號切分練習卡片（開啟「對時工具」即可幫自訂歌詞打時間軸）</span>
         <button class="btn-primary" onclick="generateCustomCards()">✨ 生成練習卡片</button>
       </div>
     </div>
@@ -744,7 +901,7 @@
     </div>
   </section>
 
-  <!-- 全篇語音連播與跟讀控制列（所有主題與文章皆可用） -->
+  <!-- 全篇語音連播與跟讀控制列 -->
   <section class="tts-global-bar">
     <div class="tts-global-title">🔊 全篇朗讀與跟讀模式：</div>
     <div class="tts-global-actions">
@@ -764,53 +921,53 @@
 </div>
 
 <script>
-  // 預設題庫資料庫
+  // 預設題庫資料庫（已初步修正開頭前奏秒數，並可使用「對時工具」進一步精調）
   const PRESET_TOPICS = {
     moana_highlight: {
       title: "🎵 《海洋奇緣》How Far I'll Go（精選段）",
       youtubeId: "cPAbx5kgCJo",
       items: [
-        { tag: "Verse 1", start: 13, end: 18, en: "I've been staring at the edge of the water", zh: "我一直凝望著水岸的盡頭" },
-        { tag: "Verse 1", start: 18, end: 23, en: "Long as I can remember, never really knowing why", zh: "從我有記憶以來就是如此，卻從不明白為什麼" },
-        { tag: "Verse 1", start: 23, end: 28, en: "I wish I could be the perfect daughter", zh: "我希望自己能成為完美的女兒" },
-        { tag: "Verse 1", start: 28, end: 33, en: "But I come back to the water, no matter how hard I try", zh: "但無論我多麼努力嘗試，我總是會回到這片海邊" },
-        { tag: "Chorus", start: 43, end: 49, en: "See the line where the sky meets the sea? It calls me", zh: "看見天空與大海交會的那條線了嗎？它在呼喚著我" },
-        { tag: "Chorus", start: 49, end: 54, en: "And no one knows, how far it goes", zh: "沒有人知道，它究竟延伸到多遠的地方" },
-        { tag: "Chorus", start: 54, end: 59, en: "If the wind in my sail on the sea stays behind me", zh: "如果海上的風吹進我的船帆，在身後推著我前進" },
-        { tag: "Chorus", start: 59, end: 66, en: "One day I'll know, if I go there's just no telling how far I'll go", zh: "總有一天我會明白，只要我啟航，沒人能預料我能走多遠" }
+        { tag: "Verse 1", start: 18.2, end: 22.8, en: "I've been staring at the edge of the water", zh: "我一直凝望著水岸的盡頭" },
+        { tag: "Verse 1", start: 22.8, end: 27.6, en: "Long as I can remember, never really knowing why", zh: "從我有記憶以來就是如此，卻從不明白為什麼" },
+        { tag: "Verse 1", start: 27.6, end: 32.0, en: "I wish I could be the perfect daughter", zh: "我希望自己能成為完美的女兒" },
+        { tag: "Verse 1", start: 32.0, end: 37.0, en: "But I come back to the water, no matter how hard I try", zh: "但無論我多麼努力嘗試，我總是會回到這片海邊" },
+        { tag: "Chorus", start: 47.0, end: 52.8, en: "See the line where the sky meets the sea? It calls me", zh: "看見天空與大海交會的那條線了嗎？它在呼喚著我" },
+        { tag: "Chorus", start: 52.8, end: 57.5, en: "And no one knows, how far it goes", zh: "沒有人知道，它究竟延伸到多遠的地方" },
+        { tag: "Chorus", start: 57.5, end: 62.8, en: "If the wind in my sail on the sea stays behind me", zh: "如果海上的風吹進我的船帆，在身後推著我前進" },
+        { tag: "Chorus", start: 62.8, end: 70.0, en: "One day I'll know, if I go there's just no telling how far I'll go", zh: "總有一天我會明白，只要我啟航，沒人能預料我能走多遠" }
       ]
     },
     moana_full: {
       title: "🎵 《海洋奇緣》How Far I'll Go（完整版）",
       youtubeId: "cPAbx5kgCJo",
       items: [
-        { tag: "Verse 1", start: 13, end: 18, en: "I've been staring at the edge of the water", zh: "我一直凝望著水岸的盡頭" },
-        { tag: "Verse 1", start: 18, end: 23, en: "Long as I can remember, never really knowing why", zh: "從我有記憶以來就是如此，卻從不明白為什麼" },
-        { tag: "Verse 1", start: 23, end: 28, en: "I wish I could be the perfect daughter", zh: "我希望自己能成為完美的女兒" },
-        { tag: "Verse 1", start: 28, end: 33, en: "But I come back to the water, no matter how hard I try", zh: "但無論我多麼努力嘗試，我總是會回到這片海邊" },
-        { tag: "Pre-Chorus", start: 33, end: 36, en: "Every turn I take, every trail I track", zh: "我走的每一個轉彎，我追尋的每一條小徑" },
-        { tag: "Pre-Chorus", start: 36, end: 38, en: "Every path I make, every road leads back", zh: "我開闢的每一條路，每一條道路最終都引領我回到" },
-        { tag: "Pre-Chorus", start: 38, end: 43, en: "To the place I know, where I cannot go, where I long to be", zh: "那個我熟悉、卻不能前往、內心深深渴望的地方" },
-        { tag: "Chorus", start: 43, end: 49, en: "See the line where the sky meets the sea? It calls me", zh: "看見天空與大海交會的那條線了嗎？它在呼喚著我" },
-        { tag: "Chorus", start: 49, end: 54, en: "And no one knows, how far it goes", zh: "沒有人知道，它究竟延伸到多遠的地方" },
-        { tag: "Chorus", start: 54, end: 59, en: "If the wind in my sail on the sea stays behind me", zh: "如果海上的風吹進我的船帆，在身後推著我前進" },
-        { tag: "Chorus", start: 59, end: 66, en: "One day I'll know, if I go there's just no telling how far I'll go", zh: "總有一天我會明白，只要我啟航，沒人能預料我能走多遠" },
-        { tag: "Verse 2", start: 69, end: 74, en: "I know everybody on this island seems so happy on this island", zh: "我知道這座島上的每個人，在這裡看起來都如此快樂" },
-        { tag: "Verse 2", start: 74, end: 76, en: "Everything is by design", zh: "一切都已安排妥當、各司其職" },
-        { tag: "Verse 2", start: 76, end: 81, en: "I know everybody on this island has a role on this island", zh: "我知道這座島上的每個人，都有屬於自己的角色" },
-        { tag: "Verse 2", start: 81, end: 84, en: "So maybe I can roll with mine", zh: "所以也許我可以順應並扮演好我的角色" },
-        { tag: "Bridge", start: 84, end: 87, en: "I can lead with pride, I can make us strong", zh: "我可以驕傲地帶領大家，我可以讓我們變得強大" },
-        { tag: "Bridge", start: 87, end: 89, en: "I'll be satisfied if I play along", zh: "只要我照著大家的期望走，我也會感到滿足" },
-        { tag: "Bridge", start: 89, end: 92, en: "But the voice inside sings a different song", zh: "但內心深處的聲音，卻唱著一首截然不同的歌" },
-        { tag: "Bridge", start: 92, end: 95, en: "What is wrong with me?", zh: "我究竟是怎麼了？" },
-        { tag: "Chorus 2", start: 95, end: 100, en: "See the light as it shines on the sea? It's blinding", zh: "看見海面上閃耀的光芒了嗎？如此耀眼奪目" },
-        { tag: "Chorus 2", start: 100, end: 105, en: "But no one knows, how deep it goes", zh: "但沒有人知道，這片大海究竟有多深" },
-        { tag: "Chorus 2", start: 105, end: 110, en: "And it seems like it's calling out to me, so come find me", zh: "它彷彿正大聲呼喚著我，說著「快來尋找我吧」" },
-        { tag: "Chorus 2", start: 110, end: 118, en: "And let me know, what's beyond that line, will I cross that line?", zh: "讓我知道，那條地平線的彼端有什麼，我會跨越那條界線嗎？" },
-        { tag: "Outro", start: 119, end: 125, en: "See the line where the sky meets the sea? It calls me", zh: "看見天空與大海交會的那條線了嗎？它在呼喚著我" },
-        { tag: "Outro", start: 125, end: 130, en: "And no one knows, how far it goes", zh: "沒有人知道，它究竟延伸到多遠的地方" },
-        { tag: "Outro", start: 130, end: 135, en: "If the wind in my sail on the sea stays behind me", zh: "如果海上的風吹進我的船帆，在身後推著我前進" },
-        { tag: "Outro", start: 135, end: 146, en: "One day I'll know, how far I'll go", zh: "總有一天我會明白，我究竟能走多遠" }
+        { tag: "Verse 1", start: 18.2, end: 22.8, en: "I've been staring at the edge of the water", zh: "我一直凝望著水岸的盡頭" },
+        { tag: "Verse 1", start: 22.8, end: 27.6, en: "Long as I can remember, never really knowing why", zh: "從我有記憶以來就是如此，卻從不明白為什麼" },
+        { tag: "Verse 1", start: 27.6, end: 32.0, en: "I wish I could be the perfect daughter", zh: "我希望自己能成為完美的女兒" },
+        { tag: "Verse 1", start: 32.0, end: 37.0, en: "But I come back to the water, no matter how hard I try", zh: "但無論我多麼努力嘗試，我總是會回到這片海邊" },
+        { tag: "Pre-Chorus", start: 37.0, end: 39.8, en: "Every turn I take, every trail I track", zh: "我走的每一個轉彎，我追尋的每一條小徑" },
+        { tag: "Pre-Chorus", start: 39.8, end: 42.3, en: "Every path I make, every road leads back", zh: "我開闢的每一條路，每一條道路最終都引領我回到" },
+        { tag: "Pre-Chorus", start: 42.3, end: 47.0, en: "To the place I know, where I cannot go, where I long to be", zh: "那個我熟悉、卻不能前往、內心深深渴望的地方" },
+        { tag: "Chorus", start: 47.0, end: 52.8, en: "See the line where the sky meets the sea? It calls me", zh: "看見天空與大海交會的那條線了嗎？它在呼喚著我" },
+        { tag: "Chorus", start: 52.8, end: 57.5, en: "And no one knows, how far it goes", zh: "沒有人知道，它究竟延伸到多遠的地方" },
+        { tag: "Chorus", start: 57.5, end: 62.8, en: "If the wind in my sail on the sea stays behind me", zh: "如果海上的風吹進我的船帆，在身後推著我前進" },
+        { tag: "Chorus", start: 62.8, end: 70.0, en: "One day I'll know, if I go there's just no telling how far I'll go", zh: "總有一天我會明白，只要我啟航，沒人能預料我能走多遠" },
+        { tag: "Verse 2", start: 73.0, end: 77.8, en: "I know everybody on this island seems so happy on this island", zh: "我知道這座島上的每個人，在這裡看起來都如此快樂" },
+        { tag: "Verse 2", start: 77.8, end: 80.2, en: "Everything is by design", zh: "一切都已安排妥當、各司其職" },
+        { tag: "Verse 2", start: 80.2, end: 85.0, en: "I know everybody on this island has a role on this island", zh: "我知道這座島上的每個人，都有屬於自己的角色" },
+        { tag: "Verse 2", start: 85.0, end: 87.8, en: "So maybe I can roll with mine", zh: "所以也許我可以順應並扮演好我的角色" },
+        { tag: "Bridge", start: 87.8, end: 90.5, en: "I can lead with pride, I can make us strong", zh: "我可以驕傲地帶領大家，我可以讓我們變得強大" },
+        { tag: "Bridge", start: 90.5, end: 93.0, en: "I'll be satisfied if I play along", zh: "只要我照著大家的期望走，我也會感到滿足" },
+        { tag: "Bridge", start: 93.0, end: 95.8, en: "But the voice inside sings a different song", zh: "但內心深處的聲音，卻唱著一首截然不同的歌" },
+        { tag: "Bridge", start: 95.8, end: 99.0, en: "What is wrong with me?", zh: "我究竟是怎麼了？" },
+        { tag: "Chorus 2", start: 99.0, end: 104.5, en: "See the light as it shines on the sea? It's blinding", zh: "看見海面上閃耀的光芒了嗎？如此耀眼奪目" },
+        { tag: "Chorus 2", start: 104.5, end: 109.2, en: "But no one knows, how deep it goes", zh: "但沒有人知道，這片大海究竟有多深" },
+        { tag: "Chorus 2", start: 109.2, end: 114.2, en: "And it seems like it's calling out to me, so come find me", zh: "它彷彿正大聲呼喚著我，說著「快來尋找我吧」" },
+        { tag: "Chorus 2", start: 114.2, end: 122.5, en: "And let me know, what's beyond that line, will I cross that line?", zh: "讓我知道，那條地平線的彼端有什麼，我會跨越那條界線嗎？" },
+        { tag: "Outro", start: 123.5, end: 129.2, en: "See the line where the sky meets the sea? It calls me", zh: "看見天空與大海交會的那條線了嗎？它在呼喚著我" },
+        { tag: "Outro", start: 129.2, end: 134.0, en: "And no one knows, how far it goes", zh: "沒有人知道，它究竟延伸到多遠的地方" },
+        { tag: "Outro", start: 134.0, end: 139.2, en: "If the wind in my sail on the sea stays behind me", zh: "如果海上的風吹進我的船帆，在身後推著我前進" },
+        { tag: "Outro", start: 139.2, end: 150.0, en: "One day I'll know, how far I'll go", zh: "總有一天我會明白，我究竟能走多遠" }
       ]
     },
     nature_story: {
@@ -844,7 +1001,6 @@
   let isBatchReading = false;
   let batchTimer = null;
 
-  // 偵測使用者手動觸控或滾輪，暫停自動捲動 4 秒避免搶畫面
   ['wheel', 'touchstart'].forEach(evt => {
     window.addEventListener(evt, () => {
       isUserScrolling = true;
@@ -914,12 +1070,18 @@
     }
   }
 
-  // 每 0.25 秒檢查播放進度：負責單句自動停止、KTV 歌詞高亮與自動捲動
+  // 每 0.15 秒檢查播放進度：負責更新即時秒數、單句自動停止、KTV 歌詞高亮與自動捲動
   function startSyncTimer() {
     stopSyncTimer();
     syncInterval = setInterval(() => {
       if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
       const now = ytPlayer.getCurrentTime();
+
+      // 更新對時工具的即時秒數顯示
+      const clockEl = document.getElementById('livePlayerClock');
+      if (clockEl) {
+        clockEl.textContent = `目前秒數：${now.toFixed(1)}s`;
+      }
 
       // 1. 若為單句點播模式，時間到就自動暫停
       if (segmentEndTime !== null && now >= segmentEndTime) {
@@ -932,7 +1094,7 @@
       // 2. 動態高亮目前唱到的歌詞卡片並自動捲動
       sentencesData.forEach((item, idx) => {
         const card = document.getElementById(`card-${idx}`);
-        if (!card || item.start === undefined) return;
+        if (!card || item.start === undefined || item.end === undefined) return;
         if (now >= item.start && now < item.end) {
           if (!card.classList.contains('singing-active')) {
             clearAllCardHighlights();
@@ -944,7 +1106,7 @@
           }
         }
       });
-    }, 250);
+    }, 150);
   }
 
   function stopSyncTimer() {
@@ -960,7 +1122,114 @@
     });
   }
 
-  // 單句原曲練唱點播
+  // ================= 老師對時小工具邏輯 =================
+
+  function toggleSyncMode() {
+    document.body.classList.toggle('sync-mode');
+    const btn = document.getElementById('toggleSyncBtn');
+    const isSync = document.body.classList.contains('sync-mode');
+    btn.classList.toggle('active-sync', isSync);
+    btn.textContent = isSync ? '✅ 完成對時' : '⏱️ 對時工具';
+  }
+
+  function getCurrentYtTime() {
+    if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') {
+      alert('請先確認上方 YouTube 播放器已載入！');
+      return null;
+    }
+    return Math.round(ytPlayer.getCurrentTime() * 10) / 10;
+  }
+
+  // 抓取目前秒數設為本句「開始時間」，並自動銜接上一句的「結束時間」
+  function captureStartTime(index) {
+    const t = getCurrentYtTime();
+    if (t === null) return;
+
+    sentencesData[index].start = t;
+    // 若尚未設定結束時間，預設先給 +4.5 秒
+    if (sentencesData[index].end === undefined || sentencesData[index].end <= t) {
+      sentencesData[index].end = Math.round((t + 4.5) * 10) / 10;
+    }
+    // 自動將上一句的結束時間無縫銜接到這一句的開始時間
+    if (index > 0 && sentencesData[index - 1].start !== undefined && t > sentencesData[index - 1].start) {
+      sentencesData[index - 1].end = t;
+      refreshCardTimeUI(index - 1);
+    }
+
+    refreshCardTimeUI(index);
+  }
+
+  // 抓取目前秒數設為本句「結束時間」
+  function captureEndTime(index) {
+    const t = getCurrentYtTime();
+    if (t === null) return;
+
+    if (sentencesData[index].start === undefined) {
+      sentencesData[index].start = Math.max(0, Math.round((t - 4.0) * 10) / 10);
+    }
+    sentencesData[index].end = t;
+    refreshCardTimeUI(index);
+  }
+
+  // 微調開始或結束秒數 (+0.5 / -0.5)
+  function nudgeTime(index, field, delta) {
+    if (sentencesData[index][field] === undefined) {
+      sentencesData[index][field] = 0;
+    }
+    const nextVal = Math.max(0, Math.round((sentencesData[index][field] + delta) * 10) / 10);
+    sentencesData[index][field] = nextVal;
+    refreshCardTimeUI(index);
+  }
+
+  // 更新單張卡片的時間顯示與播放按鈕狀態
+  function refreshCardTimeUI(index) {
+    const item = sentencesData[index];
+    const readoutEl = document.getElementById(`sync-readout-${index}`);
+    const badgeEl = document.getElementById(`time-badge-${index}`);
+    const singBtnEl = document.getElementById(`sing-btn-${index}`);
+
+    const startStr = item.start !== undefined ? `${item.start.toFixed(1)}s` : '--';
+    const endStr = item.end !== undefined ? `${item.end.toFixed(1)}s` : '--';
+
+    if (readoutEl) {
+      readoutEl.textContent = `${startStr} ~ ${endStr}`;
+    }
+    if (badgeEl && item.start !== undefined) {
+      badgeEl.style.display = 'inline-block';
+      badgeEl.textContent = `⏱️ ${item.start.toFixed(1)}s - ${endStr}`;
+    }
+    if (singBtnEl && item.start !== undefined && item.end !== undefined) {
+      singBtnEl.style.display = 'inline-flex';
+    }
+  }
+
+  // 匯出更新後的 items JSON 代碼並自動複製到剪貼簿
+  function exportSyncedCode() {
+    const outputBox = document.getElementById('exportOutput');
+    const lines = sentencesData.map(item => {
+      const tagPart = item.tag ? `tag: ${JSON.stringify(item.tag)}, ` : '';
+      const startPart = item.start !== undefined ? `start: ${item.start}, ` : '';
+      const endPart = item.end !== undefined ? `end: ${item.end}, ` : '';
+      const zhPart = item.zh ? `, zh: ${JSON.stringify(item.zh)}` : '';
+      return `        { ${tagPart}${startPart}${endPart}en: ${JSON.stringify(item.text)}${zhPart} }`;
+    });
+
+    const formattedCode = `      items: [\n${lines.join(',\n')}\n      ]`;
+    outputBox.value = formattedCode;
+    outputBox.classList.add('show');
+    outputBox.select();
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(formattedCode).then(() => {
+        alert('✅ 已複製更新後的歌詞時間軸代碼！\n\n請到 GitHub 編輯 index.html，找到對應主題的 items: [ ... ] 貼上覆蓋即可永久儲存。');
+      }).catch(() => {
+        alert('已產生代碼在下方文字框中，請全選複製並貼回 GitHub 的 index.html！');
+      });
+    }
+  }
+
+  // ================= 播放與朗讀控制 =================
+
   function playSongSegment(index) {
     const item = sentencesData[index];
     if (!ytPlayer || typeof ytPlayer.seekTo !== 'function' || item.start === undefined) return;
@@ -978,7 +1247,6 @@
     ytPlayer.playVideo();
   }
 
-  // 從頭播放整首歌曲（自動捲動跟唱）
   function playFullSong() {
     if (!ytPlayer || typeof ytPlayer.playVideo !== 'function') return;
     stopBatchReading();
@@ -999,7 +1267,6 @@
     clearAllCardHighlights();
   }
 
-  // 全篇語音連續朗讀 / 停頓跟讀模式
   function startBatchReading(withShadowPause) {
     if (!('speechSynthesis' in window)) {
       alert('抱歉，您的瀏覽器不支援語音朗讀功能。');
@@ -1094,7 +1361,6 @@
     pill.classList.add('show');
   }
 
-  // 解析使用者貼上的 YouTube 網址取得 Video ID
   function extractYoutubeId(url) {
     if (!url) return null;
     const regExp = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
@@ -1102,7 +1368,6 @@
     return match ? match[1] : null;
   }
 
-  // 初始化語音合成引擎
   function initVoices() {
     const voices = window.speechSynthesis.getVoices();
     if (voices.length > 0) {
@@ -1127,6 +1392,7 @@
 
   function handleTopicChange() {
     stopBatchReading();
+    document.getElementById('exportOutput').classList.remove('show');
     const selectedKey = document.getElementById('topicSelect').value;
     const customArea = document.getElementById('customArea');
     const presetHint = document.getElementById('presetHint');
@@ -1198,12 +1464,6 @@
     renderCards(items);
   }
 
-  function formatSec(sec) {
-    const m = Math.floor(sec / 60);
-    const s = Math.floor(sec % 60);
-    return `${m}:${s < 10 ? '0' : ''}${s}`;
-  }
-
   function renderCards(items) {
     stopCurrentRecording();
     window.speechSynthesis.cancel();
@@ -1241,27 +1501,40 @@
 
       const tagHtml = item.tag ? `<span class="section-tag">${escapeHtml(item.tag)}</span>` : '';
       const hasTimestamp = item.start !== undefined && item.end !== undefined;
-      const timeHtml = hasTimestamp ? `<span class="time-tag">⏱️ ${formatSec(item.start)}</span>` : '';
-      const zhHtml = item.zh ? `<div class="zh-translation">${escapeHtml(item.zh)}</div>` : '';
+      const startStr = item.start !== undefined ? `${item.start.toFixed(1)}s` : '--';
+      const endStr = item.end !== undefined ? `${item.end.toFixed(1)}s` : '--';
 
-      const singBtnHtml = hasTimestamp
-        ? `<button class="ctrl-btn btn-sing" onclick="playSongSegment(${index})">🎵 聽原曲唱這句</button>`
-        : '';
+      const timeBadgeStyle = hasTimestamp ? 'inline-block' : 'none';
+      const singBtnStyle = hasTimestamp ? 'inline-flex' : 'none';
+
+      const zhHtml = item.zh ? `<div class="zh-translation">${escapeHtml(item.zh)}</div>` : '';
 
       card.innerHTML = `
         <div class="card-top">
           <div class="badge-group">
             <span class="sentence-badge">第 ${index + 1} 句</span>
             ${tagHtml}
-            ${timeHtml}
+            <span class="time-tag" id="time-badge-${index}" style="display:${timeBadgeStyle};">⏱️ ${startStr} - ${endStr}</span>
             <span class="shadow-cue">🗣️ 換你跟讀！</span>
           </div>
           <span class="card-star" id="star-${index}">⭐</span>
         </div>
         <div class="sentence-display">${wordsHtml}</div>
         ${zhHtml}
+
+        <!-- 老師對時微調列 -->
+        <div class="card-sync-editor">
+          <span class="sync-time-readout" id="sync-readout-${index}">${startStr} ~ ${endStr}</span>
+          <button class="sync-btn primary-capture" onclick="captureStartTime(${index})">📍 設為開始</button>
+          <button class="sync-btn" onclick="captureEndTime(${index})">🏁 設為結束</button>
+          <button class="sync-btn" onclick="nudgeTime(${index}, 'start', -0.5)">開始 -0.5s</button>
+          <button class="sync-btn" onclick="nudgeTime(${index}, 'start', 0.5)">開始 +0.5s</button>
+          <button class="sync-btn" onclick="nudgeTime(${index}, 'end', -0.5)">結束 -0.5s</button>
+          <button class="sync-btn" onclick="nudgeTime(${index}, 'end', 0.5)">結束 +0.5s</button>
+        </div>
+
         <div class="controls-row">
-          ${singBtnHtml}
+          <button class="ctrl-btn btn-sing" id="sing-btn-${index}" style="display:${singBtnStyle};" onclick="playSongSegment(${index})">🎵 聽原曲唱這句</button>
           <button class="ctrl-btn btn-listen" onclick="speakText('${escapeJs(item.text)}', 0.95)">
             🔊 語音朗讀
           </button>
