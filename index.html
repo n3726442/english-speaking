@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>英文口說與歌詞跟讀練習器</title>
+  <title>英文口說與歌曲練唱練習器</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
@@ -14,6 +14,9 @@
       --primary-light: #e0f2fe;
       --secondary: #0d9488;
       --secondary-light: #f0fdfa;
+      --music: #7c3aed;
+      --music-hover: #6d28d9;
+      --music-light: #f3e8ff;
       --danger: #e11d48;
       --danger-light: #fff1f2;
       --success: #16a34a;
@@ -32,6 +35,10 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
       padding: 16px;
@@ -42,7 +49,7 @@
     }
 
     .container {
-      max-width: 840px;
+      max-width: 860px;
       margin: 0 auto;
     }
 
@@ -66,7 +73,7 @@
 
     .title-group h1 {
       margin: 0;
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       font-weight: 800;
       color: var(--primary);
       display: flex;
@@ -87,7 +94,7 @@
       padding: 6px 14px;
       border-radius: 999px;
       font-weight: 800;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -111,7 +118,6 @@
       background: #e2e8f0;
     }
 
-    /* 瀏覽器支援度提示 */
     .alert-banner {
       display: none;
       background: #fef2f2;
@@ -130,8 +136,7 @@
       border-radius: var(--radius);
       box-shadow: 0 2px 10px rgba(2, 132, 199, 0.06);
       border: 1.5px solid var(--border);
-      margin-bottom: 20px;
-      transition: all 0.3s ease;
+      margin-bottom: 16px;
     }
 
     .input-panel.collapsed {
@@ -143,9 +148,7 @@
       flex-wrap: wrap;
       align-items: center;
       gap: 10px;
-      margin-bottom: 14px;
-      padding-bottom: 14px;
-      border-bottom: 1px dashed #cbd5e1;
+      margin-bottom: 12px;
     }
 
     .preset-bar label {
@@ -169,35 +172,37 @@
       cursor: pointer;
     }
 
-    .preset-select:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.18);
-    }
-
     .custom-area {
       display: none;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed #cbd5e1;
     }
 
     .custom-area.show {
       display: block;
     }
 
-    .input-header {
+    .custom-yt-row {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
+      gap: 8px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
     }
 
-    .input-header span {
-      font-weight: 700;
+    .custom-yt-input {
+      flex: 1;
+      min-width: 220px;
+      padding: 8px 12px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      font-family: inherit;
       font-size: 0.9rem;
-      color: var(--text-muted);
     }
 
     textarea {
       width: 100%;
-      height: 120px;
+      height: 110px;
       padding: 12px;
       border: 1.5px solid #cbd5e1;
       border-radius: 10px;
@@ -205,12 +210,6 @@
       font-size: 1rem;
       resize: vertical;
       color: var(--text-main);
-      transition: border-color 0.2s;
-    }
-
-    textarea:focus {
-      outline: none;
-      border-color: var(--primary);
     }
 
     .input-actions {
@@ -239,44 +238,125 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
-      transition: background 0.2s, transform 0.1s;
       font-family: inherit;
     }
 
-    .btn-primary:hover {
-      background: var(--primary-hover);
-    }
-
-    .btn-primary:active {
-      transform: scale(0.98);
-    }
-
-    /* 主題資訊橫幅 */
-    .topic-banner {
-      background: linear-gradient(135deg, #0284c7, #0d9488);
-      color: white;
-      padding: 14px 20px;
+    /* YouTube 練唱播放器區塊 */
+    .player-panel {
+      background: var(--card-bg);
       border-radius: var(--radius);
-      margin-bottom: 16px;
+      padding: 16px;
+      border: 1.5px solid #ddd6fe;
+      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.08);
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    .player-panel.show {
+      display: block;
+    }
+
+    .player-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       gap: 8px;
-      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
+      margin-bottom: 12px;
     }
 
-    .topic-banner h2 {
-      margin: 0;
-      font-size: 1.1rem;
+    .player-title {
       font-weight: 800;
+      color: var(--music);
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    .topic-banner p {
-      margin: 2px 0 0 0;
+    .player-controls-top {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .yt-wrapper {
+      position: relative;
+      width: 100%;
+      padding-bottom: 42%;
+      min-height: 200px;
+      background: #0f172a;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .yt-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* 全篇語音連播與跟讀控制列（所有主題皆可用） */
+    .tts-global-bar {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      border: 1.5px solid #bae6fd;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.05);
+      margin-bottom: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .tts-global-title {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tts-global-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .speed-select {
+      padding: 7px 10px;
+      border-radius: 9px;
+      border: 1.5px solid #cbd5e1;
+      background: #f8fafc;
+      font-family: inherit;
       font-size: 0.85rem;
-      opacity: 0.92;
+      font-weight: 700;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    .global-status-pill {
+      display: none;
+      width: 100%;
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    .global-status-pill.show {
+      display: block;
     }
 
     /* 練習卡片列表 */
@@ -284,7 +364,7 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
-      padding-bottom: 40px;
+      padding-bottom: 60px;
     }
 
     .practice-card {
@@ -293,7 +373,31 @@
       padding: 20px;
       border: 1.5px solid #e2e8f0;
       box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
-      transition: border-color 0.3s, box-shadow 0.3s;
+      transition: all 0.25s ease;
+      scroll-margin-top: 110px;
+    }
+
+    /* 正在唱到的句子 KTV 高亮效果 */
+    .practice-card.singing-active {
+      border-color: var(--music);
+      background: linear-gradient(to right, #faf5ff, #ffffff);
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.18);
+      transform: translateY(-1px);
+    }
+
+    /* 正在語音連播的句子高亮效果 */
+    .practice-card.reading-active {
+      border-color: var(--primary);
+      background: linear-gradient(to right, #f0f9ff, #ffffff);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.18);
+      transform: translateY(-1px);
+    }
+
+    /* 停頓等待孩子跟讀的提示效果 */
+    .practice-card.shadow-waiting {
+      border-color: var(--secondary);
+      background: linear-gradient(to right, #f0fdfa, #ffffff);
+      box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.2);
     }
 
     .practice-card.completed {
@@ -311,12 +415,15 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 8px;
+      flex-wrap: wrap;
+      gap: 6px;
     }
 
     .badge-group {
       display: flex;
       align-items: center;
       gap: 8px;
+      flex-wrap: wrap;
     }
 
     .sentence-badge {
@@ -337,6 +444,35 @@
       border-radius: 6px;
     }
 
+    .time-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--music);
+      background: var(--music-light);
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    .shadow-cue {
+      display: none;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #0f766e;
+      background: #ccfbf1;
+      padding: 3px 10px;
+      border-radius: 999px;
+      animation: pulseShadow 1s infinite;
+    }
+
+    .practice-card.shadow-waiting .shadow-cue {
+      display: inline-block;
+    }
+
+    @keyframes pulseShadow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.55; }
+    }
+
     .card-star {
       font-size: 1.4rem;
       filter: grayscale(100%) opacity(0.3);
@@ -348,7 +484,6 @@
       transform: scale(1.15);
     }
 
-    /* 英文句子與可點擊單字區 */
     .sentence-display {
       font-size: 1.35rem;
       font-weight: 700;
@@ -382,15 +517,11 @@
       color: var(--primary);
     }
 
-    .clickable-word:active {
-      background-color: #bae6fd;
-    }
-
     /* 按鈕控制列 */
     .controls-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px;
       align-items: center;
     }
 
@@ -398,25 +529,30 @@
       border: 1.5px solid #e2e8f0;
       background: #ffffff;
       color: var(--text-main);
-      padding: 8px 14px;
+      padding: 8px 12px;
       border-radius: 10px;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       transition: all 0.15s;
       font-family: inherit;
     }
 
-    .ctrl-btn:hover {
-      background: #f8fafc;
-      border-color: #cbd5e1;
-    }
-
     .ctrl-btn:active {
       transform: scale(0.97);
+    }
+
+    .btn-sing {
+      color: var(--music);
+      border-color: #d8b4fe;
+      background: var(--music-light);
+    }
+
+    .btn-sing:hover {
+      background: #e9d5ff;
     }
 
     .btn-listen {
@@ -437,6 +573,16 @@
 
     .btn-slow:hover {
       background: #ccfbf1;
+    }
+
+    .btn-stop-all {
+      color: var(--danger);
+      border-color: #fecdd3;
+      background: var(--danger-light);
+    }
+
+    .btn-stop-all:hover {
+      background: #ffe4e6;
     }
 
     .btn-mic {
@@ -518,14 +664,9 @@
       color: var(--text-muted);
     }
 
-    /* 手機版適配 */
-    @media (max-width: 600px) {
-      body {
-        padding: 10px;
-      }
-      .sentence-display {
-        font-size: 1.2rem;
-      }
+    @media (max-width: 640px) {
+      body { padding: 10px; }
+      .sentence-display { font-size: 1.18rem; }
       .btn-mic {
         width: 100%;
         justify-content: center;
@@ -533,9 +674,11 @@
         padding: 11px;
         font-size: 1rem;
       }
-      .btn-listen, .btn-slow {
+      .btn-sing, .btn-listen, .btn-slow {
         flex: 1;
         justify-content: center;
+        padding: 8px 6px;
+        font-size: 0.82rem;
       }
     }
   </style>
@@ -545,7 +688,7 @@
 <div class="container">
   <header>
     <div class="title-group">
-      <h1>🗣️ 英文口說與歌詞跟讀</h1>
+      <h1>🎤 英文口說與歌曲練唱</h1>
     </div>
     <div class="stats-bar">
       <div class="star-counter" id="totalStars">⭐ 0 / 0</div>
@@ -563,95 +706,116 @@
     <div class="preset-bar">
       <label for="topicSelect">📚 選擇練習主題：</label>
       <select id="topicSelect" class="preset-select" onchange="handleTopicChange()">
-        <option value="moana_highlight">🌊 《海洋奇緣》How Far I'll Go（第一段＋副歌精選）</option>
-        <option value="moana_full">🌊 《海洋奇緣》How Far I'll Go（完整版歌詞）</option>
-        <option value="nature_story">☀️ 自然與生活短文（基礎練習）</option>
-        <option value="custom">✏️ 自訂文章 / 貼上新歌詞...</option>
+        <option value="moana_highlight">🎵 《海洋奇緣》How Far I'll Go（精選段＋原曲練唱）</option>
+        <option value="moana_full">🎵 《海洋奇緣》How Far I'll Go（完整版＋原曲練唱）</option>
+        <option value="nature_story">☀️ 自然與生活短文（純口說練習）</option>
+        <option value="custom">✏️ 自訂文章 / 貼上新歌詞（可搭 YouTube）...</option>
       </select>
     </div>
 
     <div class="hint-text" id="presetHint">
-      💡 提示：點擊句子中的「單一英文單字」可以單獨聽發音；按下「錄音測試」唸出整句即可獲得星星！
+      💡 提示：點擊單字可聽獨立發音；下方可選擇「全曲跟著唱」或「全篇語音連續跟讀」！
     </div>
 
-    <!-- 自訂輸入區（選擇「自訂文章」時展開） -->
+    <!-- 自訂輸入區 -->
     <div class="custom-area" id="customArea">
-      <div class="input-header">
-        <span>請在下方貼上任何英文文章或歌詞（系統會自動斷句）：</span>
+      <div class="custom-yt-row">
+        <input type="text" id="customYtUrl" class="custom-yt-input" placeholder="（選填）貼上 YouTube 歌曲網址，例如：https://www.youtube.com/watch?v=...">
       </div>
-      <textarea id="sourceText" placeholder="請在此貼上英文文章或歌詞..."></textarea>
+      <textarea id="sourceText" placeholder="請在此貼上英文文章或歌詞（每行一句）..."></textarea>
       <div class="input-actions">
-        <span class="hint-text">支援依換行或標點符號自動切分句子</span>
+        <span class="hint-text">系統會自動依照換行或標點符號切分練習卡片</span>
         <button class="btn-primary" onclick="generateCustomCards()">✨ 生成練習卡片</button>
       </div>
     </div>
   </section>
 
-  <!-- 當前主題說明橫幅 -->
-  <div class="topic-banner" id="topicBanner">
-    <div>
-      <h2 id="bannerTitle">🌊 《海洋奇緣》How Far I'll Go（精選段）</h2>
-      <p id="bannerDesc">Disney's Moana • 點擊單字可聽獨立發音，挑戰集滿所有星星！</p>
+  <!-- YouTube 練唱播放器面板 -->
+  <section class="player-panel" id="playerPanel">
+    <div class="player-header">
+      <div class="player-title" id="playerTitle">🎵 原曲伴唱播放器</div>
+      <div class="player-controls-top">
+        <button class="ctrl-btn btn-sing" onclick="playFullSong()">▶️ 從頭跟著唱整首（自動捲動）</button>
+        <button class="ctrl-btn" onclick="pauseSong()">⏸️ 暫停音樂</button>
+      </div>
     </div>
-  </div>
+    <div class="yt-wrapper">
+      <div id="ytPlayer"></div>
+    </div>
+  </section>
+
+  <!-- 全篇語音連播與跟讀控制列（所有主題與文章皆可用） -->
+  <section class="tts-global-bar">
+    <div class="tts-global-title">🔊 全篇朗讀與跟讀模式：</div>
+    <div class="tts-global-actions">
+      <select id="globalRateSelect" class="speed-select" title="選擇連播語速">
+        <option value="0.95">正常語速 (0.95x)</option>
+        <option value="0.7">慢速清晰 (0.7x)</option>
+      </select>
+      <button class="ctrl-btn btn-listen" onclick="startBatchReading(false)">▶️ 全篇連續朗讀</button>
+      <button class="ctrl-btn btn-slow" onclick="startBatchReading(true)">🗣️ 朗讀＋停頓跟讀</button>
+      <button class="ctrl-btn btn-stop-all" id="stopBatchBtn" style="display:none;" onclick="stopBatchReading()">⏹️ 停止連播</button>
+    </div>
+    <div class="global-status-pill" id="globalStatusPill"></div>
+  </section>
 
   <!-- 下方互動練習卡片區 -->
   <main class="cards-list" id="cardsContainer"></main>
 </div>
 
 <script>
-  // 預設題庫資料庫（含段落標籤與中文對照翻譯）
+  // 預設題庫資料庫
   const PRESET_TOPICS = {
     moana_highlight: {
-      title: "🌊 《海洋奇緣》How Far I'll Go（精選段）",
-      desc: "Disney's Moana • 第一段主歌與經典副歌，適合單堂課分段練習",
+      title: "🎵 《海洋奇緣》How Far I'll Go（精選段）",
+      youtubeId: "cPAbx5kgCJo",
       items: [
-        { tag: "Verse 1", en: "I've been staring at the edge of the water", zh: "我一直凝望著水岸的盡頭" },
-        { tag: "Verse 1", en: "Long as I can remember, never really knowing why", zh: "從我有記憶以來就是如此，卻從不明白為什麼" },
-        { tag: "Verse 1", en: "I wish I could be the perfect daughter", zh: "我希望自己能成為完美的女兒" },
-        { tag: "Verse 1", en: "But I come back to the water, no matter how hard I try", zh: "但無論我多麼努力嘗試，我總是會回到這片海邊" },
-        { tag: "Chorus", en: "See the line where the sky meets the sea? It calls me", zh: "看見天空與大海交會的那條線了嗎？它在呼喚著我" },
-        { tag: "Chorus", en: "And no one knows, how far it goes", zh: "沒有人知道，它究竟延伸到多遠的地方" },
-        { tag: "Chorus", en: "If the wind in my sail on the sea stays behind me", zh: "如果海上的風吹進我的船帆，在身後推著我前進" },
-        { tag: "Chorus", en: "One day I'll know, if I go there's just no telling how far I'll go", zh: "總有一天我會明白，只要我啟航，沒人能預料我能走多遠" }
+        { tag: "Verse 1", start: 13, end: 18, en: "I've been staring at the edge of the water", zh: "我一直凝望著水岸的盡頭" },
+        { tag: "Verse 1", start: 18, end: 23, en: "Long as I can remember, never really knowing why", zh: "從我有記憶以來就是如此，卻從不明白為什麼" },
+        { tag: "Verse 1", start: 23, end: 28, en: "I wish I could be the perfect daughter", zh: "我希望自己能成為完美的女兒" },
+        { tag: "Verse 1", start: 28, end: 33, en: "But I come back to the water, no matter how hard I try", zh: "但無論我多麼努力嘗試，我總是會回到這片海邊" },
+        { tag: "Chorus", start: 43, end: 49, en: "See the line where the sky meets the sea? It calls me", zh: "看見天空與大海交會的那條線了嗎？它在呼喚著我" },
+        { tag: "Chorus", start: 49, end: 54, en: "And no one knows, how far it goes", zh: "沒有人知道，它究竟延伸到多遠的地方" },
+        { tag: "Chorus", start: 54, end: 59, en: "If the wind in my sail on the sea stays behind me", zh: "如果海上的風吹進我的船帆，在身後推著我前進" },
+        { tag: "Chorus", start: 59, end: 66, en: "One day I'll know, if I go there's just no telling how far I'll go", zh: "總有一天我會明白，只要我啟航，沒人能預料我能走多遠" }
       ]
     },
     moana_full: {
-      title: "🌊 《海洋奇緣》How Far I'll Go（完整版歌詞）",
-      desc: "Disney's Moana • 全曲完整練習，挑戰成為海洋奇緣口說大師！",
+      title: "🎵 《海洋奇緣》How Far I'll Go（完整版）",
+      youtubeId: "cPAbx5kgCJo",
       items: [
-        { tag: "Verse 1", en: "I've been staring at the edge of the water", zh: "我一直凝望著水岸的盡頭" },
-        { tag: "Verse 1", en: "Long as I can remember, never really knowing why", zh: "從我有記憶以來就是如此，卻從不明白為什麼" },
-        { tag: "Verse 1", en: "I wish I could be the perfect daughter", zh: "我希望自己能成為完美的女兒" },
-        { tag: "Verse 1", en: "But I come back to the water, no matter how hard I try", zh: "但無論我多麼努力嘗試，我總是會回到這片海邊" },
-        { tag: "Pre-Chorus", en: "Every turn I take, every trail I track", zh: "我走的每一個轉彎，我追尋的每一條小徑" },
-        { tag: "Pre-Chorus", en: "Every path I make, every road leads back", zh: "我開闢的每一條路，每一條道路最終都引領我回到" },
-        { tag: "Pre-Chorus", en: "To the place I know, where I cannot go, where I long to be", zh: "那個我熟悉、卻不能前往、內心深深渴望的地方" },
-        { tag: "Chorus", en: "See the line where the sky meets the sea? It calls me", zh: "看見天空與大海交會的那條線了嗎？它在呼喚著我" },
-        { tag: "Chorus", en: "And no one knows, how far it goes", zh: "沒有人知道，它究竟延伸到多遠的地方" },
-        { tag: "Chorus", en: "If the wind in my sail on the sea stays behind me", zh: "如果海上的風吹進我的船帆，在身後推著我前進" },
-        { tag: "Chorus", en: "One day I'll know, if I go there's just no telling how far I'll go", zh: "總有一天我會明白，只要我啟航，沒人能預料我能走多遠" },
-        { tag: "Verse 2", en: "I know everybody on this island seems so happy on this island", zh: "我知道這座島上的每個人，在這裡看起來都如此快樂" },
-        { tag: "Verse 2", en: "Everything is by design", zh: "一切都已安排妥當、各司其職" },
-        { tag: "Verse 2", en: "I know everybody on this island has a role on this island", zh: "我知道這座島上的每個人，都有屬於自己的角色" },
-        { tag: "Verse 2", en: "So maybe I can roll with mine", zh: "所以也許我可以順應並扮演好我的角色" },
-        { tag: "Bridge", en: "I can lead with pride, I can make us strong", zh: "我可以驕傲地帶領大家，我可以讓我們變得強大" },
-        { tag: "Bridge", en: "I'll be satisfied if I play along", zh: "只要我照著大家的期望走，我也會感到滿足" },
-        { tag: "Bridge", en: "But the voice inside sings a different song", zh: "但內心深處的聲音，卻唱著一首截然不同的歌" },
-        { tag: "Bridge", en: "What is wrong with me?", zh: "我究竟是怎麼了？" },
-        { tag: "Chorus 2", en: "See the light as it shines on the sea? It's blinding", zh: "看見海面上閃耀的光芒了嗎？如此耀眼奪目" },
-        { tag: "Chorus 2", en: "But no one knows, how deep it goes", zh: "但沒有人知道，這片大海究竟有多深" },
-        { tag: "Chorus 2", en: "And it seems like it's calling out to me, so come find me", zh: "它彷彿正大聲呼喚著我，說著「快來尋找我吧」" },
-        { tag: "Chorus 2", en: "And let me know, what's beyond that line, will I cross that line?", zh: "讓我知道，那條地平線的彼端有什麼，我會跨越那條界線嗎？" },
-        { tag: "Outro", en: "See the line where the sky meets the sea? It calls me", zh: "看見天空與大海交會的那條線了嗎？它在呼喚著我" },
-        { tag: "Outro", en: "And no one knows, how far it goes", zh: "沒有人知道，它究竟延伸到多遠的地方" },
-        { tag: "Outro", en: "If the wind in my sail on the sea stays behind me", zh: "如果海上的風吹進我的船帆，在身後推著我前進" },
-        { tag: "Outro", en: "One day I'll know, how far I'll go", zh: "總有一天我會明白，我究竟能走多遠" }
+        { tag: "Verse 1", start: 13, end: 18, en: "I've been staring at the edge of the water", zh: "我一直凝望著水岸的盡頭" },
+        { tag: "Verse 1", start: 18, end: 23, en: "Long as I can remember, never really knowing why", zh: "從我有記憶以來就是如此，卻從不明白為什麼" },
+        { tag: "Verse 1", start: 23, end: 28, en: "I wish I could be the perfect daughter", zh: "我希望自己能成為完美的女兒" },
+        { tag: "Verse 1", start: 28, end: 33, en: "But I come back to the water, no matter how hard I try", zh: "但無論我多麼努力嘗試，我總是會回到這片海邊" },
+        { tag: "Pre-Chorus", start: 33, end: 36, en: "Every turn I take, every trail I track", zh: "我走的每一個轉彎，我追尋的每一條小徑" },
+        { tag: "Pre-Chorus", start: 36, end: 38, en: "Every path I make, every road leads back", zh: "我開闢的每一條路，每一條道路最終都引領我回到" },
+        { tag: "Pre-Chorus", start: 38, end: 43, en: "To the place I know, where I cannot go, where I long to be", zh: "那個我熟悉、卻不能前往、內心深深渴望的地方" },
+        { tag: "Chorus", start: 43, end: 49, en: "See the line where the sky meets the sea? It calls me", zh: "看見天空與大海交會的那條線了嗎？它在呼喚著我" },
+        { tag: "Chorus", start: 49, end: 54, en: "And no one knows, how far it goes", zh: "沒有人知道，它究竟延伸到多遠的地方" },
+        { tag: "Chorus", start: 54, end: 59, en: "If the wind in my sail on the sea stays behind me", zh: "如果海上的風吹進我的船帆，在身後推著我前進" },
+        { tag: "Chorus", start: 59, end: 66, en: "One day I'll know, if I go there's just no telling how far I'll go", zh: "總有一天我會明白，只要我啟航，沒人能預料我能走多遠" },
+        { tag: "Verse 2", start: 69, end: 74, en: "I know everybody on this island seems so happy on this island", zh: "我知道這座島上的每個人，在這裡看起來都如此快樂" },
+        { tag: "Verse 2", start: 74, end: 76, en: "Everything is by design", zh: "一切都已安排妥當、各司其職" },
+        { tag: "Verse 2", start: 76, end: 81, en: "I know everybody on this island has a role on this island", zh: "我知道這座島上的每個人，都有屬於自己的角色" },
+        { tag: "Verse 2", start: 81, end: 84, en: "So maybe I can roll with mine", zh: "所以也許我可以順應並扮演好我的角色" },
+        { tag: "Bridge", start: 84, end: 87, en: "I can lead with pride, I can make us strong", zh: "我可以驕傲地帶領大家，我可以讓我們變得強大" },
+        { tag: "Bridge", start: 87, end: 89, en: "I'll be satisfied if I play along", zh: "只要我照著大家的期望走，我也會感到滿足" },
+        { tag: "Bridge", start: 89, end: 92, en: "But the voice inside sings a different song", zh: "但內心深處的聲音，卻唱著一首截然不同的歌" },
+        { tag: "Bridge", start: 92, end: 95, en: "What is wrong with me?", zh: "我究竟是怎麼了？" },
+        { tag: "Chorus 2", start: 95, end: 100, en: "See the light as it shines on the sea? It's blinding", zh: "看見海面上閃耀的光芒了嗎？如此耀眼奪目" },
+        { tag: "Chorus 2", start: 100, end: 105, en: "But no one knows, how deep it goes", zh: "但沒有人知道，這片大海究竟有多深" },
+        { tag: "Chorus 2", start: 105, end: 110, en: "And it seems like it's calling out to me, so come find me", zh: "它彷彿正大聲呼喚著我，說著「快來尋找我吧」" },
+        { tag: "Chorus 2", start: 110, end: 118, en: "And let me know, what's beyond that line, will I cross that line?", zh: "讓我知道，那條地平線的彼端有什麼，我會跨越那條界線嗎？" },
+        { tag: "Outro", start: 119, end: 125, en: "See the line where the sky meets the sea? It calls me", zh: "看見天空與大海交會的那條線了嗎？它在呼喚著我" },
+        { tag: "Outro", start: 125, end: 130, en: "And no one knows, how far it goes", zh: "沒有人知道，它究竟延伸到多遠的地方" },
+        { tag: "Outro", start: 130, end: 135, en: "If the wind in my sail on the sea stays behind me", zh: "如果海上的風吹進我的船帆，在身後推著我前進" },
+        { tag: "Outro", start: 135, end: 146, en: "One day I'll know, how far I'll go", zh: "總有一天我會明白，我究竟能走多遠" }
       ]
     },
     nature_story: {
-      title: "☀️ 自然與生活短文（基礎練習）",
-      desc: "適合暖身練習的日常英語短句",
+      title: "☀️ 自然與生活短文（純口說練習）",
+      youtubeId: null,
       items: [
         { tag: "Sentence 1", en: "Look at the bright morning sun in the sky.", zh: "看看天空中明亮的朝陽。" },
         { tag: "Sentence 2", en: "Little birds are singing happily in the green trees.", zh: "小鳥在綠樹間快樂地歌唱。" },
@@ -666,7 +830,279 @@
   let activeRecordingIndex = -1;
   let preferredVoice = null;
 
-  // 初始化語音合成引擎並挑選自然的美式英語發音
+  // YouTube Player 相關變數
+  let ytPlayer = null;
+  let ytApiReady = false;
+  let currentYoutubeId = null;
+  let segmentEndTime = null;
+  let syncInterval = null;
+  let lastAutoScrolledIndex = -1;
+  let userManualScrollTimeout = null;
+  let isUserScrolling = false;
+
+  // 全篇語音連播狀態
+  let isBatchReading = false;
+  let batchTimer = null;
+
+  // 偵測使用者手動觸控或滾輪，暫停自動捲動 4 秒避免搶畫面
+  ['wheel', 'touchstart'].forEach(evt => {
+    window.addEventListener(evt, () => {
+      isUserScrolling = true;
+      clearTimeout(userManualScrollTimeout);
+      userManualScrollTimeout = setTimeout(() => {
+        isUserScrolling = false;
+      }, 4000);
+    }, { passive: true });
+  });
+
+  function smoothScrollToCard(index) {
+    if (isUserScrolling) return;
+    const card = document.getElementById(`card-${index}`);
+    if (card) {
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  // 載入 YouTube IFrame API
+  const tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  const firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  function onYouTubeIframeAPIReady() {
+    ytApiReady = true;
+    if (currentYoutubeId) {
+      loadYoutubeVideo(currentYoutubeId);
+    }
+  }
+
+  function loadYoutubeVideo(videoId) {
+    const panel = document.getElementById('playerPanel');
+    if (!videoId) {
+      panel.classList.remove('show');
+      if (ytPlayer && typeof ytPlayer.stopVideo === 'function') {
+        ytPlayer.stopVideo();
+      }
+      return;
+    }
+
+    panel.classList.add('show');
+    if (!ytApiReady) return;
+
+    if (ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+      ytPlayer.cueVideoById(videoId);
+    } else {
+      ytPlayer = new YT.Player('ytPlayer', {
+        videoId: videoId,
+        playerVars: {
+          rel: 0,
+          modestbranding: 1,
+          playsinline: 1
+        },
+        events: {
+          onStateChange: onPlayerStateChange
+        }
+      });
+    }
+  }
+
+  function onPlayerStateChange(event) {
+    if (event.data === YT.PlayerState.PLAYING) {
+      startSyncTimer();
+    } else {
+      stopSyncTimer();
+    }
+  }
+
+  // 每 0.25 秒檢查播放進度：負責單句自動停止、KTV 歌詞高亮與自動捲動
+  function startSyncTimer() {
+    stopSyncTimer();
+    syncInterval = setInterval(() => {
+      if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
+      const now = ytPlayer.getCurrentTime();
+
+      // 1. 若為單句點播模式，時間到就自動暫停
+      if (segmentEndTime !== null && now >= segmentEndTime) {
+        ytPlayer.pauseVideo();
+        segmentEndTime = null;
+        clearAllCardHighlights();
+        return;
+      }
+
+      // 2. 動態高亮目前唱到的歌詞卡片並自動捲動
+      sentencesData.forEach((item, idx) => {
+        const card = document.getElementById(`card-${idx}`);
+        if (!card || item.start === undefined) return;
+        if (now >= item.start && now < item.end) {
+          if (!card.classList.contains('singing-active')) {
+            clearAllCardHighlights();
+            card.classList.add('singing-active');
+            if (segmentEndTime === null && lastAutoScrolledIndex !== idx) {
+              lastAutoScrolledIndex = idx;
+              smoothScrollToCard(idx);
+            }
+          }
+        }
+      });
+    }, 250);
+  }
+
+  function stopSyncTimer() {
+    if (syncInterval) {
+      clearInterval(syncInterval);
+      syncInterval = null;
+    }
+  }
+
+  function clearAllCardHighlights() {
+    document.querySelectorAll('.practice-card').forEach(c => {
+      c.classList.remove('singing-active', 'reading-active', 'shadow-waiting');
+    });
+  }
+
+  // 單句原曲練唱點播
+  function playSongSegment(index) {
+    const item = sentencesData[index];
+    if (!ytPlayer || typeof ytPlayer.seekTo !== 'function' || item.start === undefined) return;
+
+    stopBatchReading();
+    stopCurrentRecording();
+    window.speechSynthesis.cancel();
+
+    segmentEndTime = item.end;
+    clearAllCardHighlights();
+    const card = document.getElementById(`card-${index}`);
+    if (card) card.classList.add('singing-active');
+
+    ytPlayer.seekTo(item.start, true);
+    ytPlayer.playVideo();
+  }
+
+  // 從頭播放整首歌曲（自動捲動跟唱）
+  function playFullSong() {
+    if (!ytPlayer || typeof ytPlayer.playVideo !== 'function') return;
+    stopBatchReading();
+    stopCurrentRecording();
+    window.speechSynthesis.cancel();
+    segmentEndTime = null;
+    lastAutoScrolledIndex = -1;
+    isUserScrolling = false;
+    ytPlayer.seekTo(0, true);
+    ytPlayer.playVideo();
+  }
+
+  function pauseSong() {
+    if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
+      ytPlayer.pauseVideo();
+    }
+    segmentEndTime = null;
+    clearAllCardHighlights();
+  }
+
+  // 全篇語音連續朗讀 / 停頓跟讀模式
+  function startBatchReading(withShadowPause) {
+    if (!('speechSynthesis' in window)) {
+      alert('抱歉，您的瀏覽器不支援語音朗讀功能。');
+      return;
+    }
+    if (sentencesData.length === 0) return;
+
+    pauseSong();
+    stopCurrentRecording();
+    stopBatchReading();
+
+    isBatchReading = true;
+    isUserScrolling = false;
+    document.getElementById('stopBatchBtn').style.display = 'inline-flex';
+
+    const rate = parseFloat(document.getElementById('globalRateSelect').value) || 0.95;
+    readNextInBatch(0, rate, withShadowPause);
+  }
+
+  function readNextInBatch(index, rate, withShadowPause) {
+    if (!isBatchReading) return;
+
+    if (index >= sentencesData.length) {
+      updateGlobalStatus('🎉 全篇朗讀完成！可以試著按下各句的「🎤 錄音測試」挑戰拿星星囉！');
+      setTimeout(() => stopBatchReading(true), 3500);
+      return;
+    }
+
+    clearAllCardHighlights();
+    const card = document.getElementById(`card-${index}`);
+    if (card) {
+      card.classList.add('reading-active');
+      smoothScrollToCard(index);
+    }
+
+    updateGlobalStatus(
+      withShadowPause
+        ? `🔊 正在朗讀第 ${index + 1} / ${sentencesData.length} 句（唸完會停頓讓你跟讀）...`
+        : `🔊 正在連續朗讀第 ${index + 1} / ${sentencesData.length} 句...`
+    );
+
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(sentencesData[index].text);
+    utterance.lang = 'en-US';
+    utterance.rate = rate;
+    if (preferredVoice) {
+      utterance.voice = preferredVoice;
+    }
+
+    utterance.onend = () => {
+      if (!isBatchReading) return;
+      if (withShadowPause) {
+        if (card) {
+          card.classList.remove('reading-active');
+          card.classList.add('shadow-waiting');
+        }
+        updateGlobalStatus(`🗣️ 第 ${index + 1} 句：換你開口跟著唸一次！（2.5 秒後自動下一句）`);
+        batchTimer = setTimeout(() => {
+          readNextInBatch(index + 1, rate, withShadowPause);
+        }, 2500);
+      } else {
+        batchTimer = setTimeout(() => {
+          readNextInBatch(index + 1, rate, withShadowPause);
+        }, 450);
+      }
+    };
+
+    utterance.onerror = () => {
+      if (isBatchReading) stopBatchReading();
+    };
+
+    window.speechSynthesis.speak(utterance);
+  }
+
+  function stopBatchReading(keepMessage = false) {
+    isBatchReading = false;
+    if (batchTimer) {
+      clearTimeout(batchTimer);
+      batchTimer = null;
+    }
+    window.speechSynthesis.cancel();
+    clearAllCardHighlights();
+    document.getElementById('stopBatchBtn').style.display = 'none';
+    if (!keepMessage) {
+      document.getElementById('globalStatusPill').classList.remove('show');
+    }
+  }
+
+  function updateGlobalStatus(msg) {
+    const pill = document.getElementById('globalStatusPill');
+    pill.textContent = msg;
+    pill.classList.add('show');
+  }
+
+  // 解析使用者貼上的 YouTube 網址取得 Video ID
+  function extractYoutubeId(url) {
+    if (!url) return null;
+    const regExp = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+    const match = url.match(regExp);
+    return match ? match[1] : null;
+  }
+
+  // 初始化語音合成引擎
   function initVoices() {
     const voices = window.speechSynthesis.getVoices();
     if (voices.length > 0) {
@@ -677,23 +1113,20 @@
         voices.find(v => v.lang.startsWith('en'));
     }
   }
-
   window.speechSynthesis.onvoiceschanged = initVoices;
 
-  // 檢查瀏覽器語音辨識支援度
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) {
     document.getElementById('browserAlert').style.display = 'block';
   }
 
-  // 頁面載入時初始化預設主題（《海洋奇緣》精選段）
   window.addEventListener('DOMContentLoaded', () => {
     initVoices();
     handleTopicChange();
   });
 
-  // 切換主題選單
   function handleTopicChange() {
+    stopBatchReading();
     const selectedKey = document.getElementById('topicSelect').value;
     const customArea = document.getElementById('customArea');
     const presetHint = document.getElementById('presetHint');
@@ -701,8 +1134,9 @@
     if (selectedKey === 'custom') {
       customArea.classList.add('show');
       presetHint.style.display = 'none';
-      document.getElementById('bannerTitle').textContent = "✏️ 自訂文章 / 歌詞練習";
-      document.getElementById('bannerDesc').textContent = "在上方輸入任何英文內容，點擊「生成練習卡片」即可開始";
+      currentYoutubeId = extractYoutubeId(document.getElementById('customYtUrl').value);
+      loadYoutubeVideo(currentYoutubeId);
+
       if (!document.getElementById('sourceText').value.trim()) {
         document.getElementById('cardsContainer').innerHTML =
           '<div style="text-align:center; color:#64748b; padding:30px;">請在上方文字框貼上英文文章或歌詞，然後點擊「生成練習卡片」。</div>';
@@ -715,13 +1149,13 @@
       customArea.classList.remove('show');
       presetHint.style.display = 'block';
       const topic = PRESET_TOPICS[selectedKey];
-      document.getElementById('bannerTitle').textContent = topic.title;
-      document.getElementById('bannerDesc').textContent = topic.desc;
+      currentYoutubeId = topic.youtubeId;
+      document.getElementById('playerTitle').textContent = topic.title + " • 原曲練唱器";
+      loadYoutubeVideo(currentYoutubeId);
       renderCards(topic.items);
     }
   }
 
-  // 切換輸入區顯示/隱藏
   function toggleInputPanel() {
     const panel = document.getElementById('inputPanel');
     const btn = document.getElementById('toggleInputBtn');
@@ -729,18 +1163,15 @@
     btn.textContent = panel.classList.contains('collapsed') ? '展開選單' : '收合選單';
   }
 
-  // 切換中文翻譯顯示/隱藏
   function toggleTranslation() {
     document.body.classList.toggle('hide-zh');
     const btn = document.getElementById('toggleZhBtn');
     btn.textContent = document.body.classList.contains('hide-zh') ? '顯示中文' : '隱藏中文';
   }
 
-  // 智慧斷句處理（用於自訂文章模式）
   function splitIntoSentences(rawText) {
     const lines = rawText.split(/\n+/).map(l => l.trim()).filter(Boolean);
     const result = [];
-
     lines.forEach(line => {
       const parts = line.match(/[^.!?]+[.!?]*["']?/g);
       if (parts) {
@@ -755,14 +1186,24 @@
     return result;
   }
 
-  // 生成自訂文章卡片
   function generateCustomCards() {
+    stopBatchReading();
+    const ytUrl = document.getElementById('customYtUrl').value;
+    currentYoutubeId = extractYoutubeId(ytUrl);
+    document.getElementById('playerTitle').textContent = "🎵 自訂歌曲播放器";
+    loadYoutubeVideo(currentYoutubeId);
+
     const text = document.getElementById('sourceText').value;
     const items = splitIntoSentences(text);
     renderCards(items);
   }
 
-  // 渲染練習卡片列表
+  function formatSec(sec) {
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60);
+    return `${m}:${s < 10 ? '0' : ''}${s}`;
+  }
+
   function renderCards(items) {
     stopCurrentRecording();
     window.speechSynthesis.cancel();
@@ -773,6 +1214,8 @@
     sentencesData = items.map((item, idx) => ({
       id: idx,
       tag: item.tag || '',
+      start: item.start,
+      end: item.end,
       text: item.en,
       zh: item.zh || '',
       completed: false
@@ -790,7 +1233,6 @@
       card.className = 'practice-card';
       card.id = `card-${index}`;
 
-      // 將句子拆分為可點擊的單字 span
       const wordsHtml = item.text.split(/\s+/).map(token => {
         const cleanWord = token.replace(/^[^a-zA-Z0-9']+|[^a-zA-Z0-9']+$/g, '');
         if (!cleanWord) return `<span>${escapeHtml(token)}</span>`;
@@ -798,24 +1240,33 @@
       }).join(' ');
 
       const tagHtml = item.tag ? `<span class="section-tag">${escapeHtml(item.tag)}</span>` : '';
+      const hasTimestamp = item.start !== undefined && item.end !== undefined;
+      const timeHtml = hasTimestamp ? `<span class="time-tag">⏱️ ${formatSec(item.start)}</span>` : '';
       const zhHtml = item.zh ? `<div class="zh-translation">${escapeHtml(item.zh)}</div>` : '';
+
+      const singBtnHtml = hasTimestamp
+        ? `<button class="ctrl-btn btn-sing" onclick="playSongSegment(${index})">🎵 聽原曲唱這句</button>`
+        : '';
 
       card.innerHTML = `
         <div class="card-top">
           <div class="badge-group">
             <span class="sentence-badge">第 ${index + 1} 句</span>
             ${tagHtml}
+            ${timeHtml}
+            <span class="shadow-cue">🗣️ 換你跟讀！</span>
           </div>
           <span class="card-star" id="star-${index}">⭐</span>
         </div>
         <div class="sentence-display">${wordsHtml}</div>
         ${zhHtml}
         <div class="controls-row">
+          ${singBtnHtml}
           <button class="ctrl-btn btn-listen" onclick="speakText('${escapeJs(item.text)}', 0.95)">
-            🔊 聽發音
+            🔊 語音朗讀
           </button>
           <button class="ctrl-btn btn-slow" onclick="speakText('${escapeJs(item.text)}', 0.65)">
-            🐢 慢速播放
+            🐢 慢速唸
           </button>
           <button class="ctrl-btn btn-mic" id="mic-btn-${index}" onclick="toggleRecord(${index})">
             🎤 錄音測試
@@ -832,12 +1283,13 @@
     });
   }
 
-  // 文字轉語音朗讀
   function speakText(text, rate = 0.95) {
     if (!('speechSynthesis' in window)) {
       alert('抱歉，您的瀏覽器不支援語音朗讀功能。');
       return;
     }
+    stopBatchReading();
+    pauseSong();
     stopCurrentRecording();
     window.speechSynthesis.cancel();
 
@@ -850,7 +1302,6 @@
     window.speechSynthesis.speak(utterance);
   }
 
-  // 切換錄音狀態
   function toggleRecord(index) {
     if (!SpeechRecognition) {
       alert('您的瀏覽器不支援語音辨識功能，請改用 Chrome、Edge 或 Safari 瀏覽器。');
@@ -862,6 +1313,8 @@
       return;
     }
 
+    stopBatchReading();
+    pauseSong();
     stopCurrentRecording();
     window.speechSynthesis.cancel();
     startRecording(index);
@@ -886,7 +1339,7 @@
     micBtn.innerHTML = '⏹️ 正在聆聽... (點擊停止)';
 
     resultBox.classList.add('show');
-    statusEl.innerHTML = '<span style="color:#e11d48;">🎙️ 請對著麥克風唸出上方句子...</span>';
+    statusEl.innerHTML = '<span style="color:#e11d48;">🎙️ 請對著麥克風清唱或唸出上方句子...</span>';
     document.getElementById(`diff-${index}`).innerHTML = '';
     document.getElementById(`heard-${index}`).innerHTML = '';
 
@@ -898,7 +1351,7 @@
     recognition.onerror = (event) => {
       let msg = '沒有聽清楚聲音，請再試一次！';
       if (event.error === 'not-allowed') {
-        msg = '❌ 麥克風權限被拒絕。若在 Google Sites 內嵌中發生此問題，請改用獨立網頁連結開啟。';
+        msg = '❌ 麥克風權限被拒絕，請確認已透過獨立網址開啟並允許麥克風權限。';
       } else if (event.error === 'no-speech') {
         msg = '🤔 沒有偵測到聲音，請靠近麥克風再試一次。';
       }
@@ -941,7 +1394,6 @@
     }
   }
 
-  // 文字標準化（處理縮寫與標點符號，讓口說辨識更寬容準確）
   function normalizeTextForCompare(str) {
     return str
       .toLowerCase()
@@ -956,12 +1408,9 @@
       .trim();
   }
 
-  // 評估發音並產生紅綠字比對結果
   function evaluatePronunciation(index, spokenText) {
     const targetText = sentencesData[index].text;
     const targetTokens = targetText.split(/\s+/);
-
-    // 將 AI 聽到的內容展開標準化後拆成單字池
     const normalizedSpoken = normalizeTextForCompare(spokenText);
     const spokenPool = normalizedSpoken.split(/\s+/).filter(Boolean);
 
@@ -974,8 +1423,6 @@
 
       totalCleanWords++;
       const subWords = normalizedToken.split(/\s+/).filter(Boolean);
-
-      // 檢查該 token 展開後的所有子單字是否都在辨識結果中
       let allSubMatched = true;
       const tempPool = [...spokenPool];
 
@@ -991,7 +1438,6 @@
 
       if (allSubMatched) {
         matchCount++;
-        // 正式從 spokenPool 中扣除已配對的單字
         for (const sw of subWords) {
           const idxInPool = spokenPool.indexOf(sw);
           if (idxInPool !== -1) spokenPool.splice(idxInPool, 1);
@@ -1025,18 +1471,15 @@
 
     diffEl.innerHTML = diffHtml;
     heardEl.innerHTML = `AI 聽到的內容：「${escapeHtml(spokenText)}」`;
-
     updateStarCounter();
   }
 
-  // 更新總星星數量
   function updateStarCounter() {
     const total = sentencesData.length;
     const earned = sentencesData.filter(s => s.completed).length;
     document.getElementById('totalStars').textContent = `⭐ ${earned} / ${total}`;
   }
 
-  // 安全性跳脫字元處理
   function escapeHtml(str) {
     return str
       .replace(/&/g, '&amp;')
