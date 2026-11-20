@@ -863,7 +863,6 @@
     <div class="preset-bar">
       <label for="topicSelect">📚 選擇練習主題：</label>
       <select id="topicSelect" class="preset-select" onchange="handleTopicChange()">
-        <option value="moana_highlight">🎵 《海洋奇緣》How Far I'll Go（精選段＋原曲練唱）</option>
         <option value="moana_full">🎵 《海洋奇緣》How Far I'll Go（完整版＋原曲練唱）</option>
         <option value="nature_story">☀️ 自然與生活短文（純口說練習）</option>
         <option value="custom">✏️ 自訂文章 / 貼上新歌詞（可搭 YouTube）...</option>
@@ -921,22 +920,8 @@
 </div>
 
 <script>
-  // 預設題庫資料庫（已初步修正開頭前奏秒數，並可使用「對時工具」進一步精調）
+  // 預設題庫資料庫
   const PRESET_TOPICS = {
-    moana_highlight: {
-      title: "🎵 《海洋奇緣》How Far I'll Go（精選段）",
-      youtubeId: "cPAbx5kgCJo",
-      items: [
-        { tag: "Verse 1", start: 18.2, end: 22.8, en: "I've been staring at the edge of the water", zh: "我一直凝望著水岸的盡頭" },
-        { tag: "Verse 1", start: 22.8, end: 27.6, en: "Long as I can remember, never really knowing why", zh: "從我有記憶以來就是如此，卻從不明白為什麼" },
-        { tag: "Verse 1", start: 27.6, end: 32.0, en: "I wish I could be the perfect daughter", zh: "我希望自己能成為完美的女兒" },
-        { tag: "Verse 1", start: 32.0, end: 37.0, en: "But I come back to the water, no matter how hard I try", zh: "但無論我多麼努力嘗試，我總是會回到這片海邊" },
-        { tag: "Chorus", start: 47.0, end: 52.8, en: "See the line where the sky meets the sea? It calls me", zh: "看見天空與大海交會的那條線了嗎？它在呼喚著我" },
-        { tag: "Chorus", start: 52.8, end: 57.5, en: "And no one knows, how far it goes", zh: "沒有人知道，它究竟延伸到多遠的地方" },
-        { tag: "Chorus", start: 57.5, end: 62.8, en: "If the wind in my sail on the sea stays behind me", zh: "如果海上的風吹進我的船帆，在身後推著我前進" },
-        { tag: "Chorus", start: 62.8, end: 70.0, en: "One day I'll know, if I go there's just no telling how far I'll go", zh: "總有一天我會明白，只要我啟航，沒人能預料我能走多遠" }
-      ]
-    },
     moana_full: {
       title: "🎵 《海洋奇緣》How Far I'll Go（完整版）",
       youtubeId: "cPAbx5kgCJo",
@@ -1077,13 +1062,11 @@
       if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
       const now = ytPlayer.getCurrentTime();
 
-      // 更新對時工具的即時秒數顯示
       const clockEl = document.getElementById('livePlayerClock');
       if (clockEl) {
         clockEl.textContent = `目前秒數：${now.toFixed(1)}s`;
       }
 
-      // 1. 若為單句點播模式，時間到就自動暫停
       if (segmentEndTime !== null && now >= segmentEndTime) {
         ytPlayer.pauseVideo();
         segmentEndTime = null;
@@ -1091,7 +1074,6 @@
         return;
       }
 
-      // 2. 動態高亮目前唱到的歌詞卡片並自動捲動
       sentencesData.forEach((item, idx) => {
         const card = document.getElementById(`card-${idx}`);
         if (!card || item.start === undefined || item.end === undefined) return;
@@ -1140,17 +1122,14 @@
     return Math.round(ytPlayer.getCurrentTime() * 10) / 10;
   }
 
-  // 抓取目前秒數設為本句「開始時間」，並自動銜接上一句的「結束時間」
   function captureStartTime(index) {
     const t = getCurrentYtTime();
     if (t === null) return;
 
     sentencesData[index].start = t;
-    // 若尚未設定結束時間，預設先給 +4.5 秒
     if (sentencesData[index].end === undefined || sentencesData[index].end <= t) {
       sentencesData[index].end = Math.round((t + 4.5) * 10) / 10;
     }
-    // 自動將上一句的結束時間無縫銜接到這一句的開始時間
     if (index > 0 && sentencesData[index - 1].start !== undefined && t > sentencesData[index - 1].start) {
       sentencesData[index - 1].end = t;
       refreshCardTimeUI(index - 1);
@@ -1159,7 +1138,6 @@
     refreshCardTimeUI(index);
   }
 
-  // 抓取目前秒數設為本句「結束時間」
   function captureEndTime(index) {
     const t = getCurrentYtTime();
     if (t === null) return;
@@ -1171,7 +1149,6 @@
     refreshCardTimeUI(index);
   }
 
-  // 微調開始或結束秒數 (+0.5 / -0.5)
   function nudgeTime(index, field, delta) {
     if (sentencesData[index][field] === undefined) {
       sentencesData[index][field] = 0;
@@ -1181,7 +1158,6 @@
     refreshCardTimeUI(index);
   }
 
-  // 更新單張卡片的時間顯示與播放按鈕狀態
   function refreshCardTimeUI(index) {
     const item = sentencesData[index];
     const readoutEl = document.getElementById(`sync-readout-${index}`);
@@ -1203,7 +1179,6 @@
     }
   }
 
-  // 匯出更新後的 items JSON 代碼並自動複製到剪貼簿
   function exportSyncedCode() {
     const outputBox = document.getElementById('exportOutput');
     const lines = sentencesData.map(item => {
