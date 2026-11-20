@@ -14,6 +14,8 @@
       --primary-light: #e0f2fe;
       --secondary: #0d9488;
       --secondary-light: #f0fdfa;
+      --ultraslow: #ea580c;
+      --ultraslow-light: #fff7ed;
       --music: #7c3aed;
       --music-hover: #6d28d9;
       --music-light: #f3e8ff;
@@ -724,7 +726,7 @@
     .controls-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 7px;
       align-items: center;
     }
 
@@ -732,14 +734,14 @@
       border: 1.5px solid #e2e8f0;
       background: #ffffff;
       color: var(--text-main);
-      padding: 8px 12px;
+      padding: 8px 11px;
       border-radius: 10px;
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
       transition: all 0.15s;
       font-family: inherit;
     }
@@ -776,6 +778,16 @@
 
     .btn-slow:hover {
       background: #ccfbf1;
+    }
+
+    .btn-ultraslow {
+      color: var(--ultraslow);
+      border-color: #fed7aa;
+      background: var(--ultraslow-light);
+    }
+
+    .btn-ultraslow:hover {
+      background: #ffedd5;
     }
 
     .btn-playback {
@@ -905,8 +917,8 @@
         padding: 11px;
         font-size: 1rem;
       }
-      .btn-sing, .btn-listen, .btn-slow {
-        flex: 1;
+      .btn-sing, .btn-listen, .btn-slow, .btn-ultraslow {
+        flex: 1 1 45%;
         justify-content: center;
         padding: 8px 6px;
         font-size: 0.82rem;
@@ -966,7 +978,7 @@
     </div>
 
     <div class="hint-text" id="presetHint">
-      💡 提示：按下「🎤 錄音測試」唸完後，還可以直接點擊「▶️ 聽聽我的錄音」回放自己的聲音喔！
+      💡 提示：下方可自由切換<strong>女聲／男聲</strong>與 <strong>0.5x 超慢速</strong>；按下「🎤 錄音測試」唸完後，還可以直接點擊「▶️ 聽聽我的錄音」回放自己的聲音！
     </div>
 
     <!-- 自訂輸入區 -->
@@ -998,11 +1010,16 @@
 
   <!-- 全篇語音連播與跟讀控制列 -->
   <section class="tts-global-bar">
-    <div class="tts-global-title">🔊 全篇朗讀與跟讀模式：</div>
+    <div class="tts-global-title">🔊 語音設定與全篇朗讀：</div>
     <div class="tts-global-actions">
-      <select id="globalRateSelect" class="speed-select" title="選擇連播語速">
+      <select id="voiceGenderSelect" class="speed-select" title="選擇朗讀聲線（單句與全篇通用）" onchange="handleVoiceGenderChange()">
+        <option value="female">👩 女聲</option>
+        <option value="male">👨 男聲</option>
+      </select>
+      <select id="globalRateSelect" class="speed-select" title="選擇全篇連播語速">
         <option value="0.95">正常語速 (0.95x)</option>
         <option value="0.7">慢速清晰 (0.7x)</option>
+        <option value="0.5">超慢速拆解 (0.5x)</option>
       </select>
       <button class="ctrl-btn btn-listen" onclick="startBatchReading(false)">▶️ 全篇連續朗讀</button>
       <button class="ctrl-btn btn-slow" onclick="startBatchReading(true)">🗣️ 朗讀＋停頓跟讀</button>
@@ -1072,7 +1089,8 @@
   let sentencesData = [];
   let activeRecognition = null;
   let activeRecordingIndex = -1;
-  let preferredVoice = null;
+  let femaleVoice = null;
+  let maleVoice = null;
 
   // 音訊錄製與回放相關變數
   let mediaRecorder = null;
@@ -1392,6 +1410,31 @@
     }
   }
 
+  function getSelectedVoice() {
+    initVoices();
+    const gender = document.getElementById('voiceGenderSelect')?.value || 'female';
+    if (gender === 'male') {
+      return maleVoice || femaleVoice;
+    }
+    return femaleVoice || maleVoice;
+  }
+
+  function handleVoiceGenderChange() {
+    initVoices();
+    const gender = document.getElementById('voiceGenderSelect').value;
+    if (gender === 'male' && !maleVoice) {
+      updateGlobalStatus('ℹ️ 目前裝置的瀏覽器僅內建預設美式女聲，已自動為您保持清晰英語發音。');
+    } else {
+      const label = gender === 'male' ? '👨 已切換為男聲朗讀' : '👩 已切換為女聲朗讀';
+      updateGlobalStatus(label);
+      setTimeout(() => {
+        if (!isBatchReading) {
+          document.getElementById('globalStatusPill').classList.remove('show');
+        }
+      }, 2200);
+    }
+  }
+
   function startBatchReading(withShadowPause) {
     if (!('speechSynthesis' in window)) {
       alert('抱歉，您的瀏覽器不支援語音朗讀功能。');
@@ -1442,8 +1485,9 @@
     const utterance = new SpeechSynthesisUtterance(sentencesData[index].text);
     utterance.lang = 'en-US';
     utterance.rate = rate;
-    if (preferredVoice) {
-      utterance.voice = preferredVoice;
+    const chosenVoice = getSelectedVoice();
+    if (chosenVoice) {
+      utterance.voice = chosenVoice;
     }
 
     utterance.onend = () => {
@@ -1504,13 +1548,30 @@
 
   function initVoices() {
     const voices = window.speechSynthesis.getVoices();
-    if (voices.length > 0) {
-      preferredVoice =
-        voices.find(v => v.lang === 'en-US' && v.name.includes('Google')) ||
-        voices.find(v => v.lang === 'en-US' && (v.name.includes('Natural') || v.name.includes('Samantha') || v.name.includes('Jenny'))) ||
-        voices.find(v => v.lang.startsWith('en-US')) ||
-        voices.find(v => v.lang.startsWith('en'));
-    }
+    if (voices.length === 0) return;
+
+    const enVoices = voices.filter(v => v.lang.startsWith('en'));
+    const usVoices = voices.filter(v => v.lang.startsWith('en-US'));
+    const pool = usVoices.length > 0 ? usVoices : enVoices;
+
+    const maleKeywords = ['male', 'david', 'guy', 'andrew', 'christopher', 'eric', 'roger', 'steffan', 'mark', 'alex', 'daniel', 'fred', 'aaron', 'james', 'ryan', 'william'];
+    const femaleKeywords = ['female', 'jenny', 'aria', 'samantha', 'zira', 'victoria', 'ava', 'allison', 'susan', 'karen', 'moira', 'tessa', 'michelle', 'emma'];
+
+    // 篩選男聲
+    maleVoice =
+      pool.find(v => maleKeywords.some(k => v.name.toLowerCase().includes(k)) && (v.name.includes('Natural') || v.name.includes('Google'))) ||
+      pool.find(v => maleKeywords.some(k => v.name.toLowerCase().includes(k))) ||
+      enVoices.find(v => maleKeywords.some(k => v.name.toLowerCase().includes(k))) ||
+      null;
+
+    // 篩選女聲
+    femaleVoice =
+      pool.find(v => v.name.includes('Google US English') && !v.name.toLowerCase().includes('male')) ||
+      pool.find(v => femaleKeywords.some(k => v.name.toLowerCase().includes(k)) && (v.name.includes('Natural') || v.name.includes('Google'))) ||
+      pool.find(v => femaleKeywords.some(k => v.name.toLowerCase().includes(k))) ||
+      pool.find(v => v !== maleVoice) ||
+      pool[0] ||
+      null;
   }
   window.speechSynthesis.onvoiceschanged = initVoices;
 
@@ -1680,8 +1741,11 @@
           <button class="ctrl-btn btn-listen" onclick="speakText('${escapeJs(item.text)}', 0.95)">
             🔊 語音朗讀
           </button>
-          <button class="ctrl-btn btn-slow" onclick="speakText('${escapeJs(item.text)}', 0.65)">
+          <button class="ctrl-btn btn-slow" onclick="speakText('${escapeJs(item.text)}', 0.7)">
             🐢 慢速唸
+          </button>
+          <button class="ctrl-btn btn-ultraslow" onclick="speakText('${escapeJs(item.text)}', 0.5)">
+            🐌 超慢 0.5x
           </button>
           <button class="ctrl-btn btn-mic" id="mic-btn-${index}" onclick="toggleRecord(${index})">
             🎤 錄音測試
@@ -1717,8 +1781,9 @@
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'en-US';
     utterance.rate = rate;
-    if (preferredVoice) {
-      utterance.voice = preferredVoice;
+    const chosenVoice = getSelectedVoice();
+    if (chosenVoice) {
+      utterance.voice = chosenVoice;
     }
     window.speechSynthesis.speak(utterance);
   }
