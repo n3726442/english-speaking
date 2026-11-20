@@ -17,6 +17,8 @@
       --music: #7c3aed;
       --music-hover: #6d28d9;
       --music-light: #f3e8ff;
+      --playback: #d97706;
+      --playback-light: #fef3c7;
       --danger: #e11d48;
       --danger-light: #fff1f2;
       --success: #16a34a;
@@ -133,6 +135,66 @@
       border-radius: var(--radius);
       margin-bottom: 14px;
       font-size: 0.9rem;
+    }
+
+    /* 右下角懸浮暫停控制膠囊（播放整首或全篇朗讀時自動出現） */
+    .floating-pause-bar {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 999;
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(8px);
+      color: #ffffff;
+      padding: 10px 14px 10px 18px;
+      border-radius: 999px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.28);
+      display: none;
+      align-items: center;
+      gap: 12px;
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      animation: slideUp 0.25s ease-out;
+    }
+
+    .floating-pause-bar.show {
+      display: flex;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .floating-label {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      white-space: nowrap;
+    }
+
+    .floating-stop-btn {
+      background: var(--danger);
+      color: #ffffff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 2px 8px rgba(225, 29, 72, 0.4);
+      transition: transform 0.1s, background 0.2s;
+    }
+
+    .floating-stop-btn:hover {
+      background: #be123c;
+    }
+
+    .floating-stop-btn:active {
+      transform: scale(0.95);
     }
 
     /* 老師對時小工具橫幅 */
@@ -455,7 +517,7 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
-      padding-bottom: 60px;
+      padding-bottom: 80px;
     }
 
     .practice-card {
@@ -716,6 +778,24 @@
       background: #ccfbf1;
     }
 
+    .btn-playback {
+      color: #b45309;
+      border-color: #fcd34d;
+      background: var(--playback-light);
+      padding: 6px 12px;
+      font-size: 0.85rem;
+    }
+
+    .btn-playback:hover {
+      background: #fde68a;
+    }
+
+    .btn-playback.is-playing {
+      background: #f59e0b;
+      color: #ffffff;
+      border-color: #d97706;
+    }
+
     .btn-stop-all {
       color: var(--danger);
       border-color: #fecdd3;
@@ -778,7 +858,7 @@
       font-size: 1.15rem;
       font-weight: 700;
       line-height: 1.6;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .word-ok {
@@ -798,6 +878,16 @@
       margin-right: 4px;
       text-decoration: underline wavy #fda4af;
       display: inline-block;
+    }
+
+    .result-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 6px;
+      border-top: 1px dashed #cbd5e1;
     }
 
     .heard-raw {
@@ -820,6 +910,12 @@
         justify-content: center;
         padding: 8px 6px;
         font-size: 0.82rem;
+      }
+      .floating-pause-bar {
+        left: 12px;
+        right: 12px;
+        bottom: 14px;
+        justify-content: space-between;
       }
     }
   </style>
@@ -870,7 +966,7 @@
     </div>
 
     <div class="hint-text" id="presetHint">
-      💡 提示：點擊單字可聽獨立發音；下方可選擇「全曲跟著唱」或「全篇語音連續跟讀」！
+      💡 提示：按下「🎤 錄音測試」唸完後，還可以直接點擊「▶️ 聽聽我的錄音」回放自己的聲音喔！
     </div>
 
     <!-- 自訂輸入區 -->
@@ -919,13 +1015,19 @@
   <main class="cards-list" id="cardsContainer"></main>
 </div>
 
+<!-- 右下角懸浮快速暫停/停止控制列 -->
+<div class="floating-pause-bar" id="floatingPauseBar">
+  <span class="floating-label" id="floatingStatusLabel">🎵 正在播放原曲...</span>
+  <button class="floating-stop-btn" id="floatingStopBtn" onclick="handleFloatingStop()">⏸️ 暫停</button>
+</div>
+
 <script>
-  // 預設題庫資料庫
+  // 預設題庫資料庫（已更新為精準對時版本）
   const PRESET_TOPICS = {
     moana_full: {
       title: "🎵 《海洋奇緣》How Far I'll Go（完整版）",
       youtubeId: "cPAbx5kgCJo",
-            items: [
+      items: [
         { tag: "Verse 1", start: 3.3, end: 7.9, en: "I've been staring at the edge of the water", zh: "我一直凝望著水岸的盡頭" },
         { tag: "Verse 1", start: 7.9, end: 16, en: "Long as I can remember, never really knowing why", zh: "從我有記憶以來就是如此，卻從不明白為什麼" },
         { tag: "Verse 1", start: 15.5, end: 19.7, en: "I wish I could be the perfect daughter", zh: "我希望自己能成為完美的女兒" },
@@ -972,6 +1074,13 @@
   let activeRecordingIndex = -1;
   let preferredVoice = null;
 
+  // 音訊錄製與回放相關變數
+  let mediaRecorder = null;
+  let audioChunks = [];
+  let currentAudioStream = null;
+  let currentPlaybackAudio = null;
+  let currentPlaybackIndex = -1;
+
   // YouTube Player 相關變數
   let ytPlayer = null;
   let ytApiReady = false;
@@ -985,6 +1094,34 @@
   // 全篇語音連播狀態
   let isBatchReading = false;
   let batchTimer = null;
+
+  // 懸浮暫停列模式 ('song' | 'batch' | null)
+  let floatingMode = null;
+
+  function showFloatingBar(mode, labelText) {
+    floatingMode = mode;
+    const bar = document.getElementById('floatingPauseBar');
+    const label = document.getElementById('floatingStatusLabel');
+    const btn = document.getElementById('floatingStopBtn');
+
+    label.textContent = labelText;
+    btn.innerHTML = mode === 'song' ? '⏸️ 暫停音樂' : '⏹️ 停止朗讀';
+    bar.classList.add('show');
+  }
+
+  function hideFloatingBar() {
+    floatingMode = null;
+    document.getElementById('floatingPauseBar').classList.remove('show');
+  }
+
+  function handleFloatingStop() {
+    if (floatingMode === 'song') {
+      pauseSong();
+    } else if (floatingMode === 'batch') {
+      stopBatchReading();
+    }
+    hideFloatingBar();
+  }
 
   ['wheel', 'touchstart'].forEach(evt => {
     window.addEventListener(evt, () => {
@@ -1050,12 +1187,16 @@
   function onPlayerStateChange(event) {
     if (event.data === YT.PlayerState.PLAYING) {
       startSyncTimer();
+      const label = segmentEndTime !== null ? '🎵 正在播放單句原曲...' : '🎵 正在全曲跟唱（自動捲動中）';
+      showFloatingBar('song', label);
     } else {
       stopSyncTimer();
+      if (floatingMode === 'song') {
+        hideFloatingBar();
+      }
     }
   }
 
-  // 每 0.15 秒檢查播放進度：負責更新即時秒數、單句自動停止、KTV 歌詞高亮與自動捲動
   function startSyncTimer() {
     stopSyncTimer();
     syncInterval = setInterval(() => {
@@ -1071,6 +1212,7 @@
         ytPlayer.pauseVideo();
         segmentEndTime = null;
         clearAllCardHighlights();
+        hideFloatingBar();
         return;
       }
 
@@ -1081,9 +1223,12 @@
           if (!card.classList.contains('singing-active')) {
             clearAllCardHighlights();
             card.classList.add('singing-active');
-            if (segmentEndTime === null && lastAutoScrolledIndex !== idx) {
-              lastAutoScrolledIndex = idx;
-              smoothScrollToCard(idx);
+            if (segmentEndTime === null) {
+              showFloatingBar('song', `🎵 全曲跟唱中（第 ${idx + 1} / ${sentencesData.length} 句）`);
+              if (lastAutoScrolledIndex !== idx) {
+                lastAutoScrolledIndex = idx;
+                smoothScrollToCard(idx);
+              }
             }
           }
         }
@@ -1209,6 +1354,7 @@
     const item = sentencesData[index];
     if (!ytPlayer || typeof ytPlayer.seekTo !== 'function' || item.start === undefined) return;
 
+    stopMyRecordingPlayback();
     stopBatchReading();
     stopCurrentRecording();
     window.speechSynthesis.cancel();
@@ -1224,6 +1370,7 @@
 
   function playFullSong() {
     if (!ytPlayer || typeof ytPlayer.playVideo !== 'function') return;
+    stopMyRecordingPlayback();
     stopBatchReading();
     stopCurrentRecording();
     window.speechSynthesis.cancel();
@@ -1240,6 +1387,9 @@
     }
     segmentEndTime = null;
     clearAllCardHighlights();
+    if (floatingMode === 'song') {
+      hideFloatingBar();
+    }
   }
 
   function startBatchReading(withShadowPause) {
@@ -1249,6 +1399,7 @@
     }
     if (sentencesData.length === 0) return;
 
+    stopMyRecordingPlayback();
     pauseSong();
     stopCurrentRecording();
     stopBatchReading();
@@ -1256,6 +1407,7 @@
     isBatchReading = true;
     isUserScrolling = false;
     document.getElementById('stopBatchBtn').style.display = 'inline-flex';
+    showFloatingBar('batch', withShadowPause ? '🗣️ 停頓跟讀模式中...' : '🔊 全篇連續朗讀中...');
 
     const rate = parseFloat(document.getElementById('globalRateSelect').value) || 0.95;
     readNextInBatch(0, rate, withShadowPause);
@@ -1277,10 +1429,13 @@
       smoothScrollToCard(index);
     }
 
+    const progressTag = `第 ${index + 1} / ${sentencesData.length} 句`;
+    showFloatingBar('batch', withShadowPause ? `🗣️ 跟讀模式（${progressTag}）` : `🔊 連續朗讀（${progressTag}）`);
+
     updateGlobalStatus(
       withShadowPause
-        ? `🔊 正在朗讀第 ${index + 1} / ${sentencesData.length} 句（唸完會停頓讓你跟讀）...`
-        : `🔊 正在連續朗讀第 ${index + 1} / ${sentencesData.length} 句...`
+        ? `🔊 正在朗讀 ${progressTag}（唸完會停頓讓你跟讀）...`
+        : `🔊 正在連續朗讀 ${progressTag}...`
     );
 
     window.speechSynthesis.cancel();
@@ -1298,7 +1453,8 @@
           card.classList.remove('reading-active');
           card.classList.add('shadow-waiting');
         }
-        updateGlobalStatus(`🗣️ 第 ${index + 1} 句：換你開口跟著唸一次！（2.5 秒後自動下一句）`);
+        showFloatingBar('batch', `🗣️ 換你唸（${progressTag}）`);
+        updateGlobalStatus(`🗣️ ${progressTag}：換你開口跟著唸一次！（2.5 秒後自動下一句）`);
         batchTimer = setTimeout(() => {
           readNextInBatch(index + 1, rate, withShadowPause);
         }, 2500);
@@ -1325,6 +1481,9 @@
     window.speechSynthesis.cancel();
     clearAllCardHighlights();
     document.getElementById('stopBatchBtn').style.display = 'none';
+    if (floatingMode === 'batch') {
+      hideFloatingBar();
+    }
     if (!keepMessage) {
       document.getElementById('globalStatusPill').classList.remove('show');
     }
@@ -1366,7 +1525,9 @@
   });
 
   function handleTopicChange() {
+    stopMyRecordingPlayback();
     stopBatchReading();
+    hideFloatingBar();
     document.getElementById('exportOutput').classList.remove('show');
     const selectedKey = document.getElementById('topicSelect').value;
     const customArea = document.getElementById('customArea');
@@ -1428,6 +1589,7 @@
   }
 
   function generateCustomCards() {
+    stopMyRecordingPlayback();
     stopBatchReading();
     const ytUrl = document.getElementById('customYtUrl').value;
     currentYoutubeId = extractYoutubeId(ytUrl);
@@ -1443,6 +1605,10 @@
     stopCurrentRecording();
     window.speechSynthesis.cancel();
 
+    sentencesData.forEach(s => {
+      if (s.audioUrl) URL.revokeObjectURL(s.audioUrl);
+    });
+
     const container = document.getElementById('cardsContainer');
     container.innerHTML = '';
 
@@ -1453,7 +1619,8 @@
       end: item.end,
       text: item.en,
       zh: item.zh || '',
-      completed: false
+      completed: false,
+      audioUrl: null
     }));
 
     updateStarCounter();
@@ -1509,7 +1676,7 @@
         </div>
 
         <div class="controls-row">
-          <button class="ctrl-btn btn-sing" id="sing-btn-${index}" style="display:${singBtnStyle};" onclick="playSongSegment(${index})">🎵 聽原曲唱這句</button>
+          <button class="ctrl-btn btn-sing" id="sing-btn-${index}" style="display:${singBtnStyle};" onclick="playSongSegment(${index})">🎵 聽原曲唱</button>
           <button class="ctrl-btn btn-listen" onclick="speakText('${escapeJs(item.text)}', 0.95)">
             🔊 語音朗讀
           </button>
@@ -1523,7 +1690,12 @@
         <div class="result-box" id="result-${index}">
           <div class="result-status" id="status-${index}"></div>
           <div class="diff-words" id="diff-${index}"></div>
-          <div class="heard-raw" id="heard-${index}"></div>
+          <div class="result-footer">
+            <div class="heard-raw" id="heard-${index}"></div>
+            <button class="ctrl-btn btn-playback" id="play-rec-btn-${index}" style="display:none;" onclick="toggleMyRecording(${index})">
+              ▶️ 聽聽我的錄音
+            </button>
+          </div>
         </div>
       `;
 
@@ -1536,6 +1708,7 @@
       alert('抱歉，您的瀏覽器不支援語音朗讀功能。');
       return;
     }
+    stopMyRecordingPlayback();
     stopBatchReading();
     pauseSong();
     stopCurrentRecording();
@@ -1550,6 +1723,115 @@
     window.speechSynthesis.speak(utterance);
   }
 
+  // ================= 錄音與個人聲音回放邏輯 =================
+
+  async function startAudioCapture(index) {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || typeof MediaRecorder === 'undefined') {
+      return;
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      currentAudioStream = stream;
+      audioChunks = [];
+
+      const recorder = new MediaRecorder(stream);
+      mediaRecorder = recorder;
+
+      recorder.ondataavailable = (event) => {
+        if (event.data && event.data.size > 0) {
+          audioChunks.push(event.data);
+        }
+      };
+
+      recorder.onstop = () => {
+        if (audioChunks.length > 0) {
+          const audioBlob = new Blob(audioChunks, { type: recorder.mimeType || 'audio/webm' });
+          if (sentencesData[index].audioUrl) {
+            URL.revokeObjectURL(sentencesData[index].audioUrl);
+          }
+          sentencesData[index].audioUrl = URL.createObjectURL(audioBlob);
+
+          const playBtn = document.getElementById(`play-rec-btn-${index}`);
+          if (playBtn) {
+            playBtn.style.display = 'inline-flex';
+          }
+        }
+        if (currentAudioStream) {
+          currentAudioStream.getTracks().forEach(track => track.stop());
+          currentAudioStream = null;
+        }
+      };
+
+      recorder.start();
+    } catch (err) {}
+  }
+
+  function stopAudioCapture() {
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+      try {
+        mediaRecorder.stop();
+      } catch (e) {}
+    }
+    mediaRecorder = null;
+  }
+
+  function toggleMyRecording(index) {
+    const audioUrl = sentencesData[index]?.audioUrl;
+    if (!audioUrl) return;
+
+    if (currentPlaybackIndex === index && currentPlaybackAudio) {
+      stopMyRecordingPlayback();
+      return;
+    }
+
+    stopMyRecordingPlayback();
+    stopBatchReading();
+    pauseSong();
+    stopCurrentRecording();
+    window.speechSynthesis.cancel();
+
+    const audio = new Audio(audioUrl);
+    currentPlaybackAudio = audio;
+    currentPlaybackIndex = index;
+
+    const btn = document.getElementById(`play-rec-btn-${index}`);
+    if (btn) {
+      btn.classList.add('is-playing');
+      btn.innerHTML = '⏹️ 停止播放錄音';
+    }
+
+    audio.onended = () => {
+      stopMyRecordingPlayback();
+    };
+
+    audio.onerror = () => {
+      stopMyRecordingPlayback();
+      alert('抱歉，這段錄音無法在目前的瀏覽器播放。');
+    };
+
+    audio.play().catch(() => {
+      stopMyRecordingPlayback();
+    });
+  }
+
+  function stopMyRecordingPlayback() {
+    if (currentPlaybackAudio) {
+      try {
+        currentPlaybackAudio.pause();
+        currentPlaybackAudio.currentTime = 0;
+      } catch (e) {}
+      currentPlaybackAudio = null;
+    }
+    if (currentPlaybackIndex !== -1) {
+      const btn = document.getElementById(`play-rec-btn-${currentPlaybackIndex}`);
+      if (btn) {
+        btn.classList.remove('is-playing');
+        btn.innerHTML = '▶️ 聽聽我的錄音';
+      }
+      currentPlaybackIndex = -1;
+    }
+  }
+
   function toggleRecord(index) {
     if (!SpeechRecognition) {
       alert('您的瀏覽器不支援語音辨識功能，請改用 Chrome、Edge 或 Safari 瀏覽器。');
@@ -1561,6 +1843,7 @@
       return;
     }
 
+    stopMyRecordingPlayback();
     stopBatchReading();
     pauseSong();
     stopCurrentRecording();
@@ -1581,6 +1864,7 @@
     const micBtn = document.getElementById(`mic-btn-${index}`);
     const resultBox = document.getElementById(`result-${index}`);
     const statusEl = document.getElementById(`status-${index}`);
+    const playRecBtn = document.getElementById(`play-rec-btn-${index}`);
 
     card.classList.add('recording');
     micBtn.classList.add('is-recording');
@@ -1590,6 +1874,9 @@
     statusEl.innerHTML = '<span style="color:#e11d48;">🎙️ 請對著麥克風清唱或唸出上方句子...</span>';
     document.getElementById(`diff-${index}`).innerHTML = '';
     document.getElementById(`heard-${index}`).innerHTML = '';
+    if (playRecBtn) playRecBtn.style.display = 'none';
+
+    startAudioCapture(index);
 
     recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
@@ -1607,6 +1894,7 @@
     };
 
     recognition.onend = () => {
+      stopAudioCapture();
       resetMicUI(index);
       activeRecognition = null;
       activeRecordingIndex = -1;
@@ -1615,11 +1903,13 @@
     try {
       recognition.start();
     } catch (e) {
+      stopAudioCapture();
       resetMicUI(index);
     }
   }
 
   function stopCurrentRecording() {
+    stopAudioCapture();
     if (activeRecognition) {
       try {
         activeRecognition.stop();
