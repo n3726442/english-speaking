@@ -783,16 +783,14 @@
       border-radius: 6px;
     }
 
+    /* 永久隱藏歌曲段落標籤（Verse / Chorus 等） */
     .section-tag {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--blue-vivid);
-      background: var(--blue-vivid-light);
-      padding: 3px 8px;
-      border-radius: 6px;
+      display: none !important;
     }
 
+    /* 平時隱藏秒數標籤，只有在「⏱️ 對時」模式開啟時才顯示 */
     .time-tag {
+      display: none;
       font-size: 0.75rem;
       font-weight: 700;
       color: #713F12;
@@ -800,6 +798,10 @@
       padding: 3px 8px;
       border-radius: 6px;
       font-family: monospace;
+    }
+
+    body.sync-mode .time-tag {
+      display: inline-block;
     }
 
     /* 🎶 精簡圓潤琥珀金小圓章 */
@@ -1294,7 +1296,7 @@
       <button class="btn-export" onclick="exportSyncedCode()">📋 複製完整歌曲代碼</button>
     </div>
     <div class="sync-toolbar-desc">
-      <strong>操作步驟：</strong>1. 貼上新歌詞與 YouTube 網址並生成卡片 $\rightarrow$ 2. 播放音樂並點擊每句的 <strong>「📍 設為開始」</strong> $\rightarrow$ 3. 按右上角「複製完整歌曲代碼」，貼到程式碼中的 <code>PRESET_TOPICS</code> 區塊即可自動出現在下拉選單！
+      <strong>操作步驟：</strong>1. 貼上新歌詞與 YouTube 網址並生成卡片 → 2. 播放音樂並點擊每句的 <strong>「📍 設為開始」</strong> → 3. 按右上角「複製完整歌曲代碼」，貼到程式碼中的 <code>PRESET_TOPICS</code> 區塊即可自動出現在下拉選單！
     </div>
     <textarea id="exportOutput" class="export-textarea" readonly></textarea>
   </section>
@@ -1369,7 +1371,7 @@
   <!-- 下方互動練習卡片區 -->
   <main class="cards-list" id="cardsContainer"></main>
 
-  <!-- 頁尾非營利與著作權聲明 -->
+  <!-- 頁尾非營利與版權聲明 -->
   <footer class="disclaimer-footer">
     本網頁僅供個人與課堂非營利語言及歌唱練習使用，無任何商業廣告或收費。<br>
     音樂與影片皆透過 YouTube 官方播放器嵌入串流，所有歌曲、影像與歌詞著作權均歸原著作權人所有。
@@ -1395,33 +1397,33 @@
       title: "🎵 《海洋奇緣》How Far I'll Go（完整版＋原曲練唱）",
       youtubeId: "cPAbx5kgCJo",
       items: [
-        { tag: "Verse 1", start: 3.3, end: 7.9, en: "I've been staring at the edge of the water", zh: "我一直凝望著水岸的盡頭" },
-        { tag: "Verse 1", start: 7.9, end: 16, en: "Long as I can remember, never really knowing why", zh: "從我有記憶以來就是如此，卻從不明白為什麼" },
-        { tag: "Verse 1", start: 15.5, end: 19.7, en: "I wish I could be the perfect daughter", zh: "我希望自己能成為完美的女兒" },
-        { tag: "Verse 1", start: 19.7, end: 27.1, en: "But I come back to the water, no matter how hard I try", zh: "但無論我多麼努力嘗試，我總是會回到這片海邊" },
-        { tag: "Pre-Chorus", start: 27.1, end: 30, en: "Every turn I take, every trail I track", zh: "我走的每一個轉彎，我追尋的每一條小徑" },
-        { tag: "Pre-Chorus", start: 30, end: 33.1, en: "Every path I make, every road leads back", zh: "我開闢的每一條路，每一條道路最終都引領我回到" },
-        { tag: "Pre-Chorus", start: 33.1, end: 39, en: "To the place I know, where I cannot go, where I long to be", zh: "那個我熟悉、卻不能前往、內心深深渴望的地方" },
-        { tag: "Chorus", start: 39, end: 43.9, en: "See the line where the sky meets the sea? It calls me", zh: "看見天空與大海交會的那條線了嗎？它在呼喚著我" },
-        { tag: "Chorus", start: 43.9, end: 50.3, en: "And no one knows, how far it goes", zh: "沒有人知道，它究竟延伸到多遠的地方" },
-        { tag: "Chorus", start: 50.3, end: 55.3, en: "If the wind in my sail on the sea stays behind me", zh: "如果海上的風吹進我的船帆，在身後推著我前進" },
-        { tag: "Chorus", start: 55.3, end: 62.4, en: "One day I'll know, if I go there's just no telling how far I'll go", zh: "總有一天我會明白，只要我啟航，沒人能預料我能走多遠" },
-        { tag: "Verse 2", start: 62.4, end: 68.7, en: "I know everybody on this island seems so happy on this island", zh: "我知道這座島上的每個人，在這裡看起來都如此快樂" },
-        { tag: "Verse 2", start: 68.7, end: 72.8, en: "Everything is by design", zh: "一切都已安排妥當、各司其職" },
-        { tag: "Verse 2", start: 72.8, end: 80.3, en: "I know everybody on this island has a role on this island", zh: "我知道這座島上的每個人，都有屬於自己的角色" },
-        { tag: "Verse 2", start: 80.3, end: 84.2, en: "So maybe I can roll with mine", zh: "所以也許我可以順應並扮演好我的角色" },
-        { tag: "Bridge", start: 84.2, end: 87.5, en: "I can lead with pride, I can make us strong", zh: "我可以驕傲地帶領大家，我可以讓我們變得強大" },
-        { tag: "Bridge", start: 87.5, end: 90.3, en: "I'll be satisfied if I play along", zh: "只要我照著大家的期望走，我也會感到滿足" },
-        { tag: "Bridge", start: 90.3, end: 93, en: "But the voice inside sings a different song", zh: "但內心深處的聲音，卻唱著一首截然不同的歌" },
-        { tag: "Bridge", start: 93, end: 96.2, en: "What is wrong with me?", zh: "我究竟是怎麼了？" },
-        { tag: "Chorus 2", start: 98, end: 103.7, en: "See the light as it shines on the sea? It's blinding", zh: "看見海面上閃耀的光芒了嗎？如此耀眼奪目" },
-        { tag: "Chorus 2", start: 103.7, end: 110.2, en: "But no one knows, how deep it goes", zh: "但沒有人知道，這片大海究竟有多深" },
-        { tag: "Chorus 2", start: 110.2, end: 115.1, en: "And it seems like it's calling out to me, so come find me", zh: "它彷彿正大聲呼喚著我，說著「快來尋找我吧」" },
-        { tag: "Chorus 2", start: 115.1, end: 121.7, en: "And let me know, what's beyond that line, will I cross that line?", zh: "讓我知道，那條地平線的彼端有什麼，我會跨越那條界線嗎？" },
-        { tag: "Outro", start: 121.7, end: 126.9, en: "See the line where the sky meets the sea? It calls me", zh: "看見天空與大海交會的那條線了嗎？它在呼喚著我" },
-        { tag: "Outro", start: 126.9, end: 132.9, en: "And no one knows, how far it goes", zh: "沒有人知道，它究竟延伸到多遠的地方" },
-        { tag: "Outro", start: 132.9, end: 137.8, en: "If the wind in my sail on the sea stays behind me", zh: "如果海上的風吹進我的船帆，在身後推著我前進" },
-        { tag: "Outro", start: 137.8, end: 148.5, en: "One day I'll know, how far I'll go", zh: "總有一天我會明白，我究竟能走多遠" }
+        { start: 3.3, end: 7.9, en: "I've been staring at the edge of the water", zh: "我一直凝望著水岸的盡頭" },
+        { start: 7.9, end: 16, en: "Long as I can remember, never really knowing why", zh: "從我有記憶以來就是如此，卻從不明白為什麼" },
+        { start: 15.5, end: 19.7, en: "I wish I could be the perfect daughter", zh: "我希望自己能成為完美的女兒" },
+        { start: 19.7, end: 27.1, en: "But I come back to the water, no matter how hard I try", zh: "但無論我多麼努力嘗試，我總是會回到這片海邊" },
+        { start: 27.1, end: 30, en: "Every turn I take, every trail I track", zh: "我走的每一個轉彎，我追尋的每一條小徑" },
+        { start: 30, end: 33.1, en: "Every path I make, every road leads back", zh: "我開闢的每一條路，每一條道路最終都引領我回到" },
+        { start: 33.1, end: 39, en: "To the place I know, where I cannot go, where I long to be", zh: "那個我熟悉、卻不能前往、內心深深渴望的地方" },
+        { start: 39, end: 43.9, en: "See the line where the sky meets the sea? It calls me", zh: "看見天空與大海交會的那條線了嗎？它在呼喚著我" },
+        { start: 43.9, end: 50.3, en: "And no one knows, how far it goes", zh: "沒有人知道，它究竟延伸到多遠的地方" },
+        { start: 50.3, end: 55.3, en: "If the wind in my sail on the sea stays behind me", zh: "如果海上的風吹進我的船帆，在身後推著我前進" },
+        { start: 55.3, end: 62.4, en: "One day I'll know, if I go there's just no telling how far I'll go", zh: "總有一天我會明白，只要我啟航，沒人能預料我能走多遠" },
+        { start: 62.4, end: 68.7, en: "I know everybody on this island seems so happy on this island", zh: "我知道這座島上的每個人，在這裡看起來都如此快樂" },
+        { start: 68.7, end: 72.8, en: "Everything is by design", zh: "一切都已安排妥當、各司其職" },
+        { start: 72.8, end: 80.3, en: "I know everybody on this island has a role on this island", zh: "我知道這座島上的每個人，都有屬於自己的角色" },
+        { start: 80.3, end: 84.2, en: "So maybe I can roll with mine", zh: "所以也許我可以順應並扮演好我的角色" },
+        { start: 84.2, end: 87.5, en: "I can lead with pride, I can make us strong", zh: "我可以驕傲地帶領大家，我可以讓我們變得強大" },
+        { start: 87.5, end: 90.3, en: "I'll be satisfied if I play along", zh: "只要我照著大家的期望走，我也會感到滿足" },
+        { start: 90.3, end: 93, en: "But the voice inside sings a different song", zh: "但內心深處的聲音，卻唱著一首截然不同的歌" },
+        { start: 93, end: 96.2, en: "What is wrong with me?", zh: "我究竟是怎麼了？" },
+        { start: 98, end: 103.7, en: "See the light as it shines on the sea? It's blinding", zh: "看見海面上閃耀的光芒了嗎？如此耀眼奪目" },
+        { start: 103.7, end: 110.2, en: "But no one knows, how deep it goes", zh: "但沒有人知道，這片大海究竟有多深" },
+        { start: 110.2, end: 115.1, en: "And it seems like it's calling out to me, so come find me", zh: "它彷彿正大聲呼喚著我，說著「快來尋找我吧」" },
+        { start: 115.1, end: 121.7, en: "And let me know, what's beyond that line, will I cross that line?", zh: "讓我知道，那條地平線的彼端有什麼，我會跨越那條界線嗎？" },
+        { start: 121.7, end: 126.9, en: "See the line where the sky meets the sea? It calls me", zh: "看見天空與大海交會的那條線了嗎？它在呼喚著我" },
+        { start: 126.9, end: 132.9, en: "And no one knows, how far it goes", zh: "沒有人知道，它究竟延伸到多遠的地方" },
+        { start: 132.9, end: 137.8, en: "If the wind in my sail on the sea stays behind me", zh: "如果海上的風吹進我的船帆，在身後推著我前進" },
+        { start: 137.8, end: 148.5, en: "One day I'll know, how far I'll go", zh: "總有一天我會明白，我究竟能走多遠" }
       ]
     },
 
@@ -1429,46 +1431,46 @@
       title: "❄️ 《冰雪奇緣》Let It Go（完整版＋原曲練唱）",
       youtubeId: "YVVTZgwYwVo",
       items: [
-        { tag: "Verse 1", start: 12.7, end: 17, en: "The snow glows white on the mountain tonight", zh: "今晚山頭上的白雪閃閃發亮" },
-        { tag: "Verse 1", start: 17, end: 21.1, en: "Not a footprint to be seen", zh: "看不見半個腳印" },
-        { tag: "Verse 1", start: 21.1, end: 24, en: "A kingdom of isolation", zh: "一座孤寂的王國" },
-        { tag: "Verse 1", start: 24, end: 28.4, en: "And it looks like I'm the queen", zh: "而我看起來就像是這裡的女王" },
-        { tag: "Verse 1", start: 28.4, end: 35.4, en: "The wind is howling like this swirling storm inside", zh: "寒風呼嘯，就像我內心翻湧的風暴" },
-        { tag: "Verse 1", start: 35.4, end: 42, en: "Couldn't keep it in, heaven knows I tried", zh: "再也壓抑不住，天知道我已經盡力了" },
-        { tag: "Pre-Chorus", start: 42, end: 45.9, en: "Don't let them in, don't let them see", zh: "別讓他們進來，別讓他們看見" },
-        { tag: "Pre-Chorus", start: 45.9, end: 49.6, en: "Be the good girl you always have to be", zh: "當個大家期望中永遠乖巧的女孩" },
-        { tag: "Pre-Chorus", start: 49.6, end: 55.9, en: "Conceal, don't feel, don't let them know", zh: "隱藏起來，別去感受，別讓他們知道" },
-        { tag: "Pre-Chorus", start: 55.9, end: 58.9, en: "Well, now they know", zh: "好吧，現在他們全都知道了" },
-        { tag: "Chorus", start: 58.9, end: 62.8, en: "Let it go, let it go", zh: "放開吧，隨它去吧" },
-        { tag: "Chorus", start: 62.8, end: 65.9, en: "Can't hold it back anymore", zh: "再也無法壓抑自己" },
-        { tag: "Chorus", start: 65.9, end: 69.3, en: "Let it go, let it go", zh: "放開吧，隨它去吧" },
-        { tag: "Chorus", start: 69.3, end: 74, en: "Turn away and slam the door", zh: "轉過身，用力甩上門" },
-        { tag: "Chorus", start: 74, end: 79.9, en: "I don't care what they're going to say", zh: "我不在乎他們會怎麼說" },
-        { tag: "Chorus", start: 79.9, end: 83.8, en: "Let the storm rage on", zh: "就讓暴風雪盡情狂嘯吧" },
-        { tag: "Chorus", start: 83.8, end: 90.6, en: "The cold never bothered me anyway", zh: "反正寒冷從來不曾困擾過我" },
-        { tag: "Verse 2", start: 90.6, end: 97.7, en: "It's funny how some distance makes everything seem small", zh: "真有趣，拉開距離後，一切都顯得如此渺小" },
-        { tag: "Verse 2", start: 97.7, end: 105.7, en: "And the fears that once controlled me can't get to me at all", zh: "曾經束縛我的恐懼，再也無法左右我" },
-        { tag: "Pre-Chorus 2", start: 105.7, end: 109.5, en: "It's time to see what I can do", zh: "是時候看看我能做到什麼程度了" },
-        { tag: "Pre-Chorus 2", start: 109.5, end: 113, en: "To test the limits and break through", zh: "去挑戰極限、徹底突破" },
-        { tag: "Pre-Chorus 2", start: 113, end: 117.2, en: "No right, no wrong, no rules for me", zh: "沒有對錯，沒有規矩能限制我" },
-        { tag: "Pre-Chorus 2", start: 117.2, end: 120.1, en: "I'm free", zh: "我自由了" },
-        { tag: "Chorus 2", start: 120.1, end: 124.1, en: "Let it go, let it go", zh: "放開吧，隨它去吧" },
-        { tag: "Chorus 2", start: 124.1, end: 127.6, en: "I am one with the wind and sky", zh: "我與清風和天空融為一體" },
-        { tag: "Chorus 2", start: 127.6, end: 131.1, en: "Let it go, let it go", zh: "放開吧，隨它去吧" },
-        { tag: "Chorus 2", start: 131.1, end: 135.3, en: "You'll never see me cry", zh: "你再也不會看見我哭泣" },
-        { tag: "Chorus 2", start: 135.3, end: 141.8, en: "Here I stand and here I stay", zh: "我就站在這裡，也將留在這裡" },
-        { tag: "Chorus 2", start: 141.8, end: 152.2, en: "Let the storm rage on", zh: "就讓暴風雪盡情狂嘯吧" },
-        { tag: "Bridge", start: 152.2, end: 159.9, en: "My power flurries through the air into the ground", zh: "我的魔力在空中飛舞，傾瀉而下深入大地" },
-        { tag: "Bridge", start: 159.9, end: 166.9, en: "My soul is spiraling in frozen fractals all around", zh: "我的靈魂在四周盤旋的冰晶雪花中綻放" },
-        { tag: "Bridge", start: 166.9, end: 173.8, en: "And one thought crystallizes like an icy blast", zh: "一個念頭如冰霜風暴般凝結成形" },
-        { tag: "Bridge", start: 173.8, end: 182, en: "I'm never going back, the past is in the past", zh: "我再也不會回頭，過去的就讓它過去吧" },
-        { tag: "Outro", start: 182, end: 185.5, en: "Let it go, let it go", zh: "放開吧，隨它去吧" },
-        { tag: "Outro", start: 185.5, end: 188.9, en: "And I'll rise like the break of dawn", zh: "我將如破曉的曙光般升起" },
-        { tag: "Outro", start: 188.9, end: 192.6, en: "Let it go, let it go", zh: "放開吧，隨它去吧" },
-        { tag: "Outro", start: 192.6, end: 196.7, en: "That perfect girl is gone", zh: "那個完美的乖女孩已經不在了" },
-        { tag: "Outro", start: 196.7, end: 204.8, en: "Here I stand in the light of day", zh: "我就站在白晝的光芒之中" },
-        { tag: "Outro", start: 204.8, end: 210.7, en: "Let the storm rage on", zh: "就讓暴風雪盡情狂嘯吧" },
-        { tag: "Outro", start: 210.7, end: 216.6, en: "The cold never bothered me anyway", zh: "反正寒冷從來不曾困擾過我" }
+        { start: 12.7, end: 17, en: "The snow glows white on the mountain tonight", zh: "今晚山頭上的白雪閃閃發亮" },
+        { start: 17, end: 21.1, en: "Not a footprint to be seen", zh: "看不見半個腳印" },
+        { start: 21.1, end: 24, en: "A kingdom of isolation", zh: "一座孤寂的王國" },
+        { start: 24, end: 28.4, en: "And it looks like I'm the queen", zh: "而我看起來就像是這裡的女王" },
+        { start: 28.4, end: 35.4, en: "The wind is howling like this swirling storm inside", zh: "寒風呼嘯，就像我內心翻湧的風暴" },
+        { start: 35.4, end: 42, en: "Couldn't keep it in, heaven knows I tried", zh: "再也壓抑不住，天知道我已經盡力了" },
+        { start: 42, end: 45.9, en: "Don't let them in, don't let them see", zh: "別讓他們進來，別讓他們看見" },
+        { start: 45.9, end: 49.6, en: "Be the good girl you always have to be", zh: "當個大家期望中永遠乖巧的女孩" },
+        { start: 49.6, end: 55.9, en: "Conceal, don't feel, don't let them know", zh: "隱藏起來，別去感受，別讓他們知道" },
+        { start: 55.9, end: 58.9, en: "Well, now they know", zh: "好吧，現在他們全都知道了" },
+        { start: 58.9, end: 62.8, en: "Let it go, let it go", zh: "放開吧，隨它去吧" },
+        { start: 62.8, end: 65.9, en: "Can't hold it back anymore", zh: "再也無法壓抑自己" },
+        { start: 65.9, end: 69.3, en: "Let it go, let it go", zh: "放開吧，隨它去吧" },
+        { start: 69.3, end: 74, en: "Turn away and slam the door", zh: "轉過身，用力甩上門" },
+        { start: 74, end: 79.9, en: "I don't care what they're going to say", zh: "我不在乎他們會怎麼說" },
+        { start: 79.9, end: 83.8, en: "Let the storm rage on", zh: "就讓暴風雪盡情狂嘯吧" },
+        { start: 83.8, end: 90.6, en: "The cold never bothered me anyway", zh: "反正寒冷從來不曾困擾過我" },
+        { start: 90.6, end: 97.7, en: "It's funny how some distance makes everything seem small", zh: "真有趣，拉開距離後，一切都顯得如此渺小" },
+        { start: 97.7, end: 105.7, en: "And the fears that once controlled me can't get to me at all", zh: "曾經束縛我的恐懼，再也無法左右我" },
+        { start: 105.7, end: 109.5, en: "It's time to see what I can do", zh: "是時候看看我能做到什麼程度了" },
+        { start: 109.5, end: 113, en: "To test the limits and break through", zh: "去挑戰極限、徹底突破" },
+        { start: 113, end: 117.2, en: "No right, no wrong, no rules for me", zh: "沒有對錯，沒有規矩能限制我" },
+        { start: 117.2, end: 120.1, en: "I'm free", zh: "我自由了" },
+        { start: 120.1, end: 124.1, en: "Let it go, let it go", zh: "放開吧，隨它去吧" },
+        { start: 124.1, end: 127.6, en: "I am one with the wind and sky", zh: "我與清風和天空融為一體" },
+        { start: 127.6, end: 131.1, en: "Let it go, let it go", zh: "放開吧，隨它去吧" },
+        { start: 131.1, end: 135.3, en: "You'll never see me cry", zh: "你再也不會看見我哭泣" },
+        { start: 135.3, end: 141.8, en: "Here I stand and here I stay", zh: "我就站在這裡，也將留在這裡" },
+        { start: 141.8, end: 152.2, en: "Let the storm rage on", zh: "就讓暴風雪盡情狂嘯吧" },
+        { start: 152.2, end: 159.9, en: "My power flurries through the air into the ground", zh: "我的魔力在空中飛舞，傾瀉而下深入大地" },
+        { start: 159.9, end: 166.9, en: "My soul is spiraling in frozen fractals all around", zh: "我的靈魂在四周盤旋的冰晶雪花中綻放" },
+        { start: 166.9, end: 173.8, en: "And one thought crystallizes like an icy blast", zh: "一個念頭如冰霜風暴般凝結成形" },
+        { start: 173.8, end: 182, en: "I'm never going back, the past is in the past", zh: "我再也不會回頭，過去的就讓它過去吧" },
+        { start: 182, end: 185.5, en: "Let it go, let it go", zh: "放開吧，隨它去吧" },
+        { start: 185.5, end: 188.9, en: "And I'll rise like the break of dawn", zh: "我將如破曉的曙光般升起" },
+        { start: 188.9, end: 192.6, en: "Let it go, let it go", zh: "放開吧，隨它去吧" },
+        { start: 192.6, end: 196.7, en: "That perfect girl is gone", zh: "那個完美的乖女孩已經不在了" },
+        { start: 196.7, end: 204.8, en: "Here I stand in the light of day", zh: "我就站在白晝的光芒之中" },
+        { start: 204.8, end: 210.7, en: "Let the storm rage on", zh: "就讓暴風雪盡情狂嘯吧" },
+        { start: 210.7, end: 216.6, en: "The cold never bothered me anyway", zh: "反正寒冷從來不曾困擾過我" }
       ]
     },
 
@@ -1476,43 +1478,43 @@
       title: "✨ 《獵魔女團》Golden（完整版＋原曲練唱）",
       youtubeId: "yebNIHKAC4A",
       items: [
-        { tag: "Verse 1", start: 18.8, end: 22.3, en: "I was a ghost, I was alone, hah", zh: "我曾像個幽靈般孤單一人，哈" },
-        { tag: "Verse 1", start: 22.3, end: 26.7, en: "어두워진, hah, 압길속에 (Ah)", zh: "在逐漸黯淡的前路之中（啊）" },
-        { tag: "Verse 1", start: 26.7, end: 31.4, en: "Given the throne, I didn't know how to believe", zh: "被賦予了王座，我卻不知該如何去相信" },
-        { tag: "Verse 1", start: 31.4, end: 34.2, en: "I was the queen that I'm meant to be", zh: "我就是命中註定要成為的那位女王" },
-        { tag: "Pre-Chorus", start: 34.2, end: 37.7, en: "I lived two lives, tried to play both sides", zh: "我過著雙重生活，試著在兩邊之間周旋" },
-        { tag: "Pre-Chorus", start: 37.7, end: 41.6, en: "But I couldn't find my own place", zh: "卻始終找不到真正屬於自己的位置" },
-        { tag: "Pre-Chorus", start: 41.6, end: 45.8, en: "Called a problem child 'cause I got too wild", zh: "因為太過狂野不羈，被人稱作問題少女" },
-        { tag: "Pre-Chorus", start: 45.8, end: 49.9, en: "But now that's how I'm getting paid, 끝없이 on stage", zh: "但如今這正是我閃耀的資本，無止盡地站在舞台上" },
-        { tag: "Chorus", start: 49.9, end: 57.4, en: "I'm done hidin', now I'm shinin' like I'm born to be", zh: "我不再躲藏，現在我要如與生俱來般盡情閃耀" },
-        { tag: "Chorus", start: 57.4, end: 64.8, en: "We dreamin' hard, we came so far, now I believe", zh: "我們勇敢追夢，一路走到這裡，現在我深信不疑" },
-        { tag: "Chorus", start: 64.8, end: 68.3, en: "We're goin' up, up, up, it's our moment", zh: "我們正不斷向上攀升，這就是屬於我們的時刻" },
-        { tag: "Chorus", start: 68.3, end: 70.5, en: "You know together we're glowing", zh: "你知道只要並肩同行，我們就會散發光芒" },
-        { tag: "Chorus", start: 70.5, end: 72.4, en: "Gonna be, gonna be golden", zh: "我們必將綻放如黃金般耀眼的光彩" },
-        { tag: "Chorus", start: 72.4, end: 76.3, en: "Oh, up, up, up with our voices", zh: "喔，用我們的歌聲一路高飛" },
-        { tag: "Chorus", start: 76.3, end: 80.4, en: "Gonna be, gonna be golden", zh: "我們必將綻放如黃金般耀眼的光彩" },
-        { tag: "Chorus", start: 80.4, end: 88.6, en: "Oh, I'm done hidin' now I'm shinin' like I'm born to be", zh: "喔，我不再躲藏，現在我要如與生俱來般盡情閃耀" },
-        { tag: "Chorus", start: 88.6, end: 92.9, en: "Oh, our time, no fear, no lies", zh: "喔，屬於我們的時代，沒有恐懼，沒有謊言" },
-        { tag: "Chorus", start: 92.9, end: 98.2, en: "That's who we're born to be", zh: "這就是我們生來註定要成為的模樣" },
-        { tag: "Verse 2", start: 98.2, end: 102.3, en: "Waited so long to break these walls down", zh: "等待了這麼久，只為打破這些高牆" },
-        { tag: "Verse 2", start: 102.3, end: 105.9, en: "To wake up and feel like me", zh: "只為醒來並真正感受到做自己的感覺" },
-        { tag: "Verse 2", start: 105.9, end: 110.1, en: "Put these patterns all in the past now", zh: "現在把這些舊有的框框全都拋諸腦後" },
-        { tag: "Verse 2", start: 110.1, end: 115.1, en: "And finally live like the girl they all see", zh: "終於活出眾人眼前那個耀眼女孩的模樣" },
-        { tag: "Bridge", start: 115.1, end: 122.6, en: "No more hiding, I'll be shining like I'm born to be", zh: "不再躲藏，我將如與生俱來般盡情閃耀" },
-        { tag: "Bridge", start: 122.6, end: 130.2, en: "'Cause we are hunters, voices strong, and I know I believe", zh: "因為我們是獵魔女團，歌聲堅定嘹亮，我知道我深信不疑" },
-        { tag: "Chorus 2", start: 130.2, end: 133.9, en: "We're goin' up, up, up, it's our moment", zh: "我們正不斷向上攀升，這就是屬於我們的時刻" },
-        { tag: "Chorus 2", start: 133.9, end: 135.8, en: "You know together we're glowing", zh: "你知道只要並肩同行，我們就會散發光芒" },
-        { tag: "Chorus 2", start: 135.8, end: 137.8, en: "Gonna be, gonna be golden", zh: "我們必將綻放如黃金般耀眼的光彩" },
-        { tag: "Chorus 2", start: 137.8, end: 141.8, en: "Oh, up, up, up, with our voices", zh: "喔，用我們的歌聲一路高飛" },
-        { tag: "Chorus 2", start: 141.8, end: 145.5, en: "Gonna be, gonna be golden", zh: "我們必將綻放如黃金般耀眼的光彩" },
-        { tag: "Chorus 2", start: 145.5, end: 154.1, en: "Oh, I'm done hidin', now I'm shining like I'm born to be", zh: "喔，我不再躲藏，現在我要如與生俱來般盡情閃耀" },
-        { tag: "Outro", start: 154.1, end: 158.4, en: "Oh, our time, no fears, no lies", zh: "喔，屬於我們的時代，沒有恐懼，沒有謊言" },
-        { tag: "Outro", start: 158.4, end: 161.5, en: "That's who we're born to be", zh: "這就是我們生來註定要成為的模樣" },
-        { tag: "Outro", start: 161.5, end: 164.3, en: "You know we're gonna be, gonna be golden", zh: "你知道我們必將綻放如黃金般耀眼的光彩" },
-        { tag: "Outro", start: 164.3, end: 166.2, en: "We're gonna be, gonna be", zh: "我們必將成為，必將成為" },
-        { tag: "Outro", start: 166.2, end: 169.7, en: "Born to be, born to be glowin'", zh: "天生註定，天生註定要散發光芒" },
-        { tag: "Outro", start: 169.7, end: 174, en: "You know that it's our time, no fears, no lies", zh: "你知道這就是我們的時代，沒有恐懼，沒有謊言" },
-        { tag: "Outro", start: 174, end: 179, en: "That's who we're born to be", zh: "這就是我們生來註定要成為的模樣" }
+        { start: 18.8, end: 22.3, en: "I was a ghost, I was alone, hah", zh: "我曾像個幽靈般孤單一人，哈" },
+        { start: 22.3, end: 26.7, en: "어두워진, hah, 압길속에 (Ah)", zh: "在逐漸黯淡的前路之中（啊）" },
+        { start: 26.7, end: 31.4, en: "Given the throne, I didn't know how to believe", zh: "被賦予了王座，我卻不知該如何去相信" },
+        { start: 31.4, end: 34.2, en: "I was the queen that I'm meant to be", zh: "我就是命中註定要成為的那位女王" },
+        { start: 34.2, end: 37.7, en: "I lived two lives, tried to play both sides", zh: "我過著雙重生活，試著在兩邊之間周旋" },
+        { start: 37.7, end: 41.6, en: "But I couldn't find my own place", zh: "卻始終找不到真正屬於自己的位置" },
+        { start: 41.6, end: 45.8, en: "Called a problem child 'cause I got too wild", zh: "因為太過狂野不羈，被人稱作問題少女" },
+        { start: 45.8, end: 49.9, en: "But now that's how I'm getting paid, 끝없이 on stage", zh: "但如今這正是我閃耀的資本，無止盡地站在舞台上" },
+        { start: 49.9, end: 57.4, en: "I'm done hidin', now I'm shinin' like I'm born to be", zh: "我不再躲藏，現在我要如與生俱來般盡情閃耀" },
+        { start: 57.4, end: 64.8, en: "We dreamin' hard, we came so far, now I believe", zh: "我們勇敢追夢，一路走到這裡，現在我深信不疑" },
+        { start: 64.8, end: 68.3, en: "We're goin' up, up, up, it's our moment", zh: "我們正不斷向上攀升，這就是屬於我們的時刻" },
+        { start: 68.3, end: 70.5, en: "You know together we're glowing", zh: "你知道只要並肩同行，我們就會散發光芒" },
+        { start: 70.5, end: 72.4, en: "Gonna be, gonna be golden", zh: "我們必將綻放如黃金般耀眼的光彩" },
+        { start: 72.4, end: 76.3, en: "Oh, up, up, up with our voices", zh: "喔，用我們的歌聲一路高飛" },
+        { start: 76.3, end: 80.4, en: "Gonna be, gonna be golden", zh: "我們必將綻放如黃金般耀眼的光彩" },
+        { start: 80.4, end: 88.6, en: "Oh, I'm done hidin' now I'm shinin' like I'm born to be", zh: "喔，我不再躲藏，現在我要如與生俱來般盡情閃耀" },
+        { start: 88.6, end: 92.9, en: "Oh, our time, no fear, no lies", zh: "喔，屬於我們的時代，沒有恐懼，沒有謊言" },
+        { start: 92.9, end: 98.2, en: "That's who we're born to be", zh: "這就是我們生來註定要成為的模樣" },
+        { start: 98.2, end: 102.3, en: "Waited so long to break these walls down", zh: "等待了這麼久，只為打破這些高牆" },
+        { start: 102.3, end: 105.9, en: "To wake up and feel like me", zh: "只為醒來並真正感受到做自己的感覺" },
+        { start: 105.9, end: 110.1, en: "Put these patterns all in the past now", zh: "現在把這些舊有的框框全都拋諸腦後" },
+        { start: 110.1, end: 115.1, en: "And finally live like the girl they all see", zh: "終於活出眾人眼前那個耀眼女孩的模樣" },
+        { start: 115.1, end: 122.6, en: "No more hiding, I'll be shining like I'm born to be", zh: "不再躲藏，我將如與生俱來般盡情閃耀" },
+        { start: 122.6, end: 130.2, en: "'Cause we are hunters, voices strong, and I know I believe", zh: "因為我們是獵魔女團，歌聲堅定嘹亮，我知道我深信不疑" },
+        { start: 130.2, end: 133.9, en: "We're goin' up, up, up, it's our moment", zh: "我們正不斷向上攀升，這就是屬於我們的時刻" },
+        { start: 133.9, end: 135.8, en: "You know together we're glowing", zh: "你知道只要並肩同行，我們就會散發光芒" },
+        { start: 135.8, end: 137.8, en: "Gonna be, gonna be golden", zh: "我們必將綻放如黃金般耀眼的光彩" },
+        { start: 137.8, end: 141.8, en: "Oh, up, up, up, with our voices", zh: "喔，用我們的歌聲一路高飛" },
+        { start: 141.8, end: 145.5, en: "Gonna be, gonna be golden", zh: "我們必將綻放如黃金般耀眼的光彩" },
+        { start: 145.5, end: 154.1, en: "Oh, I'm done hidin', now I'm shining like I'm born to be", zh: "喔，我不再躲藏，現在我要如與生俱來般盡情閃耀" },
+        { start: 154.1, end: 158.4, en: "Oh, our time, no fears, no lies", zh: "喔，屬於我們的時代，沒有恐懼，沒有謊言" },
+        { start: 158.4, end: 161.5, en: "That's who we're born to be", zh: "這就是我們生來註定要成為的模樣" },
+        { start: 161.5, end: 164.3, en: "You know we're gonna be, gonna be golden", zh: "你知道我們必將綻放如黃金般耀眼的光彩" },
+        { start: 164.3, end: 166.2, en: "We're gonna be, gonna be", zh: "我們必將成為，必將成為" },
+        { start: 166.2, end: 169.7, en: "Born to be, born to be glowin'", zh: "天生註定，天生註定要散發光芒" },
+        { start: 169.7, end: 174, en: "You know that it's our time, no fears, no lies", zh: "你知道這就是我們的時代，沒有恐懼，沒有謊言" },
+        { start: 174, end: 179, en: "That's who we're born to be", zh: "這就是我們生來註定要成為的模樣" }
       ]
     },
 
@@ -1520,10 +1522,10 @@
       title: "☀️ 自然與生活短文（純口說練習）",
       youtubeId: null,
       items: [
-        { tag: "Sentence 1", en: "Look at the bright morning sun in the sky.", zh: "看看天空中明亮的朝陽。" },
-        { tag: "Sentence 2", en: "Little birds are singing happily in the green trees.", zh: "小鳥在綠樹間快樂地歌唱。" },
-        { tag: "Sentence 3", en: "Every day is a brand new adventure to explore.", zh: "每一天都是一場等待探索的全新冒險。" },
-        { tag: "Sentence 4", en: "Take a deep breath, smile wide, and try your best!", zh: "深吸一口氣，露出燦爛的微笑，全力以赴吧！" }
+        { en: "Look at the bright morning sun in the sky.", zh: "看看天空中明亮的朝陽。" },
+        { en: "Little birds are singing happily in the green trees.", zh: "小鳥在綠樹間快樂地歌唱。" },
+        { en: "Every day is a brand new adventure to explore.", zh: "每一天都是一場等待探索的全新冒險。" },
+        { en: "Take a deep breath, smile wide, and try your best!", zh: "深吸一口氣，露出燦爛的微笑，全力以赴吧！" }
       ]
     }
   };
@@ -1833,7 +1835,6 @@
       showFloatingBar('song', label, false);
     } else if (event.data === YT.PlayerState.PAUSED) {
       stopSyncTimer();
-      // 若為單句自動播放結束而暫停，隱藏懸浮列；若為手動按暫停，保留懸浮列並顯示「繼續播放」
       if (segmentEndTime === null && !isSongPaused) {
         isSongPaused = true;
       }
@@ -1975,7 +1976,6 @@
       readoutEl.textContent = `${startStr} ~ ${endStr}`;
     }
     if (badgeEl && item.start !== undefined) {
-      badgeEl.style.display = 'inline-block';
       badgeEl.textContent = `⏱️ ${item.start.toFixed(1)}s - ${endStr}`;
     }
     if (singBtnEl && item.start !== undefined && item.end !== undefined) {
@@ -1988,11 +1988,10 @@
     const selectedKey = document.getElementById('topicSelect').value;
 
     const lines = sentencesData.map(item => {
-      const tagPart = item.tag ? `tag: ${JSON.stringify(item.tag)}, ` : '';
       const startPart = item.start !== undefined ? `start: ${item.start}, ` : '';
       const endPart = item.end !== undefined ? `end: ${item.end}, ` : '';
       const zhPart = item.zh ? `, zh: ${JSON.stringify(item.zh)}` : '';
-      return `        { ${tagPart}${startPart}${endPart}en: ${JSON.stringify(item.text)}${zhPart} }`;
+      return `        { ${startPart}${endPart}en: ${JSON.stringify(item.text)}${zhPart} }`;
     });
 
     let formattedCode = '';
@@ -2039,7 +2038,6 @@
     ytPlayer.playVideo();
   }
 
-  // 點擊上方 ▶️ 按鈕或懸浮「▶️ 繼續播放」：若目前是暫停狀態，直接從暫停處無縫繼續；否則正常播放
   function resumeOrPlaySong() {
     if (!ytPlayer || typeof ytPlayer.playVideo !== 'function') return;
     stopMyRecordingPlayback();
@@ -2061,7 +2059,6 @@
     ytPlayer.playVideo();
   }
 
-  // 點擊 ⏸️ 暫停按鈕：保留目前秒數與高亮狀態，讓懸浮膠囊切換為「▶️ 繼續播放」
   function pauseSong() {
     if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
       isSongPaused = true;
@@ -2072,7 +2069,6 @@
     showFloatingBar('song', pauseLabel, true);
   }
 
-  // 點擊懸浮膠囊的「⏹️ 結束」按鈕：徹底停止音樂、清除高亮與懸浮列
   function stopSongCompletely() {
     isSongPaused = false;
     segmentEndTime = null;
@@ -2220,7 +2216,6 @@
       utterance.voice = chosenVoice;
     }
 
-    // 記錄開始朗讀時間，用於動態計算跟讀停頓秒數
     let speechStartTime = performance.now();
     utterance.onstart = () => {
       speechStartTime = performance.now();
@@ -2383,7 +2378,7 @@
         parts.forEach(p => {
           const cleaned = p.trim();
           if (/[a-zA-Z]/.test(cleaned)) {
-            result.push({ tag: "", en: cleaned, zh: "" });
+            result.push({ en: cleaned, zh: "" });
           }
         });
       }
@@ -2420,7 +2415,6 @@
 
     sentencesData = items.map((item, idx) => ({
       id: idx,
-      tag: item.tag || '',
       start: item.start,
       end: item.end,
       text: item.en,
@@ -2447,12 +2441,10 @@
         return `<span class="clickable-word" title="點擊聽單字發音" onclick="speakText('${escapeJs(cleanWord)}', 0.9)">${escapeHtml(token)}</span>`;
       }).join(' ');
 
-      const tagHtml = item.tag ? `<span class="section-tag">${escapeHtml(item.tag)}</span>` : '';
       const hasTimestamp = item.start !== undefined && item.end !== undefined;
       const startStr = item.start !== undefined ? `${item.start.toFixed(1)}s` : '--';
       const endStr = item.end !== undefined ? `${item.end.toFixed(1)}s` : '--';
 
-      const timeBadgeStyle = hasTimestamp ? 'inline-block' : 'none';
       const singBtnStyle = hasTimestamp ? 'inline-flex' : 'none';
 
       const zhHtml = item.zh ? `<div class="zh-translation">${escapeHtml(item.zh)}</div>` : '';
@@ -2461,8 +2453,7 @@
         <div class="card-top">
           <div class="badge-group">
             <span class="sentence-badge">第 ${index + 1} 句</span>
-            ${tagHtml}
-            <span class="time-tag" id="time-badge-${index}" style="display:${timeBadgeStyle};">⏱️ ${startStr} - ${endStr}</span>
+            <span class="time-tag" id="time-badge-${index}">⏱️ ${startStr} - ${endStr}</span>
             <span class="singing-cue">🎶</span>
             <span class="shadow-cue">🗣️ 換你跟讀！</span>
           </div>
