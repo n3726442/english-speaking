@@ -139,7 +139,7 @@
       font-size: 0.9rem;
     }
 
-    /* 右下角懸浮暫停控制膠囊（播放整首或全篇朗讀時自動出現） */
+    /* 左下角懸浮暫停控制膠囊（播放整首或全篇朗讀時自動出現） */
     .floating-pause-bar {
       position: fixed;
       bottom: 20px;
@@ -294,10 +294,6 @@
       margin-bottom: 14px;
     }
 
-    .input-panel.collapsed {
-      display: none;
-    }
-
     .preset-bar {
       display: flex;
       flex-wrap: wrap;
@@ -450,6 +446,7 @@
       margin-bottom: 8px;
       cursor: move;
       user-select: none;
+      touch-action: none;
     }
 
     .player-panel.is-floating .player-title {
@@ -1029,7 +1026,6 @@
       <div class="star-counter" id="totalStars">⭐ 0 / 0</div>
       <button class="toggle-btn" id="toggleZhBtn" onclick="toggleTranslation()">隱藏中文</button>
       <button class="toggle-btn" id="toggleSyncBtn" onclick="toggleSyncMode()">⏱️ 對時工具</button>
-      <button class="toggle-btn" id="toggleInputBtn" onclick="toggleInputPanel()">切換主題</button>
     </div>
   </header>
 
@@ -1169,7 +1165,7 @@
 
     let_it_go: {
       title: "❄️ 《冰雪奇緣》Let It Go（完整版＋原曲練唱）",
-      youtubeId: "yebNIHKAC4A",
+      youtubeId: "YVVTZgwYwVo",
       items: [
         { tag: "Verse 1", start: 12.7, end: 17, en: "The snow glows white on the mountain tonight", zh: "今晚山頭上的白雪閃閃發亮" },
         { tag: "Verse 1", start: 17, end: 21.1, en: "Not a footprint to be seen", zh: "看不見半個腳印" },
@@ -1211,6 +1207,50 @@
         { tag: "Outro", start: 196.7, end: 204.8, en: "Here I stand in the light of day", zh: "我就站在白晝的光芒之中" },
         { tag: "Outro", start: 204.8, end: 210.7, en: "Let the storm rage on", zh: "就讓暴風雪盡情狂嘯吧" },
         { tag: "Outro", start: 210.7, end: 216.6, en: "The cold never bothered me anyway", zh: "反正寒冷從來不曾困擾過我" }
+      ]
+    },
+
+    golden_hunters: {
+      title: "✨ 《獵魔女團》Golden（完整版＋原曲練唱）",
+      youtubeId: "yebNIHKAC4A",
+      items: [
+        { tag: "Verse 1", start: 18.8, end: 22.3, en: "I was a ghost, I was alone, hah", zh: "我曾像個幽靈般孤單一人，哈" },
+        { tag: "Verse 1", start: 22.3, end: 26.7, en: "어두워진, hah, 압길속에 (Ah)", zh: "在逐漸黯淡的前路之中（啊）" },
+        { tag: "Verse 1", start: 26.7, end: 31.4, en: "Given the throne, I didn't know how to believe", zh: "被賦予了王座，我卻不知該如何去相信" },
+        { tag: "Verse 1", start: 31.4, end: 34.2, en: "I was the queen that I'm meant to be", zh: "我就是命中註定要成為的那位女王" },
+        { tag: "Pre-Chorus", start: 34.2, end: 37.7, en: "I lived two lives, tried to play both sides", zh: "我過著雙重生活，試著在兩邊之間周旋" },
+        { tag: "Pre-Chorus", start: 37.7, end: 41.6, en: "But I couldn't find my own place", zh: "卻始終找不到真正屬於自己的位置" },
+        { tag: "Pre-Chorus", start: 41.6, end: 45.8, en: "Called a problem child 'cause I got too wild", zh: "因為太過狂野不羈，被人稱作問題少女" },
+        { tag: "Pre-Chorus", start: 45.8, end: 49.9, en: "But now that's how I'm getting paid, 끝없이 on stage", zh: "但如今這正是我閃耀的資本，無止盡地站在舞台上" },
+        { tag: "Chorus", start: 49.9, end: 57.4, en: "I'm done hidin', now I'm shinin' like I'm born to be", zh: "我不再躲藏，現在我要如與生俱來般盡情閃耀" },
+        { tag: "Chorus", start: 57.4, end: 64.8, en: "We dreamin' hard, we came so far, now I believe", zh: "我們勇敢追夢，一路走到這裡，現在我深信不疑" },
+        { tag: "Chorus", start: 64.8, end: 68.3, en: "We're goin' up, up, up, it's our moment", zh: "我們正不斷向上攀升，這就是屬於我們的時刻" },
+        { tag: "Chorus", start: 68.3, end: 70.5, en: "You know together we're glowing", zh: "你知道只要並肩同行，我們就會散發光芒" },
+        { tag: "Chorus", start: 70.5, end: 72.4, en: "Gonna be, gonna be golden", zh: "我們必將綻放如黃金般耀眼的光彩" },
+        { tag: "Chorus", start: 72.4, end: 76.3, en: "Oh, up, up, up with our voices", zh: "喔，用我們的歌聲一路高飛" },
+        { tag: "Chorus", start: 76.3, end: 80.4, en: "Gonna be, gonna be golden", zh: "我們必將綻放如黃金般耀眼的光彩" },
+        { tag: "Chorus", start: 80.4, end: 88.6, en: "Oh, I'm done hidin' now I'm shinin' like I'm born to be", zh: "喔，我不再躲藏，現在我要如與生俱來般盡情閃耀" },
+        { tag: "Chorus", start: 88.6, end: 92.9, en: "Oh, our time, no fear, no lies", zh: "喔，屬於我們的時代，沒有恐懼，沒有謊言" },
+        { tag: "Chorus", start: 92.9, end: 98.2, en: "That's who we're born to be", zh: "這就是我們生來註定要成為的模樣" },
+        { tag: "Verse 2", start: 98.2, end: 102.3, en: "Waited so long to break these walls down", zh: "等待了這麼久，只為打破這些高牆" },
+        { tag: "Verse 2", start: 102.3, end: 105.9, en: "To wake up and feel like me", zh: "只為醒來並真正感受到做自己的感覺" },
+        { tag: "Verse 2", start: 105.9, end: 110.1, en: "Put these patterns all in the past now", zh: "現在把這些舊有的框框全都拋諸腦後" },
+        { tag: "Verse 2", start: 110.1, end: 115.1, en: "And finally live like the girl they all see", zh: "終於活出眾人眼前那個耀眼女孩的模樣" },
+        { tag: "Bridge", start: 115.1, end: 122.6, en: "No more hiding, I'll be shining like I'm born to be", zh: "不再躲藏，我將如與生俱來般盡情閃耀" },
+        { tag: "Bridge", start: 122.6, end: 130.2, en: "'Cause we are hunters, voices strong, and I know I believe", zh: "因為我們是獵魔女團，歌聲堅定嘹亮，我知道我深信不疑" },
+        { tag: "Chorus 2", start: 130.2, end: 133.9, en: "We're goin' up, up, up, it's our moment", zh: "我們正不斷向上攀升，這就是屬於我們的時刻" },
+        { tag: "Chorus 2", start: 133.9, end: 135.8, en: "You know together we're glowing", zh: "你知道只要並肩同行，我們就會散發光芒" },
+        { tag: "Chorus 2", start: 135.8, end: 137.8, en: "Gonna be, gonna be golden", zh: "我們必將綻放如黃金般耀眼的光彩" },
+        { tag: "Chorus 2", start: 137.8, end: 141.8, en: "Oh, up, up, up, with our voices", zh: "喔，用我們的歌聲一路高飛" },
+        { tag: "Chorus 2", start: 141.8, end: 145.5, en: "Gonna be, gonna be golden", zh: "我們必將綻放如黃金般耀眼的光彩" },
+        { tag: "Chorus 2", start: 145.5, end: 154.1, en: "Oh, I'm done hidin', now I'm shining like I'm born to be", zh: "喔，我不再躲藏，現在我要如與生俱來般盡情閃耀" },
+        { tag: "Outro", start: 154.1, end: 158.4, en: "Oh, our time, no fears, no lies", zh: "喔，屬於我們的時代，沒有恐懼，沒有謊言" },
+        { tag: "Outro", start: 158.4, end: 161.5, en: "That's who we're born to be", zh: "這就是我們生來註定要成為的模樣" },
+        { tag: "Outro", start: 161.5, end: 164.3, en: "You know we're gonna be, gonna be golden", zh: "你知道我們必將綻放如黃金般耀眼的光彩" },
+        { tag: "Outro", start: 164.3, end: 166.2, en: "We're gonna be, gonna be", zh: "我們必將成為，必將成為" },
+        { tag: "Outro", start: 166.2, end: 169.7, en: "Born to be, born to be glowin'", zh: "天生註定，天生註定要散發光芒" },
+        { tag: "Outro", start: 169.7, end: 174, en: "You know that it's our time, no fears, no lies", zh: "你知道這就是我們的時代，沒有恐懼，沒有謊言" },
+        { tag: "Outro", start: 174, end: 179, en: "That's who we're born to be", zh: "這就是我們生來註定要成為的模樣" }
       ]
     },
 
@@ -1278,7 +1318,6 @@
       placeholder.classList.remove('show');
       btn.classList.remove('active');
       btn.innerHTML = '📌 浮動小視窗';
-      // 清除拖曳殘留的內聯座標
       panel.style.left = '';
       panel.style.top = '';
       panel.style.right = '';
@@ -1293,38 +1332,62 @@
     let offsetX = 0;
     let offsetY = 0;
 
-    handle.addEventListener('mousedown', (e) => {
+    function startDrag(clientX, clientY) {
       if (!isPlayerFloating || window.innerWidth <= 640) return;
-      if (e.target.closest('button')) return; // 點擊按鈕時不觸發拖曳
-
       isDragging = true;
       const rect = panel.getBoundingClientRect();
-      offsetX = e.clientX - rect.left;
-      offsetY = e.clientY - rect.top;
+      offsetX = clientX - rect.left;
+      offsetY = clientY - rect.top;
 
       panel.style.right = 'auto';
       panel.style.bottom = 'auto';
       panel.style.left = rect.left + 'px';
       panel.style.top = rect.top + 'px';
       document.body.style.userSelect = 'none';
-    });
+    }
 
-    window.addEventListener('mousemove', (e) => {
+    function moveDrag(clientX, clientY) {
       if (!isDragging) return;
       const maxX = window.innerWidth - panel.offsetWidth - 8;
       const maxY = window.innerHeight - panel.offsetHeight - 8;
-      const nextX = Math.max(8, Math.min(maxX, e.clientX - offsetX));
-      const nextY = Math.max(8, Math.min(maxY, e.clientY - offsetY));
+      const nextX = Math.max(8, Math.min(maxX, clientX - offsetX));
+      const nextY = Math.max(8, Math.min(maxY, clientY - offsetY));
       panel.style.left = nextX + 'px';
       panel.style.top = nextY + 'px';
-    });
+    }
 
-    window.addEventListener('mouseup', () => {
+    function endDrag() {
       if (isDragging) {
         isDragging = false;
         document.body.style.userSelect = '';
       }
+    }
+
+    handle.addEventListener('mousedown', (e) => {
+      if (e.target.closest('button')) return;
+      startDrag(e.clientX, e.clientY);
     });
+
+    window.addEventListener('mousemove', (e) => {
+      moveDrag(e.clientX, e.clientY);
+    });
+
+    window.addEventListener('mouseup', endDrag);
+
+    handle.addEventListener('touchstart', (e) => {
+      if (e.target.closest('button')) return;
+      if (e.touches.length === 1) {
+        startDrag(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      if (isDragging && e.touches.length === 1) {
+        moveDrag(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchend', endDrag);
   }
 
   function populateTopicDropdown() {
@@ -1857,13 +1920,6 @@
       loadYoutubeVideo(currentYoutubeId);
       renderCards(topic.items);
     }
-  }
-
-  function toggleInputPanel() {
-    const panel = document.getElementById('inputPanel');
-    const btn = document.getElementById('toggleInputBtn');
-    panel.classList.toggle('collapsed');
-    btn.textContent = panel.classList.contains('collapsed') ? '展開選單' : '收合選單';
   }
 
   function toggleTranslation() {
