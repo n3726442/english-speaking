@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="robots" content="noindex, nofollow">
   <title>英文口說與歌曲練唱練習器</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -139,6 +140,46 @@
       font-size: 0.9rem;
     }
 
+    /* 回到頂端按鈕 (Back to Top) */
+    .back-to-top-btn {
+      position: fixed;
+      right: 20px;
+      bottom: 245px;
+      z-index: 940;
+      background: rgba(2, 132, 199, 0.92);
+      backdrop-filter: blur(6px);
+      color: #ffffff;
+      border: 1.5px solid rgba(255, 255, 255, 0.35);
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+      transition: opacity 0.25s ease, transform 0.25s ease, background 0.2s;
+    }
+
+    .back-to-top-btn.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .back-to-top-btn:hover {
+      background: var(--primary-hover);
+    }
+
+    .back-to-top-btn:active {
+      transform: scale(0.95);
+    }
+
     /* 左下角懸浮暫停控制膠囊（播放整首或全篇朗讀時自動出現） */
     .floating-pause-bar {
       position: fixed;
@@ -153,7 +194,7 @@
       box-shadow: 0 8px 24px rgba(15, 23, 42, 0.28);
       display: none;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
       border: 1.5px solid rgba(255, 255, 255, 0.15);
       animation: slideUp 0.25s ease-out;
     }
@@ -172,30 +213,55 @@
       font-weight: 700;
       color: #e2e8f0;
       white-space: nowrap;
+      margin-right: 4px;
+    }
+
+    .floating-action-btn {
+      background: var(--warning);
+      color: #0f172a;
+      border: none;
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: transform 0.1s, background 0.2s;
+      white-space: nowrap;
+    }
+
+    .floating-action-btn.is-resume {
+      background: #22c55e;
+      color: #ffffff;
     }
 
     .floating-stop-btn {
       background: var(--danger);
       color: #ffffff;
       border: none;
-      padding: 8px 16px;
+      padding: 7px 12px;
       border-radius: 999px;
-      font-size: 0.9rem;
+      font-size: 0.86rem;
       font-weight: 800;
       cursor: pointer;
       font-family: inherit;
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
       box-shadow: 0 2px 8px rgba(225, 29, 72, 0.4);
       transition: transform 0.1s, background 0.2s;
+      white-space: nowrap;
     }
 
     .floating-stop-btn:hover {
       background: #be123c;
     }
 
-    .floating-stop-btn:active {
+    .floating-stop-btn:active,
+    .floating-action-btn:active {
       transform: scale(0.95);
     }
 
@@ -459,7 +525,7 @@
 
     .player-panel.is-floating .yt-wrapper {
       padding-bottom: 56.25%;
-      min-height: 155px;
+      min-height: 200px;
     }
 
     .player-panel.is-floating .btn-full-song-label {
@@ -590,7 +656,7 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
-      padding-bottom: 120px;
+      padding-bottom: 40px;
     }
 
     .practice-card {
@@ -600,7 +666,12 @@
       border: 1.5px solid #e2e8f0;
       box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
       transition: all 0.25s ease;
-      scroll-margin-top: 230px;
+      scroll-margin-top: 120px;
+    }
+
+    /* 浮動小視窗開啟時，加大自動捲動上方安全邊距避免歌詞被影片遮擋 */
+    body.pip-active .practice-card {
+      scroll-margin-top: 335px;
     }
 
     .practice-card.singing-active {
@@ -861,6 +932,26 @@
       background: #ffedd5;
     }
 
+    .btn-pause-batch {
+      color: #92400e;
+      border-color: #fcd34d;
+      background: #fef3c7;
+    }
+
+    .btn-pause-batch:hover {
+      background: #fde68a;
+    }
+
+    .btn-pause-batch.is-resume {
+      color: #15803d;
+      border-color: #86efac;
+      background: #dcfce7;
+    }
+
+    .btn-pause-batch.is-resume:hover {
+      background: #bbf7d0;
+    }
+
     .btn-playback {
       color: #b45309;
       border-color: #fcd34d;
@@ -978,6 +1069,16 @@
       color: var(--text-muted);
     }
 
+    /* 頁尾非營利與版權聲明 */
+    .disclaimer-footer {
+      text-align: center;
+      font-size: 0.78rem;
+      color: #64748b;
+      padding: 16px 12px 96px 12px;
+      border-top: 1px dashed #cbd5e1;
+      line-height: 1.6;
+    }
+
     @media (max-width: 640px) {
       body { padding: 10px; }
       .sentence-display { font-size: 1.18rem; }
@@ -995,12 +1096,24 @@
         font-size: 0.82rem;
       }
       .floating-pause-bar {
-        left: 12px;
-        right: 12px;
-        bottom: 14px;
+        left: 10px;
+        right: 10px;
+        bottom: 12px;
+        padding: 8px 12px;
         justify-content: space-between;
       }
-      /* 手機版浮動播放器固定在頂部導覽列下方，方便邊看影片邊滑動歌詞 */
+      .floating-label {
+        font-size: 0.8rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .back-to-top-btn {
+        right: 14px;
+        bottom: 72px;
+        padding: 8px 12px;
+        font-size: 0.8rem;
+      }
+      /* 手機直拿浮動播放器固定在頂部導覽列下方，高度 200px 符合 YouTube API 規範 */
       .player-panel.is-floating {
         top: 64px;
         bottom: auto;
@@ -1009,8 +1122,36 @@
         width: auto;
       }
       .player-panel.is-floating .yt-wrapper {
-        padding-bottom: 42%;
-        min-height: 140px;
+        padding-bottom: 0;
+        height: 200px;
+        min-height: 200px;
+      }
+      /* 開啟浮動視窗時為歌詞列表增加底部緩衝，確保最後一句也能滑到影片下方 */
+      body.pip-active .cards-list {
+        padding-bottom: 180px;
+      }
+    }
+
+    /* 手機橫拿（Landscape）：切換成「左影右詞」雙欄配置，200x200 合規且不擋歌詞 */
+    @media (max-height: 500px) and (orientation: landscape) {
+      .player-panel.is-floating {
+        top: 60px;
+        bottom: auto;
+        left: 10px;
+        right: auto;
+        width: 224px;
+      }
+      .player-panel.is-floating .yt-wrapper {
+        padding-bottom: 0;
+        height: 200px;
+        min-height: 200px;
+      }
+      body.pip-active .cards-list,
+      body.pip-active .tts-global-bar {
+        margin-left: 236px;
+      }
+      body.pip-active .practice-card {
+        scroll-margin-top: 90px;
       }
     }
   </style>
@@ -1056,7 +1197,7 @@
     </div>
 
     <div class="hint-text" id="presetHint">
-      💡 提示：點擊播放器右上角的 <strong>「📌 浮動小視窗」</strong>，往下捲動看歌詞練唱時，影片畫面就會一直跟著你（電腦版還可滑鼠拖曳位置）！
+      💡 提示：點擊播放器右上角的 <strong>「📌 浮動小視窗」</strong>，往下捲動看歌詞練唱時，影片畫面就會一直跟著你（電腦版還可拖曳位置）！
     </div>
 
     <!-- 自訂輸入區 -->
@@ -1107,21 +1248,32 @@
         <option value="0.7">慢速清晰 (0.7x)</option>
         <option value="0.5">超慢速拆解 (0.5x)</option>
       </select>
-      <button class="ctrl-btn btn-listen" onclick="startBatchReading(false)">▶️ 全篇連續朗讀</button>
-      <button class="ctrl-btn btn-slow" onclick="startBatchReading(true)">🗣️ 朗讀＋停頓跟讀</button>
-      <button class="ctrl-btn btn-stop-all" id="stopBatchBtn" style="display:none;" onclick="stopBatchReading()">⏹️ 停止連播</button>
+      <button class="ctrl-btn btn-listen" id="startBatchNormalBtn" onclick="startBatchReading(false)">▶️ 全篇連續朗讀</button>
+      <button class="ctrl-btn btn-slow" id="startBatchShadowBtn" onclick="startBatchReading(true)">🗣️ 朗讀＋停頓跟讀</button>
+      <button class="ctrl-btn btn-pause-batch" id="pauseBatchBtn" style="display:none;" onclick="togglePauseBatchReading()">⏸️ 暫停朗讀</button>
+      <button class="ctrl-btn btn-stop-all" id="stopBatchBtn" style="display:none;" onclick="stopBatchReading()">⏹️ 結束</button>
     </div>
     <div class="global-status-pill" id="globalStatusPill"></div>
   </section>
 
   <!-- 下方互動練習卡片區 -->
   <main class="cards-list" id="cardsContainer"></main>
+
+  <!-- 頁尾非營利與著作權聲明 -->
+  <footer class="disclaimer-footer">
+    本網頁僅供個人與課堂非營利語言及歌唱練習使用，無任何商業廣告或收費。<br>
+    音樂與影片皆透過 YouTube 官方播放器嵌入串流，所有歌曲、影像與歌詞著作權均歸原著作權人所有。
+  </footer>
 </div>
 
-<!-- 左下角懸浮快速暫停/停止控制列 -->
+<!-- 回到頂端按鈕 (Back to Top) -->
+<button class="back-to-top-btn" id="backToTopBtn" onclick="scrollToTop()" title="回到頁首">⬆️ 頂端</button>
+
+<!-- 左下角懸浮快速暫停/繼續控制列 -->
 <div class="floating-pause-bar" id="floatingPauseBar">
   <span class="floating-label" id="floatingStatusLabel">🎵 正在播放原曲...</span>
-  <button class="floating-stop-btn" id="floatingStopBtn" onclick="handleFloatingStop()">⏸️ 暫停</button>
+  <button class="floating-action-btn" id="floatingPrimaryBtn" onclick="handleFloatingPrimary()">⏸️ 暫停</button>
+  <button class="floating-stop-btn" id="floatingStopBtn" style="display:none;" onclick="handleFloatingStop()">⏹️ 結束</button>
 </div>
 
 <script>
@@ -1290,12 +1442,32 @@
   let isUserScrolling = false;
   let isPlayerFloating = false;
 
-  // 全篇語音連播狀態
+  // 全篇語音連播與暫停狀態
   let isBatchReading = false;
+  let isBatchPaused = false;
+  let batchCurrentIndex = 0;
+  let batchWithShadow = false;
+  let batchRate = 0.95;
   let batchTimer = null;
 
   // 懸浮暫停列模式 ('song' | 'batch' | null)
   let floatingMode = null;
+
+  // ================= 回到頂端按鈕 (Back to Top) =================
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('backToTopBtn');
+    if (!btn) return;
+    if (window.scrollY > 300) {
+      btn.classList.add('show');
+    } else {
+      btn.classList.remove('show');
+    }
+  }, { passive: true });
 
   // ================= 浮動影片小視窗與拖曳邏輯 =================
 
@@ -1309,11 +1481,13 @@
     isPlayerFloating = typeof forceState === 'boolean' ? forceState : !isPlayerFloating;
 
     if (isPlayerFloating) {
+      document.body.classList.add('pip-active');
       panel.classList.add('is-floating');
       placeholder.classList.add('show');
       btn.classList.add('active');
       btn.innerHTML = '🗖 恢復大視窗';
     } else {
+      document.body.classList.remove('pip-active');
       panel.classList.remove('is-floating');
       placeholder.classList.remove('show');
       btn.classList.remove('active');
@@ -1407,20 +1581,46 @@
     select.appendChild(customOpt);
   }
 
-  function showFloatingBar(mode, labelText) {
+  // ================= 左下角懸浮控制膠囊邏輯 =================
+
+  function showFloatingBar(mode, labelText, isPausedState = false) {
     floatingMode = mode;
     const bar = document.getElementById('floatingPauseBar');
     const label = document.getElementById('floatingStatusLabel');
-    const btn = document.getElementById('floatingStopBtn');
+    const primaryBtn = document.getElementById('floatingPrimaryBtn');
+    const stopBtn = document.getElementById('floatingStopBtn');
 
     label.textContent = labelText;
-    btn.innerHTML = mode === 'song' ? '⏸️ 暫停音樂' : '⏹️ 停止朗讀';
+
+    if (mode === 'song') {
+      primaryBtn.classList.remove('is-resume');
+      primaryBtn.innerHTML = '⏸️ 暫停音樂';
+      stopBtn.style.display = 'none';
+    } else if (mode === 'batch') {
+      if (isPausedState) {
+        primaryBtn.classList.add('is-resume');
+        primaryBtn.innerHTML = '▶️ 繼續朗讀';
+      } else {
+        primaryBtn.classList.remove('is-resume');
+        primaryBtn.innerHTML = '⏸️ 暫停朗讀';
+      }
+      stopBtn.style.display = 'inline-flex';
+    }
+
     bar.classList.add('show');
   }
 
   function hideFloatingBar() {
     floatingMode = null;
     document.getElementById('floatingPauseBar').classList.remove('show');
+  }
+
+  function handleFloatingPrimary() {
+    if (floatingMode === 'song') {
+      pauseSong();
+    } else if (floatingMode === 'batch') {
+      togglePauseBatchReading();
+    }
   }
 
   function handleFloatingStop() {
@@ -1498,7 +1698,7 @@
     if (event.data === YT.PlayerState.PLAYING) {
       startSyncTimer();
       const label = segmentEndTime !== null ? '🎵 正在播放單句原曲...' : '🎵 正在全曲跟唱（自動捲動中）';
-      showFloatingBar('song', label);
+      showFloatingBar('song', label, false);
     } else {
       stopSyncTimer();
       if (floatingMode === 'song') {
@@ -1534,7 +1734,7 @@
             clearAllCardHighlights();
             card.classList.add('singing-active');
             if (segmentEndTime === null) {
-              showFloatingBar('song', `🎵 全曲跟唱中（第 ${idx + 1} / ${sentencesData.length} 句）`);
+              showFloatingBar('song', `🎵 全曲跟唱中（第 ${idx + 1} / ${sentencesData.length} 句）`, false);
               if (lastAutoScrolledIndex !== idx) {
                 lastAutoScrolledIndex = idx;
                 smoothScrollToCard(idx);
@@ -1669,7 +1869,7 @@
     }
   }
 
-  // ================= 播放與朗讀控制 =================
+  // ================= 播放與全篇朗讀（含暫停／繼續）控制 =================
 
   function playSongSegment(index) {
     const item = sentencesData[index];
@@ -1731,10 +1931,32 @@
       const label = gender === 'male' ? '👨 已切換為男聲朗讀' : '👩 已切換為女聲朗讀';
       updateGlobalStatus(label);
       setTimeout(() => {
-        if (!isBatchReading) {
+        if (!isBatchReading && !isBatchPaused) {
           document.getElementById('globalStatusPill').classList.remove('show');
         }
       }, 2200);
+    }
+  }
+
+  function updateBatchControlButtons() {
+    const pauseBtn = document.getElementById('pauseBatchBtn');
+    const stopBtn = document.getElementById('stopBatchBtn');
+
+    if (!isBatchReading && !isBatchPaused) {
+      pauseBtn.style.display = 'none';
+      stopBtn.style.display = 'none';
+      return;
+    }
+
+    pauseBtn.style.display = 'inline-flex';
+    stopBtn.style.display = 'inline-flex';
+
+    if (isBatchPaused) {
+      pauseBtn.classList.add('is-resume');
+      pauseBtn.innerHTML = '▶️ 繼續朗讀';
+    } else {
+      pauseBtn.classList.remove('is-resume');
+      pauseBtn.innerHTML = '⏸️ 暫停朗讀';
     }
   }
 
@@ -1751,16 +1973,49 @@
     stopBatchReading();
 
     isBatchReading = true;
+    isBatchPaused = false;
+    batchCurrentIndex = 0;
+    batchWithShadow = withShadowPause;
+    batchRate = parseFloat(document.getElementById('globalRateSelect').value) || 0.95;
     isUserScrolling = false;
-    document.getElementById('stopBatchBtn').style.display = 'inline-flex';
-    showFloatingBar('batch', withShadowPause ? '🗣️ 停頓跟讀模式中...' : '🔊 全篇連續朗讀中...');
 
-    const rate = parseFloat(document.getElementById('globalRateSelect').value) || 0.95;
-    readNextInBatch(0, rate, withShadowPause);
+    updateBatchControlButtons();
+    showFloatingBar('batch', withShadowPause ? '🗣️ 停頓跟讀模式中...' : '🔊 全篇連續朗讀中...', false);
+
+    readNextInBatch(0, batchRate, withShadowPause);
+  }
+
+  function togglePauseBatchReading() {
+    if (!isBatchReading && !isBatchPaused) return;
+
+    if (isBatchReading && !isBatchPaused) {
+      // 執行暫停（保留目前句數 batchCurrentIndex 與卡片高亮）
+      isBatchPaused = true;
+      if (batchTimer) {
+        clearTimeout(batchTimer);
+        batchTimer = null;
+      }
+      window.speechSynthesis.cancel();
+
+      const progressTag = `第 ${batchCurrentIndex + 1} / ${sentencesData.length} 句`;
+      updateBatchControlButtons();
+      showFloatingBar('batch', `⏸️ 已暫停（${progressTag}）`, true);
+      updateGlobalStatus(`⏸️ 已暫停在 ${progressTag}，按下「▶️ 繼續朗讀」即可從這一句接續。`);
+    } else if (isBatchPaused) {
+      // 從暫停的句數繼續朗讀
+      isBatchPaused = false;
+      isBatchReading = true;
+      isUserScrolling = false;
+      batchRate = parseFloat(document.getElementById('globalRateSelect').value) || batchRate;
+      updateBatchControlButtons();
+      readNextInBatch(batchCurrentIndex, batchRate, batchWithShadow);
+    }
   }
 
   function readNextInBatch(index, rate, withShadowPause) {
-    if (!isBatchReading) return;
+    if (!isBatchReading || isBatchPaused) return;
+
+    batchCurrentIndex = index;
 
     if (index >= sentencesData.length) {
       updateGlobalStatus('🎉 全篇朗讀完成！可以試著按下各句的「🎤 錄音測試」挑戰拿星星囉！');
@@ -1776,7 +2031,7 @@
     }
 
     const progressTag = `第 ${index + 1} / ${sentencesData.length} 句`;
-    showFloatingBar('batch', withShadowPause ? `🗣️ 跟讀模式（${progressTag}）` : `🔊 連續朗讀（${progressTag}）`);
+    showFloatingBar('batch', withShadowPause ? `🗣️ 跟讀模式（${progressTag}）` : `🔊 連續朗讀（${progressTag}）`, false);
 
     updateGlobalStatus(
       withShadowPause
@@ -1794,13 +2049,13 @@
     }
 
     utterance.onend = () => {
-      if (!isBatchReading) return;
+      if (!isBatchReading || isBatchPaused) return;
       if (withShadowPause) {
         if (card) {
           card.classList.remove('reading-active');
           card.classList.add('shadow-waiting');
         }
-        showFloatingBar('batch', `🗣️ 換你唸（${progressTag}）`);
+        showFloatingBar('batch', `🗣️ 換你唸（${progressTag}）`, false);
         updateGlobalStatus(`🗣️ ${progressTag}：換你開口跟著唸一次！（2.5 秒後自動下一句）`);
         batchTimer = setTimeout(() => {
           readNextInBatch(index + 1, rate, withShadowPause);
@@ -1813,7 +2068,7 @@
     };
 
     utterance.onerror = () => {
-      if (isBatchReading) stopBatchReading();
+      if (isBatchReading && !isBatchPaused) stopBatchReading();
     };
 
     window.speechSynthesis.speak(utterance);
@@ -1821,13 +2076,15 @@
 
   function stopBatchReading(keepMessage = false) {
     isBatchReading = false;
+    isBatchPaused = false;
+    batchCurrentIndex = 0;
     if (batchTimer) {
       clearTimeout(batchTimer);
       batchTimer = null;
     }
     window.speechSynthesis.cancel();
     clearAllCardHighlights();
-    document.getElementById('stopBatchBtn').style.display = 'none';
+    updateBatchControlButtons();
     if (floatingMode === 'batch') {
       hideFloatingBar();
     }
