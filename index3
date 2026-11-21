@@ -1,1 +1,2341 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>英文口說與歌曲練唱練習器</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --primary-light: #e0f2fe;
+      --secondary: #0d9488;
+      --secondary-light: #f0fdfa;
+      --ultraslow: #ea580c;
+      --ultraslow-light: #fff7ed;
+      --music: #7c3aed;
+      --music-hover: #6d28d9;
+      --music-light: #f3e8ff;
+      --playback: #d97706;
+      --playback-light: #fef3c7;
+      --danger: #e11d48;
+      --danger-light: #fff1f2;
+      --success: #16a34a;
+      --success-light: #f0fdf4;
+      --warning: #f59e0b;
+      --bg: #f0f9ff;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --border: #bae6fd;
+      --radius: 14px;
+    }
 
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      padding: 16px;
+      font-family: 'Nunito', 'Noto Sans TC', sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    /* 頂部標題與星星統計列 */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      background: var(--card-bg);
+      padding: 12px 18px;
+      border-radius: var(--radius);
+      box-shadow: 0 2px 10px rgba(2, 132, 199, 0.08);
+      border: 1.5px solid var(--border);
+      margin-bottom: 14px;
+      position: sticky;
+      top: 8px;
+      z-index: 100;
+    }
+
+    .title-group h1 {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stats-bar {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .star-counter {
+      background: #fef3c7;
+      color: #b45309;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      border: 1px solid #fde68a;
+    }
+
+    .toggle-btn {
+      background: #f8fafc;
+      color: var(--text-main);
+      border: 1px solid #cbd5e1;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .toggle-btn:hover {
+      background: #e2e8f0;
+    }
+
+    .toggle-btn.active-sync {
+      background: #dcfce7;
+      color: #15803d;
+      border-color: #86efac;
+    }
+
+    .alert-banner {
+      display: none;
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      margin-bottom: 14px;
+      font-size: 0.9rem;
+    }
+
+    /* 右下角懸浮暫停控制膠囊（播放整首或全篇朗讀時自動出現） */
+    .floating-pause-bar {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 999;
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(8px);
+      color: #ffffff;
+      padding: 10px 14px 10px 18px;
+      border-radius: 999px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.28);
+      display: none;
+      align-items: center;
+      gap: 12px;
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      animation: slideUp 0.25s ease-out;
+    }
+
+    .floating-pause-bar.show {
+      display: flex;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .floating-label {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      white-space: nowrap;
+    }
+
+    .floating-stop-btn {
+      background: var(--danger);
+      color: #ffffff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 2px 8px rgba(225, 29, 72, 0.4);
+      transition: transform 0.1s, background 0.2s;
+    }
+
+    .floating-stop-btn:hover {
+      background: #be123c;
+    }
+
+    .floating-stop-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* 老師對時小工具橫幅 */
+    .sync-toolbar {
+      display: none;
+      background: #f0fdf4;
+      border: 2px solid #4ade80;
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.12);
+    }
+
+    body.sync-mode .sync-toolbar {
+      display: block;
+    }
+
+    .sync-toolbar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .sync-toolbar-title {
+      font-weight: 800;
+      color: #15803d;
+      font-size: 0.98rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .live-clock {
+      background: #15803d;
+      color: white;
+      padding: 2px 10px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 0.95rem;
+    }
+
+    .sync-toolbar-desc {
+      font-size: 0.85rem;
+      color: #166534;
+      margin-bottom: 10px;
+    }
+
+    .btn-export {
+      background: #16a34a;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .btn-export:hover {
+      background: #15803d;
+    }
+
+    .export-textarea {
+      display: none;
+      width: 100%;
+      height: 130px;
+      margin-top: 10px;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 0.82rem;
+      border: 1.5px solid #86efac;
+      border-radius: 8px;
+      background: #ffffff;
+      color: #0f172a;
+    }
+
+    .export-textarea.show {
+      display: block;
+    }
+
+    /* 主題選擇與文章輸入區塊 */
+    .input-panel {
+      background: var(--card-bg);
+      padding: 18px 20px;
+      border-radius: var(--radius);
+      box-shadow: 0 2px 10px rgba(2, 132, 199, 0.06);
+      border: 1.5px solid var(--border);
+      margin-bottom: 14px;
+    }
+
+    .input-panel.collapsed {
+      display: none;
+    }
+
+    .preset-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .preset-bar label {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+
+    .preset-select {
+      flex: 1;
+      min-width: 240px;
+      padding: 9px 12px;
+      border-radius: 10px;
+      border: 1.5px solid var(--primary);
+      background-color: #f0f9ff;
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .custom-area {
+      display: none;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed #cbd5e1;
+    }
+
+    .custom-area.show {
+      display: block;
+    }
+
+    .custom-yt-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .custom-yt-input {
+      flex: 1;
+      min-width: 220px;
+      padding: 8px 12px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.9rem;
+    }
+
+    textarea#sourceText {
+      width: 100%;
+      height: 110px;
+      padding: 12px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      font-family: 'Nunito', 'Noto Sans TC', sans-serif;
+      font-size: 1rem;
+      resize: vertical;
+      color: var(--text-main);
+    }
+
+    .input-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .hint-text {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: inherit;
+    }
+
+    /* YouTube 練唱播放器區塊（支援大畫面與浮動小視窗雙模式） */
+    .player-placeholder {
+      display: none;
+      height: 290px;
+      margin-bottom: 14px;
+      border-radius: var(--radius);
+      border: 1.5px dashed #cbd5e1;
+      background: rgba(255, 255, 255, 0.6);
+      color: #64748b;
+      font-size: 0.9rem;
+      font-weight: 700;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .player-placeholder.show {
+      display: flex;
+    }
+
+    .player-panel {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 16px;
+      border: 1.5px solid #ddd6fe;
+      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.08);
+      margin-bottom: 14px;
+      display: none;
+      transition: box-shadow 0.25s ease;
+    }
+
+    .player-panel.show {
+      display: block;
+    }
+
+    /* 桌面版：右下角可拖曳浮動小視窗 */
+    .player-panel.is-floating {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 340px;
+      margin: 0;
+      padding: 10px 12px 12px 12px;
+      z-index: 950;
+      border: 2px solid var(--music);
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.28);
+      background: rgba(255, 255, 255, 0.97);
+      backdrop-filter: blur(8px);
+    }
+
+    .player-panel.is-floating .player-header {
+      margin-bottom: 8px;
+      cursor: move;
+      user-select: none;
+    }
+
+    .player-panel.is-floating .player-title {
+      font-size: 0.82rem;
+      max-width: 150px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .player-panel.is-floating .yt-wrapper {
+      padding-bottom: 56.25%;
+      min-height: 155px;
+    }
+
+    .player-panel.is-floating .btn-full-song-label {
+      display: none;
+    }
+
+    .player-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .player-title {
+      font-weight: 800;
+      color: var(--music);
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .player-controls-top {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn-pip {
+      color: #4338ca;
+      border-color: #c7d2fe;
+      background: #eef2ff;
+    }
+
+    .btn-pip:hover {
+      background: #e0e7ff;
+    }
+
+    .btn-pip.active {
+      background: var(--music);
+      color: #ffffff;
+      border-color: var(--music);
+    }
+
+    .yt-wrapper {
+      position: relative;
+      width: 100%;
+      padding-bottom: 42%;
+      min-height: 200px;
+      background: #0f172a;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .yt-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* 全篇語音連播與跟讀控制列 */
+    .tts-global-bar {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 12px 18px;
+      border: 1.5px solid #bae6fd;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.05);
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .tts-global-title {
+      font-weight: 800;
+      font-size: 0.92rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tts-global-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .speed-select {
+      padding: 7px 10px;
+      border-radius: 9px;
+      border: 1.5px solid #cbd5e1;
+      background: #f8fafc;
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    .global-status-pill {
+      display: none;
+      width: 100%;
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    .global-status-pill.show {
+      display: block;
+    }
+
+    /* 練習卡片列表 */
+    .cards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding-bottom: 120px;
+    }
+
+    .practice-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      border: 1.5px solid #e2e8f0;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+      transition: all 0.25s ease;
+      scroll-margin-top: 230px;
+    }
+
+    .practice-card.singing-active {
+      border-color: var(--music);
+      background: linear-gradient(to right, #faf5ff, #ffffff);
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.18);
+      transform: translateY(-1px);
+    }
+
+    .practice-card.reading-active {
+      border-color: var(--primary);
+      background: linear-gradient(to right, #f0f9ff, #ffffff);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.18);
+      transform: translateY(-1px);
+    }
+
+    .practice-card.shadow-waiting {
+      border-color: var(--secondary);
+      background: linear-gradient(to right, #f0fdfa, #ffffff);
+      box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.2);
+    }
+
+    .practice-card.completed {
+      border-color: #86efac;
+      background: linear-gradient(to bottom right, #ffffff, #f0fdf4);
+    }
+
+    .practice-card.recording {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.12);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .badge-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .sentence-badge {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 3px 10px;
+      border-radius: 6px;
+    }
+
+    .section-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--secondary);
+      background: var(--secondary-light);
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    .time-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--music);
+      background: var(--music-light);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-family: monospace;
+    }
+
+    .shadow-cue {
+      display: none;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #0f766e;
+      background: #ccfbf1;
+      padding: 3px 10px;
+      border-radius: 999px;
+      animation: pulseShadow 1s infinite;
+    }
+
+    .practice-card.shadow-waiting .shadow-cue {
+      display: inline-block;
+    }
+
+    @keyframes pulseShadow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.55; }
+    }
+
+    .card-star {
+      font-size: 1.4rem;
+      filter: grayscale(100%) opacity(0.3);
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .practice-card.completed .card-star {
+      filter: grayscale(0%) opacity(1);
+      transform: scale(1.15);
+    }
+
+    .sentence-display {
+      font-size: 1.32rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      line-height: 1.7;
+      word-spacing: 2px;
+    }
+
+    .zh-translation {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      padding-left: 4px;
+    }
+
+    body.hide-zh .zh-translation {
+      display: none;
+    }
+
+    .clickable-word {
+      display: inline-block;
+      padding: 1px 4px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.15s, color 0.15s;
+    }
+
+    .clickable-word:hover {
+      background-color: var(--primary-light);
+      color: var(--primary);
+    }
+
+    /* 卡片內部的對時微調控制列（僅在對時模式顯示） */
+    .card-sync-editor {
+      display: none;
+      margin-bottom: 12px;
+      padding: 10px 12px;
+      background: #f0fdf4;
+      border: 1.5px dashed #4ade80;
+      border-radius: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.84rem;
+    }
+
+    body.sync-mode .card-sync-editor {
+      display: flex;
+    }
+
+    .sync-btn {
+      background: #ffffff;
+      border: 1px solid #22c55e;
+      color: #15803d;
+      padding: 5px 9px;
+      border-radius: 7px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .sync-btn:hover {
+      background: #dcfce7;
+    }
+
+    .sync-btn.primary-capture {
+      background: #16a34a;
+      color: #ffffff;
+    }
+
+    .sync-btn.primary-capture:hover {
+      background: #15803d;
+    }
+
+    .sync-time-readout {
+      font-family: monospace;
+      font-weight: 700;
+      color: #166534;
+      background: #dcfce7;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    /* 按鈕控制列 */
+    .controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      align-items: center;
+    }
+
+    .ctrl-btn {
+      border: 1.5px solid #e2e8f0;
+      background: #ffffff;
+      color: var(--text-main);
+      padding: 8px 11px;
+      border-radius: 10px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+
+    .ctrl-btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn-sing {
+      color: var(--music);
+      border-color: #d8b4fe;
+      background: var(--music-light);
+    }
+
+    .btn-sing:hover {
+      background: #e9d5ff;
+    }
+
+    .btn-listen {
+      color: var(--primary);
+      border-color: #bae6fd;
+      background: var(--primary-light);
+    }
+
+    .btn-listen:hover {
+      background: #bae6fd;
+    }
+
+    .btn-slow {
+      color: var(--secondary);
+      border-color: #99f6e4;
+      background: var(--secondary-light);
+    }
+
+    .btn-slow:hover {
+      background: #ccfbf1;
+    }
+
+    .btn-ultraslow {
+      color: var(--ultraslow);
+      border-color: #fed7aa;
+      background: var(--ultraslow-light);
+    }
+
+    .btn-ultraslow:hover {
+      background: #ffedd5;
+    }
+
+    .btn-playback {
+      color: #b45309;
+      border-color: #fcd34d;
+      background: var(--playback-light);
+      padding: 6px 12px;
+      font-size: 0.85rem;
+    }
+
+    .btn-playback:hover {
+      background: #fde68a;
+    }
+
+    .btn-playback.is-playing {
+      background: #f59e0b;
+      color: #ffffff;
+      border-color: #d97706;
+    }
+
+    .btn-stop-all {
+      color: var(--danger);
+      border-color: #fecdd3;
+      background: var(--danger-light);
+    }
+
+    .btn-stop-all:hover {
+      background: #ffe4e6;
+    }
+
+    .btn-mic {
+      color: #ffffff;
+      background: var(--primary);
+      border-color: var(--primary);
+      margin-left: auto;
+    }
+
+    .btn-mic:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-mic.is-recording {
+      background: var(--danger);
+      border-color: var(--danger);
+      animation: pulse 1.4s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.45); }
+      70% { box-shadow: 0 0 0 10px rgba(225, 29, 72, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); }
+    }
+
+    /* 辨識結果回饋區 */
+    .result-box {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      display: none;
+    }
+
+    .result-box.show {
+      display: block;
+    }
+
+    .result-status {
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .diff-words {
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    .word-ok {
+      color: var(--success);
+      background: var(--success-light);
+      padding: 2px 5px;
+      border-radius: 5px;
+      margin-right: 4px;
+      display: inline-block;
+    }
+
+    .word-miss {
+      color: var(--danger);
+      background: var(--danger-light);
+      padding: 2px 5px;
+      border-radius: 5px;
+      margin-right: 4px;
+      text-decoration: underline wavy #fda4af;
+      display: inline-block;
+    }
+
+    .result-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 6px;
+      border-top: 1px dashed #cbd5e1;
+    }
+
+    .heard-raw {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 10px; }
+      .sentence-display { font-size: 1.18rem; }
+      .btn-mic {
+        width: 100%;
+        justify-content: center;
+        margin-left: 0;
+        padding: 11px;
+        font-size: 1rem;
+      }
+      .btn-sing, .btn-listen, .btn-slow, .btn-ultraslow {
+        flex: 1 1 45%;
+        justify-content: center;
+        padding: 8px 6px;
+        font-size: 0.82rem;
+      }
+      .floating-pause-bar {
+        left: 12px;
+        right: 12px;
+        bottom: 14px;
+        justify-content: space-between;
+      }
+      /* 手機版浮動播放器固定在頂部導覽列下方，方便邊看影片邊滑動歌詞 */
+      .player-panel.is-floating {
+        top: 64px;
+        bottom: auto;
+        left: 10px;
+        right: 10px;
+        width: auto;
+      }
+      .player-panel.is-floating .yt-wrapper {
+        padding-bottom: 42%;
+        min-height: 140px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="title-group">
+      <h1>🎤 英文口說與歌曲練唱</h1>
+    </div>
+    <div class="stats-bar">
+      <div class="star-counter" id="totalStars">⭐ 0 / 0</div>
+      <button class="toggle-btn" id="toggleZhBtn" onclick="toggleTranslation()">隱藏中文</button>
+      <button class="toggle-btn" id="toggleSyncBtn" onclick="toggleSyncMode()">⏱️ 對時工具</button>
+      <button class="toggle-btn" id="toggleInputBtn" onclick="toggleInputPanel()">切換主題</button>
+    </div>
+  </header>
+
+  <div class="alert-banner" id="browserAlert">
+    ⚠️ 提醒：目前的瀏覽器可能不支援語音辨識（錄音評分功能）。建議使用 <strong>Google Chrome</strong>、<strong>Microsoft Edge</strong> 或 <strong>Safari</strong> 開啟，並允許麥克風權限。
+  </div>
+
+  <!-- 老師對時小工具面板 -->
+  <section class="sync-toolbar" id="syncToolbar">
+    <div class="sync-toolbar-header">
+      <div class="sync-toolbar-title">
+        ⏱️ 老師時間軸微調工具
+        <span class="live-clock" id="livePlayerClock">目前秒數：0.0s</span>
+      </div>
+      <button class="btn-export" onclick="exportSyncedCode()">📋 複製完整歌曲代碼</button>
+    </div>
+    <div class="sync-toolbar-desc">
+      <strong>操作步驟：</strong>1. 貼上新歌詞與 YouTube 網址並生成卡片 $\rightarrow$ 2. 播放音樂並點擊每句的 <strong>「📍 設為開始」</strong> $\rightarrow$ 3. 按右上角「複製完整歌曲代碼」，貼到程式碼中的 <code>PRESET_TOPICS</code> 區塊即可自動出現在下拉選單！
+    </div>
+    <textarea id="exportOutput" class="export-textarea" readonly></textarea>
+  </section>
+
+  <!-- 主題選單與文章輸入區 -->
+  <section class="input-panel" id="inputPanel">
+    <div class="preset-bar">
+      <label for="topicSelect">📚 選擇練習主題：</label>
+      <select id="topicSelect" class="preset-select" onchange="handleTopicChange()"></select>
+    </div>
+
+    <div class="hint-text" id="presetHint">
+      💡 提示：點擊播放器右上角的 <strong>「📌 浮動小視窗」</strong>，往下捲動看歌詞練唱時，影片畫面就會一直跟著你（電腦版還可滑鼠拖曳位置）！
+    </div>
+
+    <!-- 自訂輸入區 -->
+    <div class="custom-area" id="customArea">
+      <div class="custom-yt-row">
+        <input type="text" id="customSongTitle" class="custom-yt-input" placeholder="（選填）自訂歌曲名稱，例如：🎵 歌曲名稱（完整版＋原曲練唱）">
+        <input type="text" id="customYtUrl" class="custom-yt-input" placeholder="（選填）貼上 YouTube 歌曲網址，例如：https://youtu.be/...">
+      </div>
+      <textarea id="sourceText" placeholder="請在此貼上英文文章或歌詞（每行一句）..."></textarea>
+      <div class="input-actions">
+        <span class="hint-text">系統會自動依照換行或標點符號切分練習卡片（開啟「對時工具」即可幫自訂歌詞打時間軸）</span>
+        <button class="btn-primary" onclick="generateCustomCards()">✨ 生成練習卡片</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 原位佔位框（浮動時避免版面跳動） -->
+  <div class="player-placeholder" id="playerPlaceholder">
+    <span>📺 影片已切換為浮動小視窗模式</span>
+    <button class="ctrl-btn btn-pip" onclick="toggleFloatingPlayer(false)">🗖 放回這裡</button>
+  </div>
+
+  <!-- YouTube 練唱播放器面板 -->
+  <section class="player-panel" id="playerPanel">
+    <div class="player-header" id="playerDragHandle" title="浮動模式下可按住此處拖曳位置">
+      <div class="player-title" id="playerTitle">🎵 原曲伴唱播放器</div>
+      <div class="player-controls-top">
+        <button class="ctrl-btn btn-sing" onclick="playFullSong()">▶️ <span class="btn-full-song-label">從頭跟著唱整首</span></button>
+        <button class="ctrl-btn" onclick="pauseSong()">⏸️</button>
+        <button class="ctrl-btn btn-pip" id="togglePipBtn" onclick="toggleFloatingPlayer()">📌 浮動小視窗</button>
+      </div>
+    </div>
+    <div class="yt-wrapper">
+      <div id="ytPlayer"></div>
+    </div>
+  </section>
+
+  <!-- 全篇語音連播與跟讀控制列 -->
+  <section class="tts-global-bar">
+    <div class="tts-global-title">🔊 語音設定與全篇朗讀：</div>
+    <div class="tts-global-actions">
+      <select id="voiceGenderSelect" class="speed-select" title="選擇朗讀聲線（單句與全篇通用）" onchange="handleVoiceGenderChange()">
+        <option value="female">👩 女聲</option>
+        <option value="male">👨 男聲</option>
+      </select>
+      <select id="globalRateSelect" class="speed-select" title="選擇全篇連播語速">
+        <option value="0.95">正常語速 (0.95x)</option>
+        <option value="0.7">慢速清晰 (0.7x)</option>
+        <option value="0.5">超慢速拆解 (0.5x)</option>
+      </select>
+      <button class="ctrl-btn btn-listen" onclick="startBatchReading(false)">▶️ 全篇連續朗讀</button>
+      <button class="ctrl-btn btn-slow" onclick="startBatchReading(true)">🗣️ 朗讀＋停頓跟讀</button>
+      <button class="ctrl-btn btn-stop-all" id="stopBatchBtn" style="display:none;" onclick="stopBatchReading()">⏹️ 停止連播</button>
+    </div>
+    <div class="global-status-pill" id="globalStatusPill"></div>
+  </section>
+
+  <!-- 下方互動練習卡片區 -->
+  <main class="cards-list" id="cardsContainer"></main>
+</div>
+
+<!-- 左下角懸浮快速暫停/停止控制列 -->
+<div class="floating-pause-bar" id="floatingPauseBar">
+  <span class="floating-label" id="floatingStatusLabel">🎵 正在播放原曲...</span>
+  <button class="floating-stop-btn" id="floatingStopBtn" onclick="handleFloatingStop()">⏸️ 暫停</button>
+</div>
+
+<script>
+  // =========================================================================
+  // 📚 預設題庫資料庫（以後只要在這裡新增一組物件，上方下拉選單就會自動出現！）
+  // =========================================================================
+  const PRESET_TOPICS = {
+    moana_full: {
+      title: "🎵 《海洋奇緣》How Far I'll Go（完整版＋原曲練唱）",
+      youtubeId: "cPAbx5kgCJo",
+      items: [
+        { tag: "Verse 1", start: 3.3, end: 7.9, en: "I've been staring at the edge of the water", zh: "我一直凝望著水岸的盡頭" },
+        { tag: "Verse 1", start: 7.9, end: 16, en: "Long as I can remember, never really knowing why", zh: "從我有記憶以來就是如此，卻從不明白為什麼" },
+        { tag: "Verse 1", start: 15.5, end: 19.7, en: "I wish I could be the perfect daughter", zh: "我希望自己能成為完美的女兒" },
+        { tag: "Verse 1", start: 19.7, end: 27.1, en: "But I come back to the water, no matter how hard I try", zh: "但無論我多麼努力嘗試，我總是會回到這片海邊" },
+        { tag: "Pre-Chorus", start: 27.1, end: 30, en: "Every turn I take, every trail I track", zh: "我走的每一個轉彎，我追尋的每一條小徑" },
+        { tag: "Pre-Chorus", start: 30, end: 33.1, en: "Every path I make, every road leads back", zh: "我開闢的每一條路，每一條道路最終都引領我回到" },
+        { tag: "Pre-Chorus", start: 33.1, end: 39, en: "To the place I know, where I cannot go, where I long to be", zh: "那個我熟悉、卻不能前往、內心深深渴望的地方" },
+        { tag: "Chorus", start: 39, end: 43.9, en: "See the line where the sky meets the sea? It calls me", zh: "看見天空與大海交會的那條線了嗎？它在呼喚著我" },
+        { tag: "Chorus", start: 43.9, end: 50.3, en: "And no one knows, how far it goes", zh: "沒有人知道，它究竟延伸到多遠的地方" },
+        { tag: "Chorus", start: 50.3, end: 55.3, en: "If the wind in my sail on the sea stays behind me", zh: "如果海上的風吹進我的船帆，在身後推著我前進" },
+        { tag: "Chorus", start: 55.3, end: 62.4, en: "One day I'll know, if I go there's just no telling how far I'll go", zh: "總有一天我會明白，只要我啟航，沒人能預料我能走多遠" },
+        { tag: "Verse 2", start: 62.4, end: 68.7, en: "I know everybody on this island seems so happy on this island", zh: "我知道這座島上的每個人，在這裡看起來都如此快樂" },
+        { tag: "Verse 2", start: 68.7, end: 72.8, en: "Everything is by design", zh: "一切都已安排妥當、各司其職" },
+        { tag: "Verse 2", start: 72.8, end: 80.3, en: "I know everybody on this island has a role on this island", zh: "我知道這座島上的每個人，都有屬於自己的角色" },
+        { tag: "Verse 2", start: 80.3, end: 84.2, en: "So maybe I can roll with mine", zh: "所以也許我可以順應並扮演好我的角色" },
+        { tag: "Bridge", start: 84.2, end: 87.5, en: "I can lead with pride, I can make us strong", zh: "我可以驕傲地帶領大家，我可以讓我們變得強大" },
+        { tag: "Bridge", start: 87.5, end: 90.3, en: "I'll be satisfied if I play along", zh: "只要我照著大家的期望走，我也會感到滿足" },
+        { tag: "Bridge", start: 90.3, end: 93, en: "But the voice inside sings a different song", zh: "但內心深處的聲音，卻唱著一首截然不同的歌" },
+        { tag: "Bridge", start: 93, end: 96.2, en: "What is wrong with me?", zh: "我究竟是怎麼了？" },
+        { tag: "Chorus 2", start: 98, end: 103.7, en: "See the light as it shines on the sea? It's blinding", zh: "看見海面上閃耀的光芒了嗎？如此耀眼奪目" },
+        { tag: "Chorus 2", start: 103.7, end: 110.2, en: "But no one knows, how deep it goes", zh: "但沒有人知道，這片大海究竟有多深" },
+        { tag: "Chorus 2", start: 110.2, end: 115.1, en: "And it seems like it's calling out to me, so come find me", zh: "它彷彿正大聲呼喚著我，說著「快來尋找我吧」" },
+        { tag: "Chorus 2", start: 115.1, end: 121.7, en: "And let me know, what's beyond that line, will I cross that line?", zh: "讓我知道，那條地平線的彼端有什麼，我會跨越那條界線嗎？" },
+        { tag: "Outro", start: 121.7, end: 126.9, en: "See the line where the sky meets the sea? It calls me", zh: "看見天空與大海交會的那條線了嗎？它在呼喚著我" },
+        { tag: "Outro", start: 126.9, end: 132.9, en: "And no one knows, how far it goes", zh: "沒有人知道，它究竟延伸到多遠的地方" },
+        { tag: "Outro", start: 132.9, end: 137.8, en: "If the wind in my sail on the sea stays behind me", zh: "如果海上的風吹進我的船帆，在身後推著我前進" },
+        { tag: "Outro", start: 137.8, end: 148.5, en: "One day I'll know, how far I'll go", zh: "總有一天我會明白，我究竟能走多遠" }
+      ]
+    },
+
+    let_it_go: {
+      title: "❄️ 《冰雪奇緣》Let It Go（完整版＋原曲練唱）",
+      youtubeId: "yebNIHKAC4A",
+      items: [
+        { tag: "Verse 1", start: 12.7, end: 17, en: "The snow glows white on the mountain tonight", zh: "今晚山頭上的白雪閃閃發亮" },
+        { tag: "Verse 1", start: 17, end: 21.1, en: "Not a footprint to be seen", zh: "看不見半個腳印" },
+        { tag: "Verse 1", start: 21.1, end: 24, en: "A kingdom of isolation", zh: "一座孤寂的王國" },
+        { tag: "Verse 1", start: 24, end: 28.4, en: "And it looks like I'm the queen", zh: "而我看起來就像是這裡的女王" },
+        { tag: "Verse 1", start: 28.4, end: 35.4, en: "The wind is howling like this swirling storm inside", zh: "寒風呼嘯，就像我內心翻湧的風暴" },
+        { tag: "Verse 1", start: 35.4, end: 42, en: "Couldn't keep it in, heaven knows I tried", zh: "再也壓抑不住，天知道我已經盡力了" },
+        { tag: "Pre-Chorus", start: 42, end: 45.9, en: "Don't let them in, don't let them see", zh: "別讓他們進來，別讓他們看見" },
+        { tag: "Pre-Chorus", start: 45.9, end: 49.6, en: "Be the good girl you always have to be", zh: "當個大家期望中永遠乖巧的女孩" },
+        { tag: "Pre-Chorus", start: 49.6, end: 55.9, en: "Conceal, don't feel, don't let them know", zh: "隱藏起來，別去感受，別讓他們知道" },
+        { tag: "Pre-Chorus", start: 55.9, end: 58.9, en: "Well, now they know", zh: "好吧，現在他們全都知道了" },
+        { tag: "Chorus", start: 58.9, end: 62.8, en: "Let it go, let it go", zh: "放開吧，隨它去吧" },
+        { tag: "Chorus", start: 62.8, end: 65.9, en: "Can't hold it back anymore", zh: "再也無法壓抑自己" },
+        { tag: "Chorus", start: 65.9, end: 69.3, en: "Let it go, let it go", zh: "放開吧，隨它去吧" },
+        { tag: "Chorus", start: 69.3, end: 74, en: "Turn away and slam the door", zh: "轉過身，用力甩上門" },
+        { tag: "Chorus", start: 74, end: 79.9, en: "I don't care what they're going to say", zh: "我不在乎他們會怎麼說" },
+        { tag: "Chorus", start: 79.9, end: 83.8, en: "Let the storm rage on", zh: "就讓暴風雪盡情狂嘯吧" },
+        { tag: "Chorus", start: 83.8, end: 90.6, en: "The cold never bothered me anyway", zh: "反正寒冷從來不曾困擾過我" },
+        { tag: "Verse 2", start: 90.6, end: 97.7, en: "It's funny how some distance makes everything seem small", zh: "真有趣，拉開距離後，一切都顯得如此渺小" },
+        { tag: "Verse 2", start: 97.7, end: 105.7, en: "And the fears that once controlled me can't get to me at all", zh: "曾經束縛我的恐懼，再也無法左右我" },
+        { tag: "Pre-Chorus 2", start: 105.7, end: 109.5, en: "It's time to see what I can do", zh: "是時候看看我能做到什麼程度了" },
+        { tag: "Pre-Chorus 2", start: 109.5, end: 113, en: "To test the limits and break through", zh: "去挑戰極限、徹底突破" },
+        { tag: "Pre-Chorus 2", start: 113, end: 117.2, en: "No right, no wrong, no rules for me", zh: "沒有對錯，沒有規矩能限制我" },
+        { tag: "Pre-Chorus 2", start: 117.2, end: 120.1, en: "I'm free", zh: "我自由了" },
+        { tag: "Chorus 2", start: 120.1, end: 124.1, en: "Let it go, let it go", zh: "放開吧，隨它去吧" },
+        { tag: "Chorus 2", start: 124.1, end: 127.6, en: "I am one with the wind and sky", zh: "我與清風和天空融為一體" },
+        { tag: "Chorus 2", start: 127.6, end: 131.1, en: "Let it go, let it go", zh: "放開吧，隨它去吧" },
+        { tag: "Chorus 2", start: 131.1, end: 135.3, en: "You'll never see me cry", zh: "你再也不會看見我哭泣" },
+        { tag: "Chorus 2", start: 135.3, end: 141.8, en: "Here I stand and here I stay", zh: "我就站在這裡，也將留在這裡" },
+        { tag: "Chorus 2", start: 141.8, end: 152.2, en: "Let the storm rage on", zh: "就讓暴風雪盡情狂嘯吧" },
+        { tag: "Bridge", start: 152.2, end: 159.9, en: "My power flurries through the air into the ground", zh: "我的魔力在空中飛舞，傾瀉而下深入大地" },
+        { tag: "Bridge", start: 159.9, end: 166.9, en: "My soul is spiraling in frozen fractals all around", zh: "我的靈魂在四周盤旋的冰晶雪花中綻放" },
+        { tag: "Bridge", start: 166.9, end: 173.8, en: "And one thought crystallizes like an icy blast", zh: "一個念頭如冰霜風暴般凝結成形" },
+        { tag: "Bridge", start: 173.8, end: 182, en: "I'm never going back, the past is in the past", zh: "我再也不會回頭，過去的就讓它過去吧" },
+        { tag: "Outro", start: 182, end: 185.5, en: "Let it go, let it go", zh: "放開吧，隨它去吧" },
+        { tag: "Outro", start: 185.5, end: 188.9, en: "And I'll rise like the break of dawn", zh: "我將如破曉的曙光般升起" },
+        { tag: "Outro", start: 188.9, end: 192.6, en: "Let it go, let it go", zh: "放開吧，隨它去吧" },
+        { tag: "Outro", start: 192.6, end: 196.7, en: "That perfect girl is gone", zh: "那個完美的乖女孩已經不在了" },
+        { tag: "Outro", start: 196.7, end: 204.8, en: "Here I stand in the light of day", zh: "我就站在白晝的光芒之中" },
+        { tag: "Outro", start: 204.8, end: 210.7, en: "Let the storm rage on", zh: "就讓暴風雪盡情狂嘯吧" },
+        { tag: "Outro", start: 210.7, end: 216.6, en: "The cold never bothered me anyway", zh: "反正寒冷從來不曾困擾過我" }
+      ]
+    },
+
+    nature_story: {
+      title: "☀️ 自然與生活短文（純口說練習）",
+      youtubeId: null,
+      items: [
+        { tag: "Sentence 1", en: "Look at the bright morning sun in the sky.", zh: "看看天空中明亮的朝陽。" },
+        { tag: "Sentence 2", en: "Little birds are singing happily in the green trees.", zh: "小鳥在綠樹間快樂地歌唱。" },
+        { tag: "Sentence 3", en: "Every day is a brand new adventure to explore.", zh: "每一天都是一場等待探索的全新冒險。" },
+        { tag: "Sentence 4", en: "Take a deep breath, smile wide, and try your best!", zh: "深吸一口氣，露出燦爛的微笑，全力以赴吧！" }
+      ]
+    }
+  };
+
+  let sentencesData = [];
+  let activeRecognition = null;
+  let activeRecordingIndex = -1;
+  let femaleVoice = null;
+  let maleVoice = null;
+
+  // 音訊錄製與回放相關變數
+  let mediaRecorder = null;
+  let audioChunks = [];
+  let currentAudioStream = null;
+  let currentPlaybackAudio = null;
+  let currentPlaybackIndex = -1;
+
+  // YouTube Player 相關變數
+  let ytPlayer = null;
+  let ytApiReady = false;
+  let currentYoutubeId = null;
+  let segmentEndTime = null;
+  let syncInterval = null;
+  let lastAutoScrolledIndex = -1;
+  let userManualScrollTimeout = null;
+  let isUserScrolling = false;
+  let isPlayerFloating = false;
+
+  // 全篇語音連播狀態
+  let isBatchReading = false;
+  let batchTimer = null;
+
+  // 懸浮暫停列模式 ('song' | 'batch' | null)
+  let floatingMode = null;
+
+  // ================= 浮動影片小視窗與拖曳邏輯 =================
+
+  function toggleFloatingPlayer(forceState) {
+    const panel = document.getElementById('playerPanel');
+    const placeholder = document.getElementById('playerPlaceholder');
+    const btn = document.getElementById('togglePipBtn');
+
+    if (!currentYoutubeId) return;
+
+    isPlayerFloating = typeof forceState === 'boolean' ? forceState : !isPlayerFloating;
+
+    if (isPlayerFloating) {
+      panel.classList.add('is-floating');
+      placeholder.classList.add('show');
+      btn.classList.add('active');
+      btn.innerHTML = '🗖 恢復大視窗';
+    } else {
+      panel.classList.remove('is-floating');
+      placeholder.classList.remove('show');
+      btn.classList.remove('active');
+      btn.innerHTML = '📌 浮動小視窗';
+      // 清除拖曳殘留的內聯座標
+      panel.style.left = '';
+      panel.style.top = '';
+      panel.style.right = '';
+      panel.style.bottom = '';
+    }
+  }
+
+  function initDraggablePlayer() {
+    const panel = document.getElementById('playerPanel');
+    const handle = document.getElementById('playerDragHandle');
+    let isDragging = false;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    handle.addEventListener('mousedown', (e) => {
+      if (!isPlayerFloating || window.innerWidth <= 640) return;
+      if (e.target.closest('button')) return; // 點擊按鈕時不觸發拖曳
+
+      isDragging = true;
+      const rect = panel.getBoundingClientRect();
+      offsetX = e.clientX - rect.left;
+      offsetY = e.clientY - rect.top;
+
+      panel.style.right = 'auto';
+      panel.style.bottom = 'auto';
+      panel.style.left = rect.left + 'px';
+      panel.style.top = rect.top + 'px';
+      document.body.style.userSelect = 'none';
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const maxX = window.innerWidth - panel.offsetWidth - 8;
+      const maxY = window.innerHeight - panel.offsetHeight - 8;
+      const nextX = Math.max(8, Math.min(maxX, e.clientX - offsetX));
+      const nextY = Math.max(8, Math.min(maxY, e.clientY - offsetY));
+      panel.style.left = nextX + 'px';
+      panel.style.top = nextY + 'px';
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (isDragging) {
+        isDragging = false;
+        document.body.style.userSelect = '';
+      }
+    });
+  }
+
+  function populateTopicDropdown() {
+    const select = document.getElementById('topicSelect');
+    select.innerHTML = '';
+
+    Object.keys(PRESET_TOPICS).forEach(key => {
+      const opt = document.createElement('option');
+      opt.value = key;
+      opt.textContent = PRESET_TOPICS[key].title;
+      select.appendChild(opt);
+    });
+
+    const customOpt = document.createElement('option');
+    customOpt.value = 'custom';
+    customOpt.textContent = '✏️ 自訂文章 / 貼上新歌詞（可搭 YouTube）...';
+    select.appendChild(customOpt);
+  }
+
+  function showFloatingBar(mode, labelText) {
+    floatingMode = mode;
+    const bar = document.getElementById('floatingPauseBar');
+    const label = document.getElementById('floatingStatusLabel');
+    const btn = document.getElementById('floatingStopBtn');
+
+    label.textContent = labelText;
+    btn.innerHTML = mode === 'song' ? '⏸️ 暫停音樂' : '⏹️ 停止朗讀';
+    bar.classList.add('show');
+  }
+
+  function hideFloatingBar() {
+    floatingMode = null;
+    document.getElementById('floatingPauseBar').classList.remove('show');
+  }
+
+  function handleFloatingStop() {
+    if (floatingMode === 'song') {
+      pauseSong();
+    } else if (floatingMode === 'batch') {
+      stopBatchReading();
+    }
+    hideFloatingBar();
+  }
+
+  ['wheel', 'touchstart'].forEach(evt => {
+    window.addEventListener(evt, () => {
+      isUserScrolling = true;
+      clearTimeout(userManualScrollTimeout);
+      userManualScrollTimeout = setTimeout(() => {
+        isUserScrolling = false;
+      }, 4000);
+    }, { passive: true });
+  });
+
+  function smoothScrollToCard(index) {
+    if (isUserScrolling) return;
+    const card = document.getElementById(`card-${index}`);
+    if (card) {
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  // 載入 YouTube IFrame API
+  const tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  const firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  function onYouTubeIframeAPIReady() {
+    ytApiReady = true;
+    if (currentYoutubeId) {
+      loadYoutubeVideo(currentYoutubeId);
+    }
+  }
+
+  function loadYoutubeVideo(videoId) {
+    const panel = document.getElementById('playerPanel');
+    if (!videoId) {
+      toggleFloatingPlayer(false);
+      panel.classList.remove('show');
+      if (ytPlayer && typeof ytPlayer.stopVideo === 'function') {
+        ytPlayer.stopVideo();
+      }
+      return;
+    }
+
+    panel.classList.add('show');
+    if (!ytApiReady) return;
+
+    if (ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+      ytPlayer.cueVideoById(videoId);
+    } else {
+      ytPlayer = new YT.Player('ytPlayer', {
+        videoId: videoId,
+        playerVars: {
+          rel: 0,
+          modestbranding: 1,
+          playsinline: 1
+        },
+        events: {
+          onStateChange: onPlayerStateChange
+        }
+      });
+    }
+  }
+
+  function onPlayerStateChange(event) {
+    if (event.data === YT.PlayerState.PLAYING) {
+      startSyncTimer();
+      const label = segmentEndTime !== null ? '🎵 正在播放單句原曲...' : '🎵 正在全曲跟唱（自動捲動中）';
+      showFloatingBar('song', label);
+    } else {
+      stopSyncTimer();
+      if (floatingMode === 'song') {
+        hideFloatingBar();
+      }
+    }
+  }
+
+  function startSyncTimer() {
+    stopSyncTimer();
+    syncInterval = setInterval(() => {
+      if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
+      const now = ytPlayer.getCurrentTime();
+
+      const clockEl = document.getElementById('livePlayerClock');
+      if (clockEl) {
+        clockEl.textContent = `目前秒數：${now.toFixed(1)}s`;
+      }
+
+      if (segmentEndTime !== null && now >= segmentEndTime) {
+        ytPlayer.pauseVideo();
+        segmentEndTime = null;
+        clearAllCardHighlights();
+        hideFloatingBar();
+        return;
+      }
+
+      sentencesData.forEach((item, idx) => {
+        const card = document.getElementById(`card-${idx}`);
+        if (!card || item.start === undefined || item.end === undefined) return;
+        if (now >= item.start && now < item.end) {
+          if (!card.classList.contains('singing-active')) {
+            clearAllCardHighlights();
+            card.classList.add('singing-active');
+            if (segmentEndTime === null) {
+              showFloatingBar('song', `🎵 全曲跟唱中（第 ${idx + 1} / ${sentencesData.length} 句）`);
+              if (lastAutoScrolledIndex !== idx) {
+                lastAutoScrolledIndex = idx;
+                smoothScrollToCard(idx);
+              }
+            }
+          }
+        }
+      });
+    }, 150);
+  }
+
+  function stopSyncTimer() {
+    if (syncInterval) {
+      clearInterval(syncInterval);
+      syncInterval = null;
+    }
+  }
+
+  function clearAllCardHighlights() {
+    document.querySelectorAll('.practice-card').forEach(c => {
+      c.classList.remove('singing-active', 'reading-active', 'shadow-waiting');
+    });
+  }
+
+  // ================= 老師對時小工具邏輯 =================
+
+  function toggleSyncMode() {
+    document.body.classList.toggle('sync-mode');
+    const btn = document.getElementById('toggleSyncBtn');
+    const isSync = document.body.classList.contains('sync-mode');
+    btn.classList.toggle('active-sync', isSync);
+    btn.textContent = isSync ? '✅ 完成對時' : '⏱️ 對時工具';
+  }
+
+  function getCurrentYtTime() {
+    if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') {
+      alert('請先確認上方 YouTube 播放器已載入！');
+      return null;
+    }
+    return Math.round(ytPlayer.getCurrentTime() * 10) / 10;
+  }
+
+  function captureStartTime(index) {
+    const t = getCurrentYtTime();
+    if (t === null) return;
+
+    sentencesData[index].start = t;
+    if (sentencesData[index].end === undefined || sentencesData[index].end <= t) {
+      sentencesData[index].end = Math.round((t + 4.5) * 10) / 10;
+    }
+    if (index > 0 && sentencesData[index - 1].start !== undefined && t > sentencesData[index - 1].start) {
+      sentencesData[index - 1].end = t;
+      refreshCardTimeUI(index - 1);
+    }
+
+    refreshCardTimeUI(index);
+  }
+
+  function captureEndTime(index) {
+    const t = getCurrentYtTime();
+    if (t === null) return;
+
+    if (sentencesData[index].start === undefined) {
+      sentencesData[index].start = Math.max(0, Math.round((t - 4.0) * 10) / 10);
+    }
+    sentencesData[index].end = t;
+    refreshCardTimeUI(index);
+  }
+
+  function nudgeTime(index, field, delta) {
+    if (sentencesData[index][field] === undefined) {
+      sentencesData[index][field] = 0;
+    }
+    const nextVal = Math.max(0, Math.round((sentencesData[index][field] + delta) * 10) / 10);
+    sentencesData[index][field] = nextVal;
+    refreshCardTimeUI(index);
+  }
+
+  function refreshCardTimeUI(index) {
+    const item = sentencesData[index];
+    const readoutEl = document.getElementById(`sync-readout-${index}`);
+    const badgeEl = document.getElementById(`time-badge-${index}`);
+    const singBtnEl = document.getElementById(`sing-btn-${index}`);
+
+    const startStr = item.start !== undefined ? `${item.start.toFixed(1)}s` : '--';
+    const endStr = item.end !== undefined ? `${item.end.toFixed(1)}s` : '--';
+
+    if (readoutEl) {
+      readoutEl.textContent = `${startStr} ~ ${endStr}`;
+    }
+    if (badgeEl && item.start !== undefined) {
+      badgeEl.style.display = 'inline-block';
+      badgeEl.textContent = `⏱️ ${item.start.toFixed(1)}s - ${endStr}`;
+    }
+    if (singBtnEl && item.start !== undefined && item.end !== undefined) {
+      singBtnEl.style.display = 'inline-flex';
+    }
+  }
+
+  function exportSyncedCode() {
+    const outputBox = document.getElementById('exportOutput');
+    const selectedKey = document.getElementById('topicSelect').value;
+
+    const lines = sentencesData.map(item => {
+      const tagPart = item.tag ? `tag: ${JSON.stringify(item.tag)}, ` : '';
+      const startPart = item.start !== undefined ? `start: ${item.start}, ` : '';
+      const endPart = item.end !== undefined ? `end: ${item.end}, ` : '';
+      const zhPart = item.zh ? `, zh: ${JSON.stringify(item.zh)}` : '';
+      return `        { ${tagPart}${startPart}${endPart}en: ${JSON.stringify(item.text)}${zhPart} }`;
+    });
+
+    let formattedCode = '';
+    if (selectedKey === 'custom') {
+      const customTitle = document.getElementById('customSongTitle').value.trim() || '🎵 新歌曲（完整版＋原曲練唱）';
+      const ytId = currentYoutubeId ? JSON.stringify(currentYoutubeId) : 'null';
+      const songKey = 'song_' + Date.now().toString().slice(-4);
+      formattedCode = `    ${songKey}: {\n      title: ${JSON.stringify(customTitle)},\n      youtubeId: ${ytId},\n      items: [\n${lines.join(',\n')}\n      ]\n    },`;
+    } else {
+      formattedCode = `      items: [\n${lines.join(',\n')}\n      ]`;
+    }
+
+    outputBox.value = formattedCode;
+    outputBox.classList.add('show');
+    outputBox.select();
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(formattedCode).then(() => {
+        alert('✅ 已複製歌曲代碼！\n\n貼到 GitHub 的 index.html 裡 PRESET_TOPICS 區塊即可永久加入預設選單。');
+      }).catch(() => {
+        alert('已產生代碼在下方文字框中，請全選複製並貼回 GitHub 的 index.html！');
+      });
+    }
+  }
+
+  // ================= 播放與朗讀控制 =================
+
+  function playSongSegment(index) {
+    const item = sentencesData[index];
+    if (!ytPlayer || typeof ytPlayer.seekTo !== 'function' || item.start === undefined) return;
+
+    stopMyRecordingPlayback();
+    stopBatchReading();
+    stopCurrentRecording();
+    window.speechSynthesis.cancel();
+
+    segmentEndTime = item.end;
+    clearAllCardHighlights();
+    const card = document.getElementById(`card-${index}`);
+    if (card) card.classList.add('singing-active');
+
+    ytPlayer.seekTo(item.start, true);
+    ytPlayer.playVideo();
+  }
+
+  function playFullSong() {
+    if (!ytPlayer || typeof ytPlayer.playVideo !== 'function') return;
+    stopMyRecordingPlayback();
+    stopBatchReading();
+    stopCurrentRecording();
+    window.speechSynthesis.cancel();
+    segmentEndTime = null;
+    lastAutoScrolledIndex = -1;
+    isUserScrolling = false;
+    ytPlayer.seekTo(0, true);
+    ytPlayer.playVideo();
+  }
+
+  function pauseSong() {
+    if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
+      ytPlayer.pauseVideo();
+    }
+    segmentEndTime = null;
+    clearAllCardHighlights();
+    if (floatingMode === 'song') {
+      hideFloatingBar();
+    }
+  }
+
+  function getSelectedVoice() {
+    initVoices();
+    const gender = document.getElementById('voiceGenderSelect')?.value || 'female';
+    if (gender === 'male') {
+      return maleVoice || femaleVoice;
+    }
+    return femaleVoice || maleVoice;
+  }
+
+  function handleVoiceGenderChange() {
+    initVoices();
+    const gender = document.getElementById('voiceGenderSelect').value;
+    if (gender === 'male' && !maleVoice) {
+      updateGlobalStatus('ℹ️ 目前裝置的瀏覽器僅內建預設美式女聲，已自動為您保持清晰英語發音。');
+    } else {
+      const label = gender === 'male' ? '👨 已切換為男聲朗讀' : '👩 已切換為女聲朗讀';
+      updateGlobalStatus(label);
+      setTimeout(() => {
+        if (!isBatchReading) {
+          document.getElementById('globalStatusPill').classList.remove('show');
+        }
+      }, 2200);
+    }
+  }
+
+  function startBatchReading(withShadowPause) {
+    if (!('speechSynthesis' in window)) {
+      alert('抱歉，您的瀏覽器不支援語音朗讀功能。');
+      return;
+    }
+    if (sentencesData.length === 0) return;
+
+    stopMyRecordingPlayback();
+    pauseSong();
+    stopCurrentRecording();
+    stopBatchReading();
+
+    isBatchReading = true;
+    isUserScrolling = false;
+    document.getElementById('stopBatchBtn').style.display = 'inline-flex';
+    showFloatingBar('batch', withShadowPause ? '🗣️ 停頓跟讀模式中...' : '🔊 全篇連續朗讀中...');
+
+    const rate = parseFloat(document.getElementById('globalRateSelect').value) || 0.95;
+    readNextInBatch(0, rate, withShadowPause);
+  }
+
+  function readNextInBatch(index, rate, withShadowPause) {
+    if (!isBatchReading) return;
+
+    if (index >= sentencesData.length) {
+      updateGlobalStatus('🎉 全篇朗讀完成！可以試著按下各句的「🎤 錄音測試」挑戰拿星星囉！');
+      setTimeout(() => stopBatchReading(true), 3500);
+      return;
+    }
+
+    clearAllCardHighlights();
+    const card = document.getElementById(`card-${index}`);
+    if (card) {
+      card.classList.add('reading-active');
+      smoothScrollToCard(index);
+    }
+
+    const progressTag = `第 ${index + 1} / ${sentencesData.length} 句`;
+    showFloatingBar('batch', withShadowPause ? `🗣️ 跟讀模式（${progressTag}）` : `🔊 連續朗讀（${progressTag}）`);
+
+    updateGlobalStatus(
+      withShadowPause
+        ? `🔊 正在朗讀 ${progressTag}（唸完會停頓讓你跟讀）...`
+        : `🔊 正在連續朗讀 ${progressTag}...`
+    );
+
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(sentencesData[index].text);
+    utterance.lang = 'en-US';
+    utterance.rate = rate;
+    const chosenVoice = getSelectedVoice();
+    if (chosenVoice) {
+      utterance.voice = chosenVoice;
+    }
+
+    utterance.onend = () => {
+      if (!isBatchReading) return;
+      if (withShadowPause) {
+        if (card) {
+          card.classList.remove('reading-active');
+          card.classList.add('shadow-waiting');
+        }
+        showFloatingBar('batch', `🗣️ 換你唸（${progressTag}）`);
+        updateGlobalStatus(`🗣️ ${progressTag}：換你開口跟著唸一次！（2.5 秒後自動下一句）`);
+        batchTimer = setTimeout(() => {
+          readNextInBatch(index + 1, rate, withShadowPause);
+        }, 2500);
+      } else {
+        batchTimer = setTimeout(() => {
+          readNextInBatch(index + 1, rate, withShadowPause);
+        }, 450);
+      }
+    };
+
+    utterance.onerror = () => {
+      if (isBatchReading) stopBatchReading();
+    };
+
+    window.speechSynthesis.speak(utterance);
+  }
+
+  function stopBatchReading(keepMessage = false) {
+    isBatchReading = false;
+    if (batchTimer) {
+      clearTimeout(batchTimer);
+      batchTimer = null;
+    }
+    window.speechSynthesis.cancel();
+    clearAllCardHighlights();
+    document.getElementById('stopBatchBtn').style.display = 'none';
+    if (floatingMode === 'batch') {
+      hideFloatingBar();
+    }
+    if (!keepMessage) {
+      document.getElementById('globalStatusPill').classList.remove('show');
+    }
+  }
+
+  function updateGlobalStatus(msg) {
+    const pill = document.getElementById('globalStatusPill');
+    pill.textContent = msg;
+    pill.classList.add('show');
+  }
+
+  function extractYoutubeId(url) {
+    if (!url) return null;
+    const regExp = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+    const match = url.match(regExp);
+    return match ? match[1] : null;
+  }
+
+  function initVoices() {
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length === 0) return;
+
+    const enVoices = voices.filter(v => v.lang.startsWith('en'));
+    const usVoices = voices.filter(v => v.lang.startsWith('en-US'));
+    const pool = usVoices.length > 0 ? usVoices : enVoices;
+
+    const maleKeywords = ['male', 'david', 'guy', 'andrew', 'christopher', 'eric', 'roger', 'steffan', 'mark', 'alex', 'daniel', 'fred', 'aaron', 'james', 'ryan', 'william'];
+    const femaleKeywords = ['female', 'jenny', 'aria', 'samantha', 'zira', 'victoria', 'ava', 'allison', 'susan', 'karen', 'moira', 'tessa', 'michelle', 'emma'];
+
+    maleVoice =
+      pool.find(v => maleKeywords.some(k => v.name.toLowerCase().includes(k)) && (v.name.includes('Natural') || v.name.includes('Google'))) ||
+      pool.find(v => maleKeywords.some(k => v.name.toLowerCase().includes(k))) ||
+      enVoices.find(v => maleKeywords.some(k => v.name.toLowerCase().includes(k))) ||
+      null;
+
+    femaleVoice =
+      pool.find(v => v.name.includes('Google US English') && !v.name.toLowerCase().includes('male')) ||
+      pool.find(v => femaleKeywords.some(k => v.name.toLowerCase().includes(k)) && (v.name.includes('Natural') || v.name.includes('Google'))) ||
+      pool.find(v => femaleKeywords.some(k => v.name.toLowerCase().includes(k))) ||
+      pool.find(v => v !== maleVoice) ||
+      pool[0] ||
+      null;
+  }
+  window.speechSynthesis.onvoiceschanged = initVoices;
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    document.getElementById('browserAlert').style.display = 'block';
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    populateTopicDropdown();
+    initDraggablePlayer();
+    initVoices();
+    handleTopicChange();
+  });
+
+  function handleTopicChange() {
+    stopMyRecordingPlayback();
+    stopBatchReading();
+    hideFloatingBar();
+    document.getElementById('exportOutput').classList.remove('show');
+    const selectedKey = document.getElementById('topicSelect').value;
+    const customArea = document.getElementById('customArea');
+    const presetHint = document.getElementById('presetHint');
+
+    if (selectedKey === 'custom') {
+      customArea.classList.add('show');
+      presetHint.style.display = 'none';
+      currentYoutubeId = extractYoutubeId(document.getElementById('customYtUrl').value);
+      loadYoutubeVideo(currentYoutubeId);
+
+      if (!document.getElementById('sourceText').value.trim()) {
+        document.getElementById('cardsContainer').innerHTML =
+          '<div style="text-align:center; color:#64748b; padding:30px;">請在上方文字框貼上英文文章或歌詞，然後點擊「生成練習卡片」。</div>';
+        sentencesData = [];
+        updateStarCounter();
+      } else {
+        generateCustomCards();
+      }
+    } else {
+      customArea.classList.remove('show');
+      presetHint.style.display = 'block';
+      const topic = PRESET_TOPICS[selectedKey];
+      currentYoutubeId = topic.youtubeId;
+      document.getElementById('playerTitle').textContent = topic.title.replace('（完整版＋原曲練唱）', '');
+      loadYoutubeVideo(currentYoutubeId);
+      renderCards(topic.items);
+    }
+  }
+
+  function toggleInputPanel() {
+    const panel = document.getElementById('inputPanel');
+    const btn = document.getElementById('toggleInputBtn');
+    panel.classList.toggle('collapsed');
+    btn.textContent = panel.classList.contains('collapsed') ? '展開選單' : '收合選單';
+  }
+
+  function toggleTranslation() {
+    document.body.classList.toggle('hide-zh');
+    const btn = document.getElementById('toggleZhBtn');
+    btn.textContent = document.body.classList.contains('hide-zh') ? '顯示中文' : '隱藏中文';
+  }
+
+  function splitIntoSentences(rawText) {
+    const lines = rawText.split(/\n+/).map(l => l.trim()).filter(Boolean);
+    const result = [];
+    lines.forEach(line => {
+      const parts = line.match(/[^.!?]+[.!?]*["']?/g);
+      if (parts) {
+        parts.forEach(p => {
+          const cleaned = p.trim();
+          if (/[a-zA-Z]/.test(cleaned)) {
+            result.push({ tag: "", en: cleaned, zh: "" });
+          }
+        });
+      }
+    });
+    return result;
+  }
+
+  function generateCustomCards() {
+    stopMyRecordingPlayback();
+    stopBatchReading();
+    const ytUrl = document.getElementById('customYtUrl').value;
+    const customTitle = document.getElementById('customSongTitle').value.trim() || "🎵 自訂歌曲播放器";
+    currentYoutubeId = extractYoutubeId(ytUrl);
+    document.getElementById('playerTitle').textContent = customTitle;
+    loadYoutubeVideo(currentYoutubeId);
+
+    const text = document.getElementById('sourceText').value;
+    const items = splitIntoSentences(text);
+    renderCards(items);
+  }
+
+  function renderCards(items) {
+    stopCurrentRecording();
+    window.speechSynthesis.cancel();
+
+    sentencesData.forEach(s => {
+      if (s.audioUrl) URL.revokeObjectURL(s.audioUrl);
+    });
+
+    const container = document.getElementById('cardsContainer');
+    container.innerHTML = '';
+
+    sentencesData = items.map((item, idx) => ({
+      id: idx,
+      tag: item.tag || '',
+      start: item.start,
+      end: item.end,
+      text: item.en,
+      zh: item.zh || '',
+      completed: false,
+      audioUrl: null
+    }));
+
+    updateStarCounter();
+
+    if (sentencesData.length === 0) {
+      container.innerHTML = '<div style="text-align:center; color:#64748b; padding:30px;">目前沒有練習句子，請輸入英文內容後生成卡片。</div>';
+      return;
+    }
+
+    sentencesData.forEach((item, index) => {
+      const card = document.createElement('div');
+      card.className = 'practice-card';
+      card.id = `card-${index}`;
+
+      const wordsHtml = item.text.split(/\s+/).map(token => {
+        const cleanWord = token.replace(/^[^a-zA-Z0-9']+|[^a-zA-Z0-9']+$/g, '');
+        if (!cleanWord) return `<span>${escapeHtml(token)}</span>`;
+        return `<span class="clickable-word" title="點擊聽單字發音" onclick="speakText('${escapeJs(cleanWord)}', 0.9)">${escapeHtml(token)}</span>`;
+      }).join(' ');
+
+      const tagHtml = item.tag ? `<span class="section-tag">${escapeHtml(item.tag)}</span>` : '';
+      const hasTimestamp = item.start !== undefined && item.end !== undefined;
+      const startStr = item.start !== undefined ? `${item.start.toFixed(1)}s` : '--';
+      const endStr = item.end !== undefined ? `${item.end.toFixed(1)}s` : '--';
+
+      const timeBadgeStyle = hasTimestamp ? 'inline-block' : 'none';
+      const singBtnStyle = hasTimestamp ? 'inline-flex' : 'none';
+
+      const zhHtml = item.zh ? `<div class="zh-translation">${escapeHtml(item.zh)}</div>` : '';
+
+      card.innerHTML = `
+        <div class="card-top">
+          <div class="badge-group">
+            <span class="sentence-badge">第 ${index + 1} 句</span>
+            ${tagHtml}
+            <span class="time-tag" id="time-badge-${index}" style="display:${timeBadgeStyle};">⏱️ ${startStr} - ${endStr}</span>
+            <span class="shadow-cue">🗣️ 換你跟讀！</span>
+          </div>
+          <span class="card-star" id="star-${index}">⭐</span>
+        </div>
+        <div class="sentence-display">${wordsHtml}</div>
+        ${zhHtml}
+
+        <!-- 老師對時微調列 -->
+        <div class="card-sync-editor">
+          <span class="sync-time-readout" id="sync-readout-${index}">${startStr} ~ ${endStr}</span>
+          <button class="sync-btn primary-capture" onclick="captureStartTime(${index})">📍 設為開始</button>
+          <button class="sync-btn" onclick="captureEndTime(${index})">🏁 設為結束</button>
+          <button class="sync-btn" onclick="nudgeTime(${index}, 'start', -0.5)">開始 -0.5s</button>
+          <button class="sync-btn" onclick="nudgeTime(${index}, 'start', 0.5)">開始 +0.5s</button>
+          <button class="sync-btn" onclick="nudgeTime(${index}, 'end', -0.5)">結束 -0.5s</button>
+          <button class="sync-btn" onclick="nudgeTime(${index}, 'end', 0.5)">結束 +0.5s</button>
+        </div>
+
+        <div class="controls-row">
+          <button class="ctrl-btn btn-sing" id="sing-btn-${index}" style="display:${singBtnStyle};" onclick="playSongSegment(${index})">🎵 聽原曲唱</button>
+          <button class="ctrl-btn btn-listen" onclick="speakText('${escapeJs(item.text)}', 0.95)">
+            🔊 語音朗讀
+          </button>
+          <button class="ctrl-btn btn-slow" onclick="speakText('${escapeJs(item.text)}', 0.7)">
+            🐢 慢速唸
+          </button>
+          <button class="ctrl-btn btn-ultraslow" onclick="speakText('${escapeJs(item.text)}', 0.5)">
+            🐌 超慢 0.5x
+          </button>
+          <button class="ctrl-btn btn-mic" id="mic-btn-${index}" onclick="toggleRecord(${index})">
+            🎤 錄音測試
+          </button>
+        </div>
+        <div class="result-box" id="result-${index}">
+          <div class="result-status" id="status-${index}"></div>
+          <div class="diff-words" id="diff-${index}"></div>
+          <div class="result-footer">
+            <div class="heard-raw" id="heard-${index}"></div>
+            <button class="ctrl-btn btn-playback" id="play-rec-btn-${index}" style="display:none;" onclick="toggleMyRecording(${index})">
+              ▶️ 聽聽我的錄音
+            </button>
+          </div>
+        </div>
+      `;
+
+      container.appendChild(card);
+    });
+  }
+
+  function speakText(text, rate = 0.95) {
+    if (!('speechSynthesis' in window)) {
+      alert('抱歉，您的瀏覽器不支援語音朗讀功能。');
+      return;
+    }
+    stopMyRecordingPlayback();
+    stopBatchReading();
+    pauseSong();
+    stopCurrentRecording();
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';
+    utterance.rate = rate;
+    const chosenVoice = getSelectedVoice();
+    if (chosenVoice) {
+      utterance.voice = chosenVoice;
+    }
+    window.speechSynthesis.speak(utterance);
+  }
+
+  // ================= 錄音與個人聲音回放邏輯 =================
+
+  async function startAudioCapture(index) {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || typeof MediaRecorder === 'undefined') {
+      return;
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      currentAudioStream = stream;
+      audioChunks = [];
+
+      const recorder = new MediaRecorder(stream);
+      mediaRecorder = recorder;
+
+      recorder.ondataavailable = (event) => {
+        if (event.data && event.data.size > 0) {
+          audioChunks.push(event.data);
+        }
+      };
+
+      recorder.onstop = () => {
+        if (audioChunks.length > 0) {
+          const audioBlob = new Blob(audioChunks, { type: recorder.mimeType || 'audio/webm' });
+          if (sentencesData[index].audioUrl) {
+            URL.revokeObjectURL(sentencesData[index].audioUrl);
+          }
+          sentencesData[index].audioUrl = URL.createObjectURL(audioBlob);
+
+          const playBtn = document.getElementById(`play-rec-btn-${index}`);
+          if (playBtn) {
+            playBtn.style.display = 'inline-flex';
+          }
+        }
+        if (currentAudioStream) {
+          currentAudioStream.getTracks().forEach(track => track.stop());
+          currentAudioStream = null;
+        }
+      };
+
+      recorder.start();
+    } catch (err) {}
+  }
+
+  function stopAudioCapture() {
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+      try {
+        mediaRecorder.stop();
+      } catch (e) {}
+    }
+    mediaRecorder = null;
+  }
+
+  function toggleMyRecording(index) {
+    const audioUrl = sentencesData[index]?.audioUrl;
+    if (!audioUrl) return;
+
+    if (currentPlaybackIndex === index && currentPlaybackAudio) {
+      stopMyRecordingPlayback();
+      return;
+    }
+
+    stopMyRecordingPlayback();
+    stopBatchReading();
+    pauseSong();
+    stopCurrentRecording();
+    window.speechSynthesis.cancel();
+
+    const audio = new Audio(audioUrl);
+    currentPlaybackAudio = audio;
+    currentPlaybackIndex = index;
+
+    const btn = document.getElementById(`play-rec-btn-${index}`);
+    if (btn) {
+      btn.classList.add('is-playing');
+      btn.innerHTML = '⏹️ 停止播放錄音';
+    }
+
+    audio.onended = () => {
+      stopMyRecordingPlayback();
+    };
+
+    audio.onerror = () => {
+      stopMyRecordingPlayback();
+      alert('抱歉，這段錄音無法在目前的瀏覽器播放。');
+    };
+
+    audio.play().catch(() => {
+      stopMyRecordingPlayback();
+    });
+  }
+
+  function stopMyRecordingPlayback() {
+    if (currentPlaybackAudio) {
+      try {
+        currentPlaybackAudio.pause();
+        currentPlaybackAudio.currentTime = 0;
+      } catch (e) {}
+      currentPlaybackAudio = null;
+    }
+    if (currentPlaybackIndex !== -1) {
+      const btn = document.getElementById(`play-rec-btn-${currentPlaybackIndex}`);
+      if (btn) {
+        btn.classList.remove('is-playing');
+        btn.innerHTML = '▶️ 聽聽我的錄音';
+      }
+      currentPlaybackIndex = -1;
+    }
+  }
+
+  function toggleRecord(index) {
+    if (!SpeechRecognition) {
+      alert('您的瀏覽器不支援語音辨識功能，請改用 Chrome、Edge 或 Safari 瀏覽器。');
+      return;
+    }
+
+    if (activeRecordingIndex === index) {
+      stopCurrentRecording();
+      return;
+    }
+
+    stopMyRecordingPlayback();
+    stopBatchReading();
+    pauseSong();
+    stopCurrentRecording();
+    window.speechSynthesis.cancel();
+    startRecording(index);
+  }
+
+  function startRecording(index) {
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    activeRecognition = recognition;
+    activeRecordingIndex = index;
+
+    const card = document.getElementById(`card-${index}`);
+    const micBtn = document.getElementById(`mic-btn-${index}`);
+    const resultBox = document.getElementById(`result-${index}`);
+    const statusEl = document.getElementById(`status-${index}`);
+    const playRecBtn = document.getElementById(`play-rec-btn-${index}`);
+
+    card.classList.add('recording');
+    micBtn.classList.add('is-recording');
+    micBtn.innerHTML = '⏹️ 正在聆聽... (點擊停止)';
+
+    resultBox.classList.add('show');
+    statusEl.innerHTML = '<span style="color:#e11d48;">🎙️ 請對著麥克風清唱或唸出上方句子...</span>';
+    document.getElementById(`diff-${index}`).innerHTML = '';
+    document.getElementById(`heard-${index}`).innerHTML = '';
+    if (playRecBtn) playRecBtn.style.display = 'none';
+
+    startAudioCapture(index);
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      evaluatePronunciation(index, transcript);
+    };
+
+    recognition.onerror = (event) => {
+      let msg = '沒有聽清楚聲音，請再試一次！';
+      if (event.error === 'not-allowed') {
+        msg = '❌ 麥克風權限被拒絕，請確認已透過獨立網址開啟並允許麥克風權限。';
+      } else if (event.error === 'no-speech') {
+        msg = '🤔 沒有偵測到聲音，請靠近麥克風再試一次。';
+      }
+      statusEl.innerHTML = `<span style="color:#e11d48;">${msg}</span>`;
+    };
+
+    recognition.onend = () => {
+      stopAudioCapture();
+      resetMicUI(index);
+      activeRecognition = null;
+      activeRecordingIndex = -1;
+    };
+
+    try {
+      recognition.start();
+    } catch (e) {
+      stopAudioCapture();
+      resetMicUI(index);
+    }
+  }
+
+  function stopCurrentRecording() {
+    stopAudioCapture();
+    if (activeRecognition) {
+      try {
+        activeRecognition.stop();
+      } catch (e) {}
+    }
+    if (activeRecordingIndex !== -1) {
+      resetMicUI(activeRecordingIndex);
+    }
+    activeRecognition = null;
+    activeRecordingIndex = -1;
+  }
+
+  function resetMicUI(index) {
+    const card = document.getElementById(`card-${index}`);
+    const micBtn = document.getElementById(`mic-btn-${index}`);
+    if (card) card.classList.remove('recording');
+    if (micBtn) {
+      micBtn.classList.remove('is-recording');
+      micBtn.innerHTML = '🎤 錄音測試';
+    }
+  }
+
+  function normalizeTextForCompare(str) {
+    return str
+      .toLowerCase()
+      .replace(/’/g, "'")
+      .replace(/\bi've\b/g, "i have")
+      .replace(/\bi'll\b/g, "i will")
+      .replace(/\bit's\b/g, "it is")
+      .replace(/\bthere's\b/g, "there is")
+      .replace(/\bwhat's\b/g, "what is")
+      .replace(/\bcannot\b/g, "can not")
+      .replace(/[^a-z0-9\s]/g, ' ')
+      .trim();
+  }
+
+  function evaluatePronunciation(index, spokenText) {
+    const targetText = sentencesData[index].text;
+    const targetTokens = targetText.split(/\s+/);
+    const normalizedSpoken = normalizeTextForCompare(spokenText);
+    const spokenPool = normalizedSpoken.split(/\s+/).filter(Boolean);
+
+    let matchCount = 0;
+    let totalCleanWords = 0;
+
+    const diffHtml = targetTokens.map(token => {
+      const normalizedToken = normalizeTextForCompare(token);
+      if (!normalizedToken) return `<span>${escapeHtml(token)}</span>`;
+
+      totalCleanWords++;
+      const subWords = normalizedToken.split(/\s+/).filter(Boolean);
+      let allSubMatched = true;
+      const tempPool = [...spokenPool];
+
+      for (const sw of subWords) {
+        const idxInPool = tempPool.indexOf(sw);
+        if (idxInPool !== -1) {
+          tempPool.splice(idxInPool, 1);
+        } else {
+          allSubMatched = false;
+          break;
+        }
+      }
+
+      if (allSubMatched) {
+        matchCount++;
+        for (const sw of subWords) {
+          const idxInPool = spokenPool.indexOf(sw);
+          if (idxInPool !== -1) spokenPool.splice(idxInPool, 1);
+        }
+        return `<span class="word-ok" title="發音清晰！">${escapeHtml(token)}</span>`;
+      } else {
+        return `<span class="word-miss" title="可以再聽一次發音練習喔">${escapeHtml(token)}</span>`;
+      }
+    }).join(' ');
+
+    const accuracy = totalCleanWords > 0 ? Math.round((matchCount / totalCleanWords) * 100) : 0;
+    const isPassed = accuracy >= 80;
+
+    const statusEl = document.getElementById(`status-${index}`);
+    const diffEl = document.getElementById(`diff-${index}`);
+    const heardEl = document.getElementById(`heard-${index}`);
+    const card = document.getElementById(`card-${index}`);
+
+    if (isPassed) {
+      sentencesData[index].completed = true;
+      card.classList.add('completed');
+      statusEl.innerHTML = `
+        <span style="color:#16a34a;">🎉 太棒了！發音很清楚（準確度 ${accuracy}%）</span>
+        <span style="color:#d97706;">獲得星星 ⭐</span>
+      `;
+    } else {
+      statusEl.innerHTML = `
+        <span style="color:#d97706;">💪 繼續加油！紅色單字可以點一下聽發音再試一次（準確度 ${accuracy}%）</span>
+      `;
+    }
+
+    diffEl.innerHTML = diffHtml;
+    heardEl.innerHTML = `AI 聽到的內容：「${escapeHtml(spokenText)}」`;
+    updateStarCounter();
+  }
+
+  function updateStarCounter() {
+    const total = sentencesData.length;
+    const earned = sentencesData.filter(s => s.completed).length;
+    document.getElementById('totalStars').textContent = `⭐ ${earned} / ${total}`;
+  }
+
+  function escapeHtml(str) {
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function escapeJs(str) {
+    return str.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, ' ');
+  }
+</script>
+
+</body>
+</html>
