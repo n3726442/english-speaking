@@ -10,25 +10,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
   <style>
     /* =========================================================================
-       🎨 方案 3：皇室紫 × 銘黃橘（活潑舞台風・色弱友善高對比色票）
+       🎨 色弱友善高對比色票：皇室紫 × 高對比寶藍 × 暖金黃／珊瑚橘（無混淆綠系）
        ========================================================================= */
     :root {
       --primary: #4A3B8C;          /* 皇室紫：主色與主要互動 */
       --primary-hover: #372A6D;
       --primary-light: #EDE9FE;
-      --secondary: #00798C;        /* 深湖水青：慢速朗讀與段落標籤 */
-      --secondary-light: #E0F2F5;
-      --ultraslow: #B45309;        /* 深琥珀橘：超慢速拆解 */
-      --ultraslow-light: #FEF3C7;
-      --music: #00798C;            /* 深湖水青：原曲伴唱與舞台高亮 */
-      --music-hover: #005F6E;
-      --music-light: #E0F2F5;
-      --playback: #D97706;         /* 銘黃橘：個人錄音回放 */
+      --blue-vivid: #005BBB;       /* 高對比寶藍：聽原曲唱、發音正確與重點標記（色弱安全） */
+      --blue-vivid-hover: #004494;
+      --blue-vivid-light: #E6F0FA;
+      --ultraslow: #9A3412;        /* 深焦糖褐橘：超慢速拆解 */
+      --ultraslow-light: #FFEDD5;
+      --gold-highlight: #D97706;   /* 深琥珀金：正在唱這句外框與強調 */
+      --gold-bg-start: #FEF3C7;    /* 暖金黃漸層起點 */
+      --gold-bg-end: #FFFBEB;      /* 暖金黃漸層終點 */
+      --playback: #B45309;         /* 銘黃橘：個人錄音回放 */
       --playback-light: #FEF3C7;
       --danger: #E05A2B;           /* 亮珊瑚橘：錄音與待加強提示（色弱安全） */
       --danger-light: #FFF1EC;
-      --success: #00798C;          /* 深湖水青：發音正確（色弱安全，避免紅綠混淆） */
-      --success-light: #E0F2F5;
       --warning: #F59E0B;          /* 銘黃色：星星與暫停強調 */
       --bg: #F9F9FB;               /* 珍珠白底色 */
       --card-bg: #FFFFFF;
@@ -138,9 +137,9 @@
     }
 
     .toggle-btn.active-sync {
-      background: var(--secondary-light);
-      color: var(--secondary);
-      border-color: var(--secondary);
+      background: var(--blue-vivid-light);
+      color: var(--blue-vivid);
+      border-color: var(--blue-vivid);
     }
 
     .alert-banner {
@@ -248,7 +247,7 @@
     }
 
     .floating-action-btn.is-resume {
-      background: var(--secondary);
+      background: var(--blue-vivid);
       color: #FFFFFF;
     }
 
@@ -279,15 +278,15 @@
       transform: scale(0.95);
     }
 
-    /* 老師對時小工具橫幅 */
+    /* 老師對時小工具橫幅（高對比寶藍） */
     .sync-toolbar {
       display: none;
-      background: var(--secondary-light);
-      border: 2px solid var(--secondary);
+      background: var(--blue-vivid-light);
+      border: 2px solid var(--blue-vivid);
       border-radius: var(--radius);
       padding: 14px 18px;
       margin-bottom: 14px;
-      box-shadow: 0 4px 12px rgba(0, 121, 140, 0.12);
+      box-shadow: 0 4px 12px rgba(0, 91, 187, 0.12);
     }
 
     body.sync-mode .sync-toolbar {
@@ -305,7 +304,7 @@
 
     .sync-toolbar-title {
       font-weight: 800;
-      color: var(--secondary);
+      color: var(--blue-vivid);
       font-size: 0.98rem;
       display: flex;
       align-items: center;
@@ -313,7 +312,7 @@
     }
 
     .live-clock {
-      background: var(--secondary);
+      background: var(--blue-vivid);
       color: white;
       padding: 2px 10px;
       border-radius: 6px;
@@ -323,12 +322,12 @@
 
     .sync-toolbar-desc {
       font-size: 0.85rem;
-      color: #164E63;
+      color: #1E3A8A;
       margin-bottom: 10px;
     }
 
     .btn-export {
-      background: var(--secondary);
+      background: var(--blue-vivid);
       color: white;
       border: none;
       padding: 8px 14px;
@@ -343,7 +342,7 @@
     }
 
     .btn-export:hover {
-      background: var(--music-hover);
+      background: var(--blue-vivid-hover);
     }
 
     .export-textarea {
@@ -354,7 +353,7 @@
       padding: 10px;
       font-family: monospace;
       font-size: 0.82rem;
-      border: 1.5px solid var(--secondary);
+      border: 1.5px solid var(--blue-vivid);
       border-radius: 8px;
       background: #FFFFFF;
       color: var(--text-main);
@@ -605,19 +604,19 @@
     }
 
     .icon-ctrl-btn.btn-pip {
-      background: var(--secondary-light);
-      border-color: #99F6E4;
-      color: var(--secondary);
+      background: var(--blue-vivid-light);
+      border-color: #93C5FD;
+      color: var(--blue-vivid);
     }
 
     .icon-ctrl-btn.btn-pip:hover {
-      background: #CCFBF1;
+      background: #DBEAFE;
     }
 
     .icon-ctrl-btn.btn-pip.active {
-      background: var(--primary);
+      background: var(--blue-vivid);
       color: #FFFFFF;
-      border-color: var(--primary);
+      border-color: var(--blue-vivid);
     }
 
     .yt-wrapper {
@@ -712,7 +711,7 @@
       padding: 18px 20px;
       border: 1.5px solid #E4E4E7;
       box-shadow: 0 2px 6px rgba(24, 24, 27, 0.04);
-      transition: all 0.25s ease;
+      transition: all 0.2s ease;
       scroll-margin-top: 120px;
     }
 
@@ -721,38 +720,41 @@
       scroll-margin-top: 140px;
     }
 
-    /* 原曲播放高亮：深湖水青實線＋舞台感外框 */
+    /* ⭐ 原曲播放高亮：暖金黃底色 ＋ 2.5px 深琥珀粗框 ＋ 左側 6px 加粗標示條（色弱一眼辨識！） */
     .practice-card.singing-active {
-      border-color: var(--music);
-      background: linear-gradient(to right, var(--music-light), #FFFFFF);
-      box-shadow: 0 0 0 3px rgba(0, 121, 140, 0.22);
-      transform: translateY(-1px);
+      border: 2.5px solid var(--gold-highlight);
+      border-left: 7px solid var(--gold-highlight);
+      background: linear-gradient(135deg, var(--gold-bg-start), var(--gold-bg-end));
+      box-shadow: 0 6px 20px rgba(217, 119, 6, 0.25);
+      transform: translateY(-2px);
     }
 
-    /* 語音朗讀高亮：皇室紫實線 */
+    /* 語音朗讀高亮：皇室紫粗框 */
     .practice-card.reading-active {
-      border-color: var(--primary);
+      border: 2px solid var(--primary);
+      border-left: 6px solid var(--primary);
       background: linear-gradient(to right, var(--primary-light), #FFFFFF);
-      box-shadow: 0 0 0 3px rgba(74, 59, 140, 0.2);
+      box-shadow: 0 4px 14px rgba(74, 59, 140, 0.18);
       transform: translateY(-1px);
     }
 
-    /* 跟讀停頓提示：銘黃橘高亮 */
+    /* 跟讀停頓提示：高對比寶藍框 */
     .practice-card.shadow-waiting {
-      border-color: var(--warning);
-      background: linear-gradient(to right, #FEF3C7, #FFFFFF);
-      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25);
+      border: 2px solid var(--blue-vivid);
+      border-left: 6px solid var(--blue-vivid);
+      background: linear-gradient(to right, var(--blue-vivid-light), #FFFFFF);
+      box-shadow: 0 4px 14px rgba(0, 91, 187, 0.2);
     }
 
-    /* 過關完成：深湖水青邊框（色弱安全，不與珊瑚橘混淆） */
-    .practice-card.completed {
-      border-color: var(--success);
-      background: linear-gradient(to bottom right, #FFFFFF, #F0FDFA);
+    /* 過關完成：高對比寶藍邊框（非正在播放時顯示） */
+    .practice-card.completed:not(.singing-active):not(.reading-active) {
+      border-color: var(--blue-vivid);
+      background: linear-gradient(to bottom right, #FFFFFF, #F5F9FF);
     }
 
     /* 錄音中：亮珊瑚橘邊框 */
     .practice-card.recording {
-      border-color: var(--danger);
+      border: 2px solid var(--danger);
       box-shadow: 0 0 0 3px rgba(224, 90, 43, 0.2);
     }
 
@@ -784,8 +786,8 @@
     .section-tag {
       font-size: 0.75rem;
       font-weight: 700;
-      color: var(--secondary);
-      background: var(--secondary-light);
+      color: var(--blue-vivid);
+      background: var(--blue-vivid-light);
       padding: 3px 8px;
       border-radius: 6px;
     }
@@ -793,19 +795,38 @@
     .time-tag {
       font-size: 0.75rem;
       font-weight: 700;
-      color: #92400E;
-      background: #FEF3C7;
+      color: #713F12;
+      background: #FEF08A;
       padding: 3px 8px;
       border-radius: 6px;
       font-family: monospace;
+    }
+
+    /* 🎶 正在唱這句動態標籤（不單靠顏色，提供明確文字與圖示提示） */
+    .singing-cue {
+      display: none;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      background: var(--gold-highlight);
+      padding: 3px 10px;
+      border-radius: 999px;
+      box-shadow: 0 2px 6px rgba(217, 119, 6, 0.35);
+      animation: pulseShadow 1.2s infinite;
+    }
+
+    .practice-card.singing-active .singing-cue {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
 
     .shadow-cue {
       display: none;
       font-size: 0.8rem;
       font-weight: 800;
-      color: #92400E;
-      background: #FDE68A;
+      color: #FFFFFF;
+      background: var(--blue-vivid);
       padding: 3px 10px;
       border-radius: 999px;
       animation: pulseShadow 1s infinite;
@@ -817,7 +838,7 @@
 
     @keyframes pulseShadow {
       0%, 100% { opacity: 1; }
-      50% { opacity: 0.55; }
+      50% { opacity: 0.65; }
     }
 
     .card-star {
@@ -869,8 +890,8 @@
       display: none;
       margin-bottom: 12px;
       padding: 10px 12px;
-      background: var(--secondary-light);
-      border: 1.5px dashed var(--secondary);
+      background: var(--blue-vivid-light);
+      border: 1.5px dashed var(--blue-vivid);
       border-radius: 10px;
       flex-wrap: wrap;
       align-items: center;
@@ -884,8 +905,8 @@
 
     .sync-btn {
       background: #FFFFFF;
-      border: 1px solid var(--secondary);
-      color: var(--secondary);
+      border: 1px solid var(--blue-vivid);
+      color: var(--blue-vivid);
       padding: 5px 9px;
       border-radius: 7px;
       font-weight: 700;
@@ -895,23 +916,23 @@
     }
 
     .sync-btn:hover {
-      background: #CCFBF1;
+      background: #DBEAFE;
     }
 
     .sync-btn.primary-capture {
-      background: var(--secondary);
+      background: var(--blue-vivid);
       color: #FFFFFF;
     }
 
     .sync-btn.primary-capture:hover {
-      background: var(--music-hover);
+      background: var(--blue-vivid-hover);
     }
 
     .sync-time-readout {
       font-family: monospace;
       font-weight: 700;
-      color: #164E63;
-      background: #CCFBF1;
+      color: #1E3A8A;
+      background: #DBEAFE;
       padding: 4px 8px;
       border-radius: 6px;
     }
@@ -944,14 +965,15 @@
       transform: scale(0.97);
     }
 
+    /* 🎵 聽原曲唱：高對比寶藍（取代原本的綠色系，色弱視覺極清晰） */
     .btn-sing {
-      color: var(--music);
-      border-color: #99F6E4;
-      background: var(--music-light);
+      color: var(--blue-vivid);
+      border-color: #93C5FD;
+      background: var(--blue-vivid-light);
     }
 
     .btn-sing:hover {
-      background: #CCFBF1;
+      background: #DBEAFE;
     }
 
     .btn-listen {
@@ -976,12 +998,12 @@
 
     .btn-ultraslow {
       color: var(--ultraslow);
-      border-color: #FCD34D;
+      border-color: #FDBA74;
       background: var(--ultraslow-light);
     }
 
     .btn-ultraslow:hover {
-      background: #FDE68A;
+      background: #FED7AA;
     }
 
     .btn-pause-batch {
@@ -996,12 +1018,12 @@
 
     .btn-pause-batch.is-resume {
       color: #FFFFFF;
-      border-color: var(--secondary);
-      background: var(--secondary);
+      border-color: var(--blue-vivid);
+      background: var(--blue-vivid);
     }
 
     .btn-pause-batch.is-resume:hover {
-      background: var(--music-hover);
+      background: var(--blue-vivid-hover);
     }
 
     .btn-playback {
@@ -1056,7 +1078,7 @@
       100% { box-shadow: 0 0 0 0 rgba(224, 90, 43, 0); }
     }
 
-    /* 辨識結果回饋區（色弱友善：深湖水青實線框 vs 亮珊瑚橘波浪底線） */
+    /* 辨識結果回饋區（色弱友善：高對比寶藍實線框 vs 亮珊瑚橘波浪底線） */
     .result-box {
       margin-top: 14px;
       padding: 12px 14px;
@@ -1089,9 +1111,9 @@
     }
 
     .word-ok {
-      color: var(--success);
-      background: var(--success-light);
-      border: 1px solid #99F6E4;
+      color: var(--blue-vivid);
+      background: var(--blue-vivid-light);
+      border: 1.5px solid #93C5FD;
       padding: 2px 6px;
       border-radius: 5px;
       margin-right: 4px;
@@ -1101,7 +1123,7 @@
     .word-miss {
       color: #C2410C;
       background: var(--danger-light);
-      border: 1px dashed #FDBA74;
+      border: 1.5px dashed #FDBA74;
       padding: 2px 6px;
       border-radius: 5px;
       margin-right: 4px;
@@ -1732,7 +1754,7 @@
     }, { passive: true });
   });
 
-  // 精準捲動對齊：手機直向開啟浮動視窗時對齊頂部邊距(nearest/start)，桌面或大視窗置中(center)
+  // 精準捲動對齊：手機直向開啟浮動視窗時對齊頂部邊距(start)，桌面或大視窗置中(center)
   function smoothScrollToCard(index) {
     if (isUserScrolling) return;
     const card = document.getElementById(`card-${index}`);
@@ -2365,6 +2387,7 @@
             <span class="sentence-badge">第 ${index + 1} 句</span>
             ${tagHtml}
             <span class="time-tag" id="time-badge-${index}" style="display:${timeBadgeStyle};">⏱️ ${startStr} - ${endStr}</span>
+            <span class="singing-cue">🎶 正在唱這句</span>
             <span class="shadow-cue">🗣️ 換你跟讀！</span>
           </div>
           <span class="card-star" id="star-${index}">⭐</span>
@@ -2710,7 +2733,7 @@
       sentencesData[index].completed = true;
       card.classList.add('completed');
       statusEl.innerHTML = `
-        <span style="color:#00798C;">🎉 太棒了！發音很清楚（準確度 ${accuracy}%）</span>
+        <span style="color:#005BBB;">🎉 太棒了！發音很清楚（準確度 ${accuracy}%）</span>
         <span style="color:#B45309;">獲得星星 ⭐</span>
       `;
     } else {
