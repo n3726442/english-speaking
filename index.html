@@ -143,7 +143,7 @@
     .floating-pause-bar {
       position: fixed;
       bottom: 20px;
-      right: 20px;
+      left: 20px;
       z-index: 999;
       background: rgba(15, 23, 42, 0.92);
       backdrop-filter: blur(8px);
@@ -269,7 +269,7 @@
     .export-textarea {
       display: none;
       width: 100%;
-      height: 110px;
+      height: 130px;
       margin-top: 10px;
       padding: 10px;
       font-family: monospace;
@@ -396,7 +396,26 @@
       font-family: inherit;
     }
 
-    /* YouTube 練唱播放器區塊 */
+    /* YouTube 練唱播放器區塊（支援大畫面與浮動小視窗雙模式） */
+    .player-placeholder {
+      display: none;
+      height: 290px;
+      margin-bottom: 14px;
+      border-radius: var(--radius);
+      border: 1.5px dashed #cbd5e1;
+      background: rgba(255, 255, 255, 0.6);
+      color: #64748b;
+      font-size: 0.9rem;
+      font-weight: 700;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .player-placeholder.show {
+      display: flex;
+    }
+
     .player-panel {
       background: var(--card-bg);
       border-radius: var(--radius);
@@ -405,10 +424,49 @@
       box-shadow: 0 4px 14px rgba(124, 58, 237, 0.08);
       margin-bottom: 14px;
       display: none;
+      transition: box-shadow 0.25s ease;
     }
 
     .player-panel.show {
       display: block;
+    }
+
+    /* 桌面版：右下角可拖曳浮動小視窗 */
+    .player-panel.is-floating {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 340px;
+      margin: 0;
+      padding: 10px 12px 12px 12px;
+      z-index: 950;
+      border: 2px solid var(--music);
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.28);
+      background: rgba(255, 255, 255, 0.97);
+      backdrop-filter: blur(8px);
+    }
+
+    .player-panel.is-floating .player-header {
+      margin-bottom: 8px;
+      cursor: move;
+      user-select: none;
+    }
+
+    .player-panel.is-floating .player-title {
+      font-size: 0.82rem;
+      max-width: 150px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .player-panel.is-floating .yt-wrapper {
+      padding-bottom: 56.25%;
+      min-height: 155px;
+    }
+
+    .player-panel.is-floating .btn-full-song-label {
+      display: none;
     }
 
     .player-header {
@@ -431,9 +489,25 @@
 
     .player-controls-top {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       flex-wrap: wrap;
       align-items: center;
+    }
+
+    .btn-pip {
+      color: #4338ca;
+      border-color: #c7d2fe;
+      background: #eef2ff;
+    }
+
+    .btn-pip:hover {
+      background: #e0e7ff;
+    }
+
+    .btn-pip.active {
+      background: var(--music);
+      color: #ffffff;
+      border-color: var(--music);
     }
 
     .yt-wrapper {
@@ -519,7 +593,7 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
-      padding-bottom: 80px;
+      padding-bottom: 120px;
     }
 
     .practice-card {
@@ -529,7 +603,7 @@
       border: 1.5px solid #e2e8f0;
       box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
       transition: all 0.25s ease;
-      scroll-margin-top: 110px;
+      scroll-margin-top: 230px;
     }
 
     .practice-card.singing-active {
@@ -929,6 +1003,18 @@
         bottom: 14px;
         justify-content: space-between;
       }
+      /* 手機版浮動播放器固定在頂部導覽列下方，方便邊看影片邊滑動歌詞 */
+      .player-panel.is-floating {
+        top: 64px;
+        bottom: auto;
+        left: 10px;
+        right: 10px;
+        width: auto;
+      }
+      .player-panel.is-floating .yt-wrapper {
+        padding-bottom: 42%;
+        min-height: 140px;
+      }
     }
   </style>
 </head>
@@ -958,10 +1044,10 @@
         ⏱️ 老師時間軸微調工具
         <span class="live-clock" id="livePlayerClock">目前秒數：0.0s</span>
       </div>
-      <button class="btn-export" onclick="exportSyncedCode()">📋 複製更新後的歌詞代碼</button>
+      <button class="btn-export" onclick="exportSyncedCode()">📋 複製完整歌曲代碼</button>
     </div>
     <div class="sync-toolbar-desc">
-      <strong>操作步驟：</strong>1. 按下方「▶️ 從頭跟著唱整首」播放音樂 $\rightarrow$ 2. 聽到歌手剛唱出某一句的瞬間，點擊該句的 <strong>「📍 設為開始」</strong>（會自動把上一句結束時間接好）$\rightarrow$ 3. 全部對好後按右上角「複製更新後的歌詞代碼」，貼回 GitHub 的 <code>items: [...]</code> 覆蓋即可！
+      <strong>操作步驟：</strong>1. 貼上新歌詞與 YouTube 網址並生成卡片 $\rightarrow$ 2. 播放音樂並點擊每句的 <strong>「📍 設為開始」</strong> $\rightarrow$ 3. 按右上角「複製完整歌曲代碼」，貼到程式碼中的 <code>PRESET_TOPICS</code> 區塊即可自動出現在下拉選單！
     </div>
     <textarea id="exportOutput" class="export-textarea" readonly></textarea>
   </section>
@@ -970,21 +1056,18 @@
   <section class="input-panel" id="inputPanel">
     <div class="preset-bar">
       <label for="topicSelect">📚 選擇練習主題：</label>
-      <select id="topicSelect" class="preset-select" onchange="handleTopicChange()">
-        <option value="moana_full">🎵 《海洋奇緣》How Far I'll Go（完整版＋原曲練唱）</option>
-        <option value="nature_story">☀️ 自然與生活短文（純口說練習）</option>
-        <option value="custom">✏️ 自訂文章 / 貼上新歌詞（可搭 YouTube）...</option>
-      </select>
+      <select id="topicSelect" class="preset-select" onchange="handleTopicChange()"></select>
     </div>
 
     <div class="hint-text" id="presetHint">
-      💡 提示：下方可自由切換<strong>女聲／男聲</strong>與 <strong>0.5x 超慢速</strong>；按下「🎤 錄音測試」唸完後，還可以直接點擊「▶️ 聽聽我的錄音」回放自己的聲音！
+      💡 提示：點擊播放器右上角的 <strong>「📌 浮動小視窗」</strong>，往下捲動看歌詞練唱時，影片畫面就會一直跟著你（電腦版還可滑鼠拖曳位置）！
     </div>
 
     <!-- 自訂輸入區 -->
     <div class="custom-area" id="customArea">
       <div class="custom-yt-row">
-        <input type="text" id="customYtUrl" class="custom-yt-input" placeholder="（選填）貼上 YouTube 歌曲網址，例如：https://www.youtube.com/watch?v=...">
+        <input type="text" id="customSongTitle" class="custom-yt-input" placeholder="（選填）自訂歌曲名稱，例如：🎵 歌曲名稱（完整版＋原曲練唱）">
+        <input type="text" id="customYtUrl" class="custom-yt-input" placeholder="（選填）貼上 YouTube 歌曲網址，例如：https://youtu.be/...">
       </div>
       <textarea id="sourceText" placeholder="請在此貼上英文文章或歌詞（每行一句）..."></textarea>
       <div class="input-actions">
@@ -994,13 +1077,20 @@
     </div>
   </section>
 
+  <!-- 原位佔位框（浮動時避免版面跳動） -->
+  <div class="player-placeholder" id="playerPlaceholder">
+    <span>📺 影片已切換為浮動小視窗模式</span>
+    <button class="ctrl-btn btn-pip" onclick="toggleFloatingPlayer(false)">🗖 放回這裡</button>
+  </div>
+
   <!-- YouTube 練唱播放器面板 -->
   <section class="player-panel" id="playerPanel">
-    <div class="player-header">
+    <div class="player-header" id="playerDragHandle" title="浮動模式下可按住此處拖曳位置">
       <div class="player-title" id="playerTitle">🎵 原曲伴唱播放器</div>
       <div class="player-controls-top">
-        <button class="ctrl-btn btn-sing" onclick="playFullSong()">▶️ 從頭跟著唱整首（自動捲動）</button>
-        <button class="ctrl-btn" onclick="pauseSong()">⏸️ 暫停音樂</button>
+        <button class="ctrl-btn btn-sing" onclick="playFullSong()">▶️ <span class="btn-full-song-label">從頭跟著唱整首</span></button>
+        <button class="ctrl-btn" onclick="pauseSong()">⏸️</button>
+        <button class="ctrl-btn btn-pip" id="togglePipBtn" onclick="toggleFloatingPlayer()">📌 浮動小視窗</button>
       </div>
     </div>
     <div class="yt-wrapper">
@@ -1032,17 +1122,19 @@
   <main class="cards-list" id="cardsContainer"></main>
 </div>
 
-<!-- 右下角懸浮快速暫停/停止控制列 -->
+<!-- 左下角懸浮快速暫停/停止控制列 -->
 <div class="floating-pause-bar" id="floatingPauseBar">
   <span class="floating-label" id="floatingStatusLabel">🎵 正在播放原曲...</span>
   <button class="floating-stop-btn" id="floatingStopBtn" onclick="handleFloatingStop()">⏸️ 暫停</button>
 </div>
 
 <script>
-  // 預設題庫資料庫（已更新為精準對時版本）
+  // =========================================================================
+  // 📚 預設題庫資料庫（以後只要在這裡新增一組物件，上方下拉選單就會自動出現！）
+  // =========================================================================
   const PRESET_TOPICS = {
     moana_full: {
-      title: "🎵 《海洋奇緣》How Far I'll Go（完整版）",
+      title: "🎵 《海洋奇緣》How Far I'll Go（完整版＋原曲練唱）",
       youtubeId: "cPAbx5kgCJo",
       items: [
         { tag: "Verse 1", start: 3.3, end: 7.9, en: "I've been staring at the edge of the water", zh: "我一直凝望著水岸的盡頭" },
@@ -1074,6 +1166,54 @@
         { tag: "Outro", start: 137.8, end: 148.5, en: "One day I'll know, how far I'll go", zh: "總有一天我會明白，我究竟能走多遠" }
       ]
     },
+
+    let_it_go: {
+      title: "❄️ 《冰雪奇緣》Let It Go（完整版＋原曲練唱）",
+      youtubeId: "yebNIHKAC4A",
+      items: [
+        { tag: "Verse 1", start: 12.7, end: 17, en: "The snow glows white on the mountain tonight", zh: "今晚山頭上的白雪閃閃發亮" },
+        { tag: "Verse 1", start: 17, end: 21.1, en: "Not a footprint to be seen", zh: "看不見半個腳印" },
+        { tag: "Verse 1", start: 21.1, end: 24, en: "A kingdom of isolation", zh: "一座孤寂的王國" },
+        { tag: "Verse 1", start: 24, end: 28.4, en: "And it looks like I'm the queen", zh: "而我看起來就像是這裡的女王" },
+        { tag: "Verse 1", start: 28.4, end: 35.4, en: "The wind is howling like this swirling storm inside", zh: "寒風呼嘯，就像我內心翻湧的風暴" },
+        { tag: "Verse 1", start: 35.4, end: 42, en: "Couldn't keep it in, heaven knows I tried", zh: "再也壓抑不住，天知道我已經盡力了" },
+        { tag: "Pre-Chorus", start: 42, end: 45.9, en: "Don't let them in, don't let them see", zh: "別讓他們進來，別讓他們看見" },
+        { tag: "Pre-Chorus", start: 45.9, end: 49.6, en: "Be the good girl you always have to be", zh: "當個大家期望中永遠乖巧的女孩" },
+        { tag: "Pre-Chorus", start: 49.6, end: 55.9, en: "Conceal, don't feel, don't let them know", zh: "隱藏起來，別去感受，別讓他們知道" },
+        { tag: "Pre-Chorus", start: 55.9, end: 58.9, en: "Well, now they know", zh: "好吧，現在他們全都知道了" },
+        { tag: "Chorus", start: 58.9, end: 62.8, en: "Let it go, let it go", zh: "放開吧，隨它去吧" },
+        { tag: "Chorus", start: 62.8, end: 65.9, en: "Can't hold it back anymore", zh: "再也無法壓抑自己" },
+        { tag: "Chorus", start: 65.9, end: 69.3, en: "Let it go, let it go", zh: "放開吧，隨它去吧" },
+        { tag: "Chorus", start: 69.3, end: 74, en: "Turn away and slam the door", zh: "轉過身，用力甩上門" },
+        { tag: "Chorus", start: 74, end: 79.9, en: "I don't care what they're going to say", zh: "我不在乎他們會怎麼說" },
+        { tag: "Chorus", start: 79.9, end: 83.8, en: "Let the storm rage on", zh: "就讓暴風雪盡情狂嘯吧" },
+        { tag: "Chorus", start: 83.8, end: 90.6, en: "The cold never bothered me anyway", zh: "反正寒冷從來不曾困擾過我" },
+        { tag: "Verse 2", start: 90.6, end: 97.7, en: "It's funny how some distance makes everything seem small", zh: "真有趣，拉開距離後，一切都顯得如此渺小" },
+        { tag: "Verse 2", start: 97.7, end: 105.7, en: "And the fears that once controlled me can't get to me at all", zh: "曾經束縛我的恐懼，再也無法左右我" },
+        { tag: "Pre-Chorus 2", start: 105.7, end: 109.5, en: "It's time to see what I can do", zh: "是時候看看我能做到什麼程度了" },
+        { tag: "Pre-Chorus 2", start: 109.5, end: 113, en: "To test the limits and break through", zh: "去挑戰極限、徹底突破" },
+        { tag: "Pre-Chorus 2", start: 113, end: 117.2, en: "No right, no wrong, no rules for me", zh: "沒有對錯，沒有規矩能限制我" },
+        { tag: "Pre-Chorus 2", start: 117.2, end: 120.1, en: "I'm free", zh: "我自由了" },
+        { tag: "Chorus 2", start: 120.1, end: 124.1, en: "Let it go, let it go", zh: "放開吧，隨它去吧" },
+        { tag: "Chorus 2", start: 124.1, end: 127.6, en: "I am one with the wind and sky", zh: "我與清風和天空融為一體" },
+        { tag: "Chorus 2", start: 127.6, end: 131.1, en: "Let it go, let it go", zh: "放開吧，隨它去吧" },
+        { tag: "Chorus 2", start: 131.1, end: 135.3, en: "You'll never see me cry", zh: "你再也不會看見我哭泣" },
+        { tag: "Chorus 2", start: 135.3, end: 141.8, en: "Here I stand and here I stay", zh: "我就站在這裡，也將留在這裡" },
+        { tag: "Chorus 2", start: 141.8, end: 152.2, en: "Let the storm rage on", zh: "就讓暴風雪盡情狂嘯吧" },
+        { tag: "Bridge", start: 152.2, end: 159.9, en: "My power flurries through the air into the ground", zh: "我的魔力在空中飛舞，傾瀉而下深入大地" },
+        { tag: "Bridge", start: 159.9, end: 166.9, en: "My soul is spiraling in frozen fractals all around", zh: "我的靈魂在四周盤旋的冰晶雪花中綻放" },
+        { tag: "Bridge", start: 166.9, end: 173.8, en: "And one thought crystallizes like an icy blast", zh: "一個念頭如冰霜風暴般凝結成形" },
+        { tag: "Bridge", start: 173.8, end: 182, en: "I'm never going back, the past is in the past", zh: "我再也不會回頭，過去的就讓它過去吧" },
+        { tag: "Outro", start: 182, end: 185.5, en: "Let it go, let it go", zh: "放開吧，隨它去吧" },
+        { tag: "Outro", start: 185.5, end: 188.9, en: "And I'll rise like the break of dawn", zh: "我將如破曉的曙光般升起" },
+        { tag: "Outro", start: 188.9, end: 192.6, en: "Let it go, let it go", zh: "放開吧，隨它去吧" },
+        { tag: "Outro", start: 192.6, end: 196.7, en: "That perfect girl is gone", zh: "那個完美的乖女孩已經不在了" },
+        { tag: "Outro", start: 196.7, end: 204.8, en: "Here I stand in the light of day", zh: "我就站在白晝的光芒之中" },
+        { tag: "Outro", start: 204.8, end: 210.7, en: "Let the storm rage on", zh: "就讓暴風雪盡情狂嘯吧" },
+        { tag: "Outro", start: 210.7, end: 216.6, en: "The cold never bothered me anyway", zh: "反正寒冷從來不曾困擾過我" }
+      ]
+    },
+
     nature_story: {
       title: "☀️ 自然與生活短文（純口說練習）",
       youtubeId: null,
@@ -1108,6 +1248,7 @@
   let lastAutoScrolledIndex = -1;
   let userManualScrollTimeout = null;
   let isUserScrolling = false;
+  let isPlayerFloating = false;
 
   // 全篇語音連播狀態
   let isBatchReading = false;
@@ -1115,6 +1256,93 @@
 
   // 懸浮暫停列模式 ('song' | 'batch' | null)
   let floatingMode = null;
+
+  // ================= 浮動影片小視窗與拖曳邏輯 =================
+
+  function toggleFloatingPlayer(forceState) {
+    const panel = document.getElementById('playerPanel');
+    const placeholder = document.getElementById('playerPlaceholder');
+    const btn = document.getElementById('togglePipBtn');
+
+    if (!currentYoutubeId) return;
+
+    isPlayerFloating = typeof forceState === 'boolean' ? forceState : !isPlayerFloating;
+
+    if (isPlayerFloating) {
+      panel.classList.add('is-floating');
+      placeholder.classList.add('show');
+      btn.classList.add('active');
+      btn.innerHTML = '🗖 恢復大視窗';
+    } else {
+      panel.classList.remove('is-floating');
+      placeholder.classList.remove('show');
+      btn.classList.remove('active');
+      btn.innerHTML = '📌 浮動小視窗';
+      // 清除拖曳殘留的內聯座標
+      panel.style.left = '';
+      panel.style.top = '';
+      panel.style.right = '';
+      panel.style.bottom = '';
+    }
+  }
+
+  function initDraggablePlayer() {
+    const panel = document.getElementById('playerPanel');
+    const handle = document.getElementById('playerDragHandle');
+    let isDragging = false;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    handle.addEventListener('mousedown', (e) => {
+      if (!isPlayerFloating || window.innerWidth <= 640) return;
+      if (e.target.closest('button')) return; // 點擊按鈕時不觸發拖曳
+
+      isDragging = true;
+      const rect = panel.getBoundingClientRect();
+      offsetX = e.clientX - rect.left;
+      offsetY = e.clientY - rect.top;
+
+      panel.style.right = 'auto';
+      panel.style.bottom = 'auto';
+      panel.style.left = rect.left + 'px';
+      panel.style.top = rect.top + 'px';
+      document.body.style.userSelect = 'none';
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const maxX = window.innerWidth - panel.offsetWidth - 8;
+      const maxY = window.innerHeight - panel.offsetHeight - 8;
+      const nextX = Math.max(8, Math.min(maxX, e.clientX - offsetX));
+      const nextY = Math.max(8, Math.min(maxY, e.clientY - offsetY));
+      panel.style.left = nextX + 'px';
+      panel.style.top = nextY + 'px';
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (isDragging) {
+        isDragging = false;
+        document.body.style.userSelect = '';
+      }
+    });
+  }
+
+  function populateTopicDropdown() {
+    const select = document.getElementById('topicSelect');
+    select.innerHTML = '';
+
+    Object.keys(PRESET_TOPICS).forEach(key => {
+      const opt = document.createElement('option');
+      opt.value = key;
+      opt.textContent = PRESET_TOPICS[key].title;
+      select.appendChild(opt);
+    });
+
+    const customOpt = document.createElement('option');
+    customOpt.value = 'custom';
+    customOpt.textContent = '✏️ 自訂文章 / 貼上新歌詞（可搭 YouTube）...';
+    select.appendChild(customOpt);
+  }
 
   function showFloatingBar(mode, labelText) {
     floatingMode = mode;
@@ -1175,6 +1403,7 @@
   function loadYoutubeVideo(videoId) {
     const panel = document.getElementById('playerPanel');
     if (!videoId) {
+      toggleFloatingPlayer(false);
       panel.classList.remove('show');
       if (ytPlayer && typeof ytPlayer.stopVideo === 'function') {
         ytPlayer.stopVideo();
@@ -1344,6 +1573,8 @@
 
   function exportSyncedCode() {
     const outputBox = document.getElementById('exportOutput');
+    const selectedKey = document.getElementById('topicSelect').value;
+
     const lines = sentencesData.map(item => {
       const tagPart = item.tag ? `tag: ${JSON.stringify(item.tag)}, ` : '';
       const startPart = item.start !== undefined ? `start: ${item.start}, ` : '';
@@ -1352,14 +1583,23 @@
       return `        { ${tagPart}${startPart}${endPart}en: ${JSON.stringify(item.text)}${zhPart} }`;
     });
 
-    const formattedCode = `      items: [\n${lines.join(',\n')}\n      ]`;
+    let formattedCode = '';
+    if (selectedKey === 'custom') {
+      const customTitle = document.getElementById('customSongTitle').value.trim() || '🎵 新歌曲（完整版＋原曲練唱）';
+      const ytId = currentYoutubeId ? JSON.stringify(currentYoutubeId) : 'null';
+      const songKey = 'song_' + Date.now().toString().slice(-4);
+      formattedCode = `    ${songKey}: {\n      title: ${JSON.stringify(customTitle)},\n      youtubeId: ${ytId},\n      items: [\n${lines.join(',\n')}\n      ]\n    },`;
+    } else {
+      formattedCode = `      items: [\n${lines.join(',\n')}\n      ]`;
+    }
+
     outputBox.value = formattedCode;
     outputBox.classList.add('show');
     outputBox.select();
 
     if (navigator.clipboard) {
       navigator.clipboard.writeText(formattedCode).then(() => {
-        alert('✅ 已複製更新後的歌詞時間軸代碼！\n\n請到 GitHub 編輯 index.html，找到對應主題的 items: [ ... ] 貼上覆蓋即可永久儲存。');
+        alert('✅ 已複製歌曲代碼！\n\n貼到 GitHub 的 index.html 裡 PRESET_TOPICS 區塊即可永久加入預設選單。');
       }).catch(() => {
         alert('已產生代碼在下方文字框中，請全選複製並貼回 GitHub 的 index.html！');
       });
@@ -1557,14 +1797,12 @@
     const maleKeywords = ['male', 'david', 'guy', 'andrew', 'christopher', 'eric', 'roger', 'steffan', 'mark', 'alex', 'daniel', 'fred', 'aaron', 'james', 'ryan', 'william'];
     const femaleKeywords = ['female', 'jenny', 'aria', 'samantha', 'zira', 'victoria', 'ava', 'allison', 'susan', 'karen', 'moira', 'tessa', 'michelle', 'emma'];
 
-    // 篩選男聲
     maleVoice =
       pool.find(v => maleKeywords.some(k => v.name.toLowerCase().includes(k)) && (v.name.includes('Natural') || v.name.includes('Google'))) ||
       pool.find(v => maleKeywords.some(k => v.name.toLowerCase().includes(k))) ||
       enVoices.find(v => maleKeywords.some(k => v.name.toLowerCase().includes(k))) ||
       null;
 
-    // 篩選女聲
     femaleVoice =
       pool.find(v => v.name.includes('Google US English') && !v.name.toLowerCase().includes('male')) ||
       pool.find(v => femaleKeywords.some(k => v.name.toLowerCase().includes(k)) && (v.name.includes('Natural') || v.name.includes('Google'))) ||
@@ -1581,6 +1819,8 @@
   }
 
   window.addEventListener('DOMContentLoaded', () => {
+    populateTopicDropdown();
+    initDraggablePlayer();
     initVoices();
     handleTopicChange();
   });
@@ -1613,7 +1853,7 @@
       presetHint.style.display = 'block';
       const topic = PRESET_TOPICS[selectedKey];
       currentYoutubeId = topic.youtubeId;
-      document.getElementById('playerTitle').textContent = topic.title + " • 原曲練唱器";
+      document.getElementById('playerTitle').textContent = topic.title.replace('（完整版＋原曲練唱）', '');
       loadYoutubeVideo(currentYoutubeId);
       renderCards(topic.items);
     }
@@ -1653,8 +1893,9 @@
     stopMyRecordingPlayback();
     stopBatchReading();
     const ytUrl = document.getElementById('customYtUrl').value;
+    const customTitle = document.getElementById('customSongTitle').value.trim() || "🎵 自訂歌曲播放器";
     currentYoutubeId = extractYoutubeId(ytUrl);
-    document.getElementById('playerTitle').textContent = "🎵 自訂歌曲播放器";
+    document.getElementById('playerTitle').textContent = customTitle;
     loadYoutubeVideo(currentYoutubeId);
 
     const text = document.getElementById('sourceText').value;
