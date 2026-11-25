@@ -193,7 +193,7 @@
       transform: scale(0.95);
     }
 
-    /* 左下角懸浮暫停控制膠囊（播放整首或全篇朗讀時自動出現） */
+    /* 左下角懸浮暫停控制膠囊 */
     .floating-pause-bar {
       position: fixed;
       bottom: 20px;
@@ -278,7 +278,7 @@
       transform: scale(0.95);
     }
 
-    /* 老師對時小工具橫幅（高對比寶藍） */
+    /* 老師對時小工具橫幅 */
     .sync-toolbar {
       display: none;
       background: var(--blue-vivid-light);
@@ -471,7 +471,7 @@
       font-family: inherit;
     }
 
-    /* YouTube 練唱播放器區塊（單行純圖示工具列設計） */
+    /* YouTube 練唱播放器區塊 */
     .player-placeholder {
       display: none;
       height: 280px;
@@ -506,7 +506,6 @@
       display: block;
     }
 
-    /* 桌面版：右下角可拖曳浮動小視窗 */
     .player-panel.is-floating {
       position: fixed;
       bottom: 20px;
@@ -533,7 +532,6 @@
       min-height: 200px;
     }
 
-    /* 單行不換行播放器標題列 */
     .player-header {
       display: flex;
       justify-content: space-between;
@@ -565,7 +563,6 @@
       flex-shrink: 0;
     }
 
-    /* 純圖示緊湊按鈕樣式 */
     .icon-ctrl-btn {
       border: 1.5px solid #D4D4D8;
       background: #FFFFFF;
@@ -715,12 +712,10 @@
       scroll-margin-top: 120px;
     }
 
-    /* 桌面版浮動小視窗開啟時的自動捲動邊距 */
     body.pip-active .practice-card {
       scroll-margin-top: 140px;
     }
 
-    /* ⭐ 原曲播放高亮：暖金黃底色 ＋ 2.5px 深琥珀粗框 ＋ 左側 7px 加粗標示條 */
     .practice-card.singing-active {
       border: 2.5px solid var(--gold-highlight);
       border-left: 7px solid var(--gold-highlight);
@@ -729,7 +724,6 @@
       transform: translateY(-2px);
     }
 
-    /* 語音朗讀高亮：皇室紫粗框 */
     .practice-card.reading-active {
       border: 2px solid var(--primary);
       border-left: 6px solid var(--primary);
@@ -738,7 +732,6 @@
       transform: translateY(-1px);
     }
 
-    /* 跟讀停頓提示：高對比寶藍框 */
     .practice-card.shadow-waiting {
       border: 2px solid var(--blue-vivid);
       border-left: 6px solid var(--blue-vivid);
@@ -746,13 +739,11 @@
       box-shadow: 0 4px 14px rgba(0, 91, 187, 0.2);
     }
 
-    /* 過關完成：高對比寶藍邊框（非正在播放時顯示） */
     .practice-card.completed:not(.singing-active):not(.reading-active) {
       border-color: var(--blue-vivid);
       background: linear-gradient(to bottom right, #FFFFFF, #F5F9FF);
     }
 
-    /* 錄音中：亮珊瑚橘邊框 */
     .practice-card.recording {
       border: 2px solid var(--danger);
       box-shadow: 0 0 0 3px rgba(224, 90, 43, 0.2);
@@ -783,12 +774,10 @@
       border-radius: 6px;
     }
 
-    /* 永久隱藏歌曲段落標籤（Verse / Chorus 等） */
     .section-tag {
       display: none !important;
     }
 
-    /* 平時隱藏秒數標籤，只有在「⏱️ 對時」模式開啟時才顯示 */
     .time-tag {
       display: none;
       font-size: 0.75rem;
@@ -804,7 +793,6 @@
       display: inline-block;
     }
 
-    /* 🎶 精簡圓潤琥珀金小圓章 */
     .singing-cue {
       display: none;
       font-size: 0.85rem;
@@ -841,6 +829,27 @@
     @keyframes pulseShadow {
       0%, 100% { opacity: 1; }
       50% { opacity: 0.65; }
+    }
+
+    .star-status-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .star-earned-badge {
+      display: none;
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: var(--blue-vivid);
+      background: var(--blue-vivid-light);
+      border: 1px solid #93C5FD;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .practice-card.completed .star-earned-badge {
+      display: inline-block;
     }
 
     .card-star {
@@ -887,7 +896,6 @@
       color: var(--primary);
     }
 
-    /* 卡片內部的對時微調控制列（僅在對時模式顯示） */
     .card-sync-editor {
       display: none;
       margin-bottom: 12px;
@@ -939,7 +947,6 @@
       border-radius: 6px;
     }
 
-    /* 按鈕控制列 */
     .controls-row {
       display: flex;
       flex-wrap: wrap;
@@ -967,7 +974,6 @@
       transform: scale(0.97);
     }
 
-    /* 🎵 聽原曲唱：高對比寶藍（色弱視覺極清晰） */
     .btn-sing {
       color: var(--blue-vivid);
       border-color: #93C5FD;
@@ -1056,7 +1062,6 @@
       background: #FFEDD5;
     }
 
-    /* 錄音按鈕：亮珊瑚橘與皇室紫形成鮮明舞台對比（色弱友善） */
     .btn-mic {
       color: #FFFFFF;
       background: var(--primary);
@@ -1080,7 +1085,6 @@
       100% { box-shadow: 0 0 0 0 rgba(224, 90, 43, 0); }
     }
 
-    /* 辨識結果回饋區（色弱友善：高對比寶藍實線框 vs 亮珊瑚橘波浪底線） */
     .result-box {
       margin-top: 14px;
       padding: 12px 14px;
@@ -1148,7 +1152,6 @@
       color: var(--text-muted);
     }
 
-    /* 頁尾非營利與版權聲明 */
     .disclaimer-footer {
       text-align: center;
       font-size: 0.78rem;
@@ -1158,13 +1161,9 @@
       line-height: 1.6;
     }
 
-    /* =========================================================================
-       📱 手機版專屬響應式調整（確保單行工具列＋精準捲動對齊不遮擋歌詞）
-       ========================================================================= */
     @media (max-width: 640px) {
       body { padding: 10px; }
 
-      /* 頂部導覽列緊湊單行化 */
       header {
         padding: 8px 10px;
         top: 6px;
@@ -1215,7 +1214,6 @@
         font-size: 0.8rem;
       }
 
-      /* 手機直向浮動播放器：固定在單行導覽列下方，工具列單行不換行，影片高度 200px 合規 */
       .player-panel.is-floating {
         top: 56px;
         bottom: auto;
@@ -1233,18 +1231,15 @@
         min-height: 200px;
       }
 
-      /* 精準計算自動捲動對齊點：導覽列(56px) + 單行標題(38px) + 影片(200px) + 緩衝(22px) = 316px */
       body.pip-active .practice-card {
         scroll-margin-top: 316px;
       }
 
-      /* 底部補齊捲動空間，讓最後幾句歌詞也能輕鬆滑到浮動影片正下方 */
       body.pip-active .cards-list {
         padding-bottom: 240px;
       }
     }
 
-    /* 手機橫拿（Landscape）：切換成「左影右詞」雙欄配置，200x200 合規且不擋歌詞 */
     @media (max-height: 500px) and (orientation: landscape) {
       .player-panel.is-floating {
         top: 56px;
@@ -1286,7 +1281,6 @@
     ⚠️ 提醒：目前的瀏覽器可能不支援語音辨識（錄音評分功能）。建議使用 <strong>Google Chrome</strong>、<strong>Microsoft Edge</strong> 或 <strong>Safari</strong> 開啟，並允許麥克風權限。
   </div>
 
-  <!-- 老師對時小工具面板 -->
   <section class="sync-toolbar" id="syncToolbar">
     <div class="sync-toolbar-header">
       <div class="sync-toolbar-title">
@@ -1296,12 +1290,11 @@
       <button class="btn-export" onclick="exportSyncedCode()">📋 複製完整歌曲代碼</button>
     </div>
     <div class="sync-toolbar-desc">
-      <strong>操作步驟：</strong>1. 貼上新歌詞與 YouTube 網址並生成卡片 → 2. 播放音樂並點擊每句的 <strong>「📍 設為開始」</strong> → 3. 按右上角「複製完整歌曲代碼」，貼到程式碼中的 <code>PRESET_TOPICS</code> 區塊即可自動出現在下拉選單！
+      <strong>操作步驟：</strong>1. 貼上新歌詞與 YouTube 網址並生成卡片 → 2. 播放音樂並點擊每句的 <strong>「📍 設為開始」</strong> 與 <strong>「🏁 設為結束」</strong>（可 ±0.5s 微調） → 3. 按右上角「複製完整歌曲代碼」，貼到 <code>PRESET_TOPICS</code> 即可加入選單。
     </div>
     <textarea id="exportOutput" class="export-textarea" readonly></textarea>
   </section>
 
-  <!-- 主題選單與文章輸入區 -->
   <section class="input-panel" id="inputPanel">
     <div class="preset-bar">
       <label for="topicSelect">📚 選擇練習主題：</label>
@@ -1312,7 +1305,6 @@
       💡 提示：點擊播放器右上角 <strong>↘️</strong> 切換為浮動小視窗，往下捲動看歌詞練唱時，影片畫面就會跟著你（點擊 <strong>↖️</strong> 可恢復大視窗）！
     </div>
 
-    <!-- 自訂輸入區 -->
     <div class="custom-area" id="customArea">
       <div class="custom-yt-row">
         <input type="text" id="customSongTitle" class="custom-yt-input" placeholder="（選填）自訂歌曲名稱，例如：🎵 歌曲名稱（完整版＋原曲練唱）">
@@ -1326,13 +1318,11 @@
     </div>
   </section>
 
-  <!-- 原位佔位框（浮動時避免版面跳動） -->
   <div class="player-placeholder" id="playerPlaceholder">
     <span>📺 影片已切換為浮動小視窗</span>
     <button class="icon-ctrl-btn btn-pip active" onclick="toggleFloatingPlayer(false)" title="恢復大視窗">↖️</button>
   </div>
 
-  <!-- YouTube 練唱播放器面板（單行純圖示按鈕：▶️、⏸️、↘️/↖️） -->
   <section class="player-panel" id="playerPanel">
     <div class="player-header" id="playerDragHandle" title="浮動模式下可按住此處拖曳位置">
       <div class="player-title" id="playerTitle">🎵 原曲伴唱播放器</div>
@@ -1347,7 +1337,6 @@
     </div>
   </section>
 
-  <!-- 全篇語音連播與跟讀控制列 -->
   <section class="tts-global-bar">
     <div class="tts-global-title">🔊 語音設定與全篇朗讀：</div>
     <div class="tts-global-actions">
@@ -1368,20 +1357,16 @@
     <div class="global-status-pill" id="globalStatusPill"></div>
   </section>
 
-  <!-- 下方互動練習卡片區 -->
   <main class="cards-list" id="cardsContainer"></main>
 
-  <!-- 頁尾非營利與版權聲明 -->
   <footer class="disclaimer-footer">
     本網頁僅供個人與課堂非營利語言及歌唱練習使用，無任何商業廣告或收費。<br>
     音樂與影片皆透過 YouTube 官方播放器嵌入串流，所有歌曲、影像與歌詞著作權均歸原著作權人所有。
   </footer>
 </div>
 
-<!-- 回到頂端按鈕 (Back to Top) -->
 <button class="back-to-top-btn" id="backToTopBtn" onclick="scrollToTop()" title="回到頁首">⬆️ 頂端</button>
 
-<!-- 左下角懸浮快速暫停/繼續控制列 -->
 <div class="floating-pause-bar" id="floatingPauseBar">
   <span class="floating-label" id="floatingStatusLabel">🎵 正在播放原曲...</span>
   <button class="floating-action-btn" id="floatingPrimaryBtn" onclick="handleFloatingPrimary()">⏸️ 暫停</button>
@@ -1389,9 +1374,6 @@
 </div>
 
 <script>
-  // =========================================================================
-  // 📚 預設題庫資料庫（以後只要在這裡新增一組物件，上方下拉選單就會自動出現！）
-  // =========================================================================
   const PRESET_TOPICS = {
     moana_full: {
       title: "🎵 《海洋奇緣》How Far I'll Go（完整版＋原曲練唱）",
@@ -1536,14 +1518,12 @@
   let femaleVoice = null;
   let maleVoice = null;
 
-  // 音訊錄製與回放相關變數
   let mediaRecorder = null;
   let audioChunks = [];
   let currentAudioStream = null;
   let currentPlaybackAudio = null;
   let currentPlaybackIndex = -1;
 
-  // YouTube Player 相關變數
   let ytPlayer = null;
   let ytApiReady = false;
   let currentYoutubeId = null;
@@ -1555,7 +1535,6 @@
   let isUserScrolling = false;
   let isPlayerFloating = false;
 
-  // 全篇語音連播與暫停狀態
   let isBatchReading = false;
   let isBatchPaused = false;
   let batchCurrentIndex = 0;
@@ -1563,10 +1542,7 @@
   let batchRate = 0.95;
   let batchTimer = null;
 
-  // 懸浮暫停列模式 ('song' | 'batch' | null)
   let floatingMode = null;
-
-  // ================= 回到頂端按鈕 (Back to Top) =================
 
   function scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1581,8 +1557,6 @@
       btn.classList.remove('show');
     }
   }, { passive: true });
-
-  // ================= 浮動影片小視窗與拖曳邏輯（純圖示 ↘️ / ↖️） =================
 
   function toggleFloatingPlayer(forceState) {
     const panel = document.getElementById('playerPanel');
@@ -1696,8 +1670,6 @@
     select.appendChild(customOpt);
   }
 
-  // ================= 左下角懸浮控制膠囊邏輯 =================
-
   function showFloatingBar(mode, labelText, isPausedState = false) {
     floatingMode = mode;
     const bar = document.getElementById('floatingPauseBar');
@@ -1767,7 +1739,6 @@
     }, { passive: true });
   });
 
-  // 精準捲動對齊：手機直向開啟浮動視窗時對齊頂部邊距(start)，桌面或大視窗置中(center)
   function smoothScrollToCard(index) {
     if (isUserScrolling) return;
     const card = document.getElementById(`card-${index}`);
@@ -1780,7 +1751,6 @@
     });
   }
 
-  // 載入 YouTube IFrame API
   const tag = document.createElement('script');
   tag.src = "https://www.youtube.com/iframe_api";
   const firstScriptTag = document.getElementsByTagName('script')[0];
@@ -1802,7 +1772,7 @@
       toggleFloatingPlayer(false);
       panel.classList.remove('show');
       if (ytPlayer && typeof ytPlayer.stopVideo === 'function') {
-        ytPlayer.stopVideo();
+        try { ytPlayer.stopVideo(); } catch (e) {}
       }
       return;
     }
@@ -1908,8 +1878,6 @@
       c.classList.remove('singing-active', 'reading-active', 'shadow-waiting');
     });
   }
-
-  // ================= 老師對時小工具邏輯 =================
 
   function toggleSyncMode() {
     document.body.classList.toggle('sync-mode');
@@ -2017,7 +1985,23 @@
     }
   }
 
-  // ================= 播放、暫停、繼續與全篇朗讀 =================
+  // 僅在音樂確實播放中時做單純暫停（不跳秒、不重啟播放器）
+  function pauseActiveSongOnly() {
+    stopSyncTimer();
+    segmentEndTime = null;
+    isSongPaused = false;
+    clearAllCardHighlights();
+    if (floatingMode === 'song') {
+      hideFloatingBar();
+    }
+    if (ytPlayer && typeof ytPlayer.getPlayerState === 'function' && typeof ytPlayer.pauseVideo === 'function') {
+      try {
+        if (ytPlayer.getPlayerState() === YT.PlayerState.PLAYING) {
+          ytPlayer.pauseVideo();
+        }
+      } catch (e) {}
+    }
+  }
 
   function playSongSegment(index) {
     const item = sentencesData[index];
@@ -2072,9 +2056,14 @@
   function stopSongCompletely() {
     isSongPaused = false;
     segmentEndTime = null;
-    if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
-      ytPlayer.pauseVideo();
-      ytPlayer.seekTo(0, true);
+    stopSyncTimer();
+    if (ytPlayer && typeof ytPlayer.getPlayerState === 'function' && typeof ytPlayer.pauseVideo === 'function') {
+      try {
+        const st = ytPlayer.getPlayerState();
+        if (st === YT.PlayerState.PLAYING || st === YT.PlayerState.PAUSED) {
+          ytPlayer.pauseVideo();
+        }
+      } catch (e) {}
     }
     clearAllCardHighlights();
     if (floatingMode === 'song') {
@@ -2137,7 +2126,7 @@
     if (sentencesData.length === 0) return;
 
     stopMyRecordingPlayback();
-    stopSongCompletely();
+    pauseActiveSongOnly();
     stopCurrentRecording();
     stopBatchReading();
 
@@ -2229,7 +2218,6 @@
         const estimatedSeconds = (wordCount * 0.42) / Math.max(rate, 0.5);
         const effectiveSpeechSeconds = Math.max(measuredSeconds, estimatedSeconds);
 
-        // 動態智慧公式：朗讀時間 × 1.3 倍 ＋ 1.2 秒緩衝，最低至少 3.5 秒
         const shadowPauseSeconds = Math.max(3.5, Math.round((effectiveSpeechSeconds * 1.3 + 1.2) * 10) / 10);
         const shadowPauseMs = Math.round(shadowPauseSeconds * 1000);
 
@@ -2457,12 +2445,14 @@
             <span class="singing-cue">🎶</span>
             <span class="shadow-cue">🗣️ 換你跟讀！</span>
           </div>
-          <span class="card-star" id="star-${index}">⭐</span>
+          <div class="star-status-group">
+            <span class="star-earned-badge">⭐ 已獲得星星</span>
+            <span class="card-star" id="star-${index}">⭐</span>
+          </div>
         </div>
         <div class="sentence-display">${wordsHtml}</div>
         ${zhHtml}
 
-        <!-- 老師對時微調列 -->
         <div class="card-sync-editor">
           <span class="sync-time-readout" id="sync-readout-${index}">${startStr} ~ ${endStr}</span>
           <button class="sync-btn primary-capture" onclick="captureStartTime(${index})">📍 設為開始</button>
@@ -2511,7 +2501,7 @@
     }
     stopMyRecordingPlayback();
     stopBatchReading();
-    stopSongCompletely();
+    pauseActiveSongOnly();
     stopCurrentRecording();
     window.speechSynthesis.cancel();
 
@@ -2525,7 +2515,7 @@
     window.speechSynthesis.speak(utterance);
   }
 
-  // ================= 錄音與個人聲音回放邏輯 =================
+  // ================= 錄音與個人聲音回放邏輯（含麥克風串流防呆） =================
 
   async function startAudioCapture(index) {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || typeof MediaRecorder === 'undefined') {
@@ -2533,6 +2523,10 @@
     }
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      if (activeRecordingIndex !== index) {
+        stream.getTracks().forEach(track => track.stop());
+        return;
+      }
       currentAudioStream = stream;
       audioChunks = [];
 
@@ -2546,7 +2540,7 @@
       };
 
       recorder.onstop = () => {
-        if (audioChunks.length > 0) {
+        if (audioChunks.length > 0 && sentencesData[index]) {
           const audioBlob = new Blob(audioChunks, { type: recorder.mimeType || 'audio/webm' });
           if (sentencesData[index].audioUrl) {
             URL.revokeObjectURL(sentencesData[index].audioUrl);
@@ -2565,7 +2559,9 @@
       };
 
       recorder.start();
-    } catch (err) {}
+    } catch (err) {
+      // 麥克風被占用或拒絕時靜默略過錄音回放，不影響語音辨識主流程
+    }
   }
 
   function stopAudioCapture() {
@@ -2588,7 +2584,7 @@
 
     stopMyRecordingPlayback();
     stopBatchReading();
-    stopSongCompletely();
+    pauseActiveSongOnly();
     stopCurrentRecording();
     window.speechSynthesis.cancel();
 
@@ -2647,14 +2643,21 @@
 
     stopMyRecordingPlayback();
     stopBatchReading();
-    stopSongCompletely();
+    pauseActiveSongOnly();
     stopCurrentRecording();
     window.speechSynthesis.cancel();
     startRecording(index);
   }
 
   function startRecording(index) {
-    const recognition = new SpeechRecognition();
+    let recognition = null;
+    try {
+      recognition = new SpeechRecognition();
+    } catch (e) {
+      alert('無法啟動語音辨識，請確認瀏覽器權限設定。');
+      return;
+    }
+
     recognition.lang = 'en-US';
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
@@ -2673,7 +2676,7 @@
     micBtn.innerHTML = '⏹️ 正在聆聽... (點擊停止)';
 
     resultBox.classList.add('show');
-    statusEl.innerHTML = '<span style="color:#E05A2B;">🎙️ 請對著麥克風清唱或唸出上方句子...</span>';
+    statusEl.innerHTML = '<span style="color:#E05A2B;">🎙️ 請對著麥克風清唱或唸出上方句子（達 80% 即可獲得星星 ⭐）...</span>';
     document.getElementById(`diff-${index}`).innerHTML = '';
     document.getElementById(`heard-${index}`).innerHTML = '';
     if (playRecBtn) playRecBtn.style.display = 'none';
@@ -2707,6 +2710,8 @@
     } catch (e) {
       stopAudioCapture();
       resetMicUI(index);
+      activeRecognition = null;
+      activeRecordingIndex = -1;
     }
   }
 
@@ -2800,12 +2805,13 @@
       sentencesData[index].completed = true;
       card.classList.add('completed');
       statusEl.innerHTML = `
-        <span style="color:#005BBB;">🎉 太棒了！發音很清楚（準確度 ${accuracy}%）</span>
-        <span style="color:#B45309;">獲得星星 ⭐</span>
+        <span style="color:#005BBB;">🎉 達標過關！發音清晰（準確度 ${accuracy}%，門檻 80%）</span>
+        <span style="color:#B45309; font-weight:800;">⭐ 已獲得星星</span>
       `;
     } else {
       statusEl.innerHTML = `
-        <span style="color:#C2410C;">💪 繼續加油！橘紅色單字可以點一下聽發音再試一次（準確度 ${accuracy}%）</span>
+        <span style="color:#C2410C;">💪 準確度 ${accuracy}%（過關門檻 80%），橘紅色單字可點一下聽發音再試一次</span>
+        <span style="color:#52525B; font-size:0.82rem;">已辨識 ${matchCount} / ${totalCleanWords} 字</span>
       `;
     }
 
